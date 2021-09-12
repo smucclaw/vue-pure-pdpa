@@ -5,7 +5,9 @@
 </template>
 
 <script>
+  const PMain = require('./PMain.purs');
   console.log("hello world");
+  console.log(PMain.str);
 </script>
 
 <style>
