@@ -1,0 +1,62 @@
+{
+  "name": "vue-pure-pdpa",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "deps": "npm i && npx spago install",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "clean": "rm -rf node_modules output .spago .psc* .purs*"
+  },
+  "author": "AHaliq",
+  "license": "ISC",
+  "dependencies": {
+    "purs-loader": "^3.7.2",
+    "redux": "^4.1.1",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.2",
+    "vuejs-redux": "^2.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@vue/babel-preset-app": "^4.5.13",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^4.5.13",
+    "@vue/cli-service": "^4.5.13",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "cache-loader": "^4.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^7.17.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^7.3.1",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
