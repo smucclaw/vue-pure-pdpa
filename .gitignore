@@ -3,6 +3,8 @@ node_modules
 /dist
 output
 .spago
+.psc-*
+.purs-*
 
 /tests/e2e/videos/
 /tests/e2e/screenshots/

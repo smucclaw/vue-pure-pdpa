@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "deps": "npm install && npx spago install",
-    "serve": "npm run clean:purs && vue-cli-service serve",
-    "build": "npm run clean:purs && vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:purs": "npx spago test",
     "test:e2e": "vue-cli-service test:e2e",

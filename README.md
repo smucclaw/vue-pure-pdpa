@@ -40,4 +40,13 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### FAQ
-- running spago test will produce `.spago` and `output/` which will cause errors for npm
+
+```
+error  in ./src/index.purs
+
+Syntax Error: Error: compilation failed:
+From previous event:
+```
+- running spago test will produce `.spago` and `output/` which will cause errors for npm for some reason,
+- someone should investigate why
+- current workaround `npm run clean:purs`
