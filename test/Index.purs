@@ -1,9 +1,8 @@
-module Test.Index where
-
-import Prelude
+module Test.IndexTest where
 
 import Index (str)
 
+import Prelude
 import Control.Monad.Error.Class (class MonadThrow)
 import Effect.Exception (Error)
 import Test.Spec (SpecT, describe, it)
