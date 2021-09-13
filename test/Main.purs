@@ -13,3 +13,5 @@ import Test.Index (spec) as Index
 main :: Effect Unit
 main = launchAff_ $ runSpec [consoleReporter] do
   Index.spec
+
+-- https://purescript-spec.github.io/purescript-spec/#full-example
