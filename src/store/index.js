@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { str } from '../index.purs';
+import { str } from '../Index.purs';
 
 export default createStore({
   state: {
