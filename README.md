@@ -1,12 +1,40 @@
 # vue-pure-pdpa
 
-this project uses
-- purescript
-- spago
-- vue
-
+## Project setup
 ```
-npm install -g @vue/cli spago purescript
-npm run deps
+npm install
+npx spago install
+```
+
+### Compiles and hot-reloads for development
+```
 npm run serve
 ```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Run your end-to-end tests
+```
+npm run test:e2e
+```
+
+### Run purescript tests
+```
+npx spago test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

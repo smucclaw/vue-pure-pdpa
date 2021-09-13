@@ -2,8 +2,7 @@ const path = require('path');
 
 // vue.config.js
 module.exports = {
-  chainWebpack: config => {
-
+  chainWebpack: (config) => {
     // Purescript Loader
     config.module
       .rule('purescript')
@@ -14,7 +13,7 @@ module.exports = {
         src: [
           path.join('src', '**', '*.purs'),
           path.join('.spago', '**', 'src', '**', '*.purs'),
-        ]
-      }))
-  }
-}
+        ],
+      }));
+  },
+};
