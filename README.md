@@ -28,7 +28,7 @@ npm run test:e2e
 
 ### Run purescript tests
 ```
-npx spago test
+npm run test:purs
 ```
 
 ### Lints and fixes files
@@ -36,17 +36,15 @@ npx spago test
 npm run lint
 ```
 
+### Clean generated files
+```
+npm run clean
+```
+
+### Clean only purescript files
+```
+npm run clean:purs
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-### FAQ
-
-```
-error  in ./src/index.purs
-
-Syntax Error: Error: compilation failed:
-From previous event:
-```
-- running spago test will produce `.spago` and `output/` which will cause errors for npm for some reason,
-- someone should investigate why
-- current workaround `npm run clean:purs`
