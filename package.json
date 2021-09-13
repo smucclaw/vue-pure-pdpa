@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "deps": "npm install && npx spago install",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "npm run clean:purs && vue-cli-service serve",
+    "build": "npm run clean:purs && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:purs": "npx spago test",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "clean": "rm -rf node_modules && npm run clean:purs",
@@ -33,12 +34,15 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.0.0",
     "purs-loader": "^3.7.2",
+    "purty": "^7.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-0"
   },
   "babel": {
-    "plugins": ["transform-es2015-modules-commonjs"]
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ]
   }
 }

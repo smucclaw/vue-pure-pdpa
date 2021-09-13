@@ -4,10 +4,14 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Class.Console (log)
-import Index (str)
+import Effect.Aff (launchAff_, delay)
+import Test.Spec.Reporter.Console (consoleReporter)
+import Test.Spec.Runner (runSpec)
+
+import Test.IndexTest (spec) as IndexTest
 
 main :: Effect Unit
 main = do
   log "🍝"
-  log str
-  log "You should add some tests."
+  launchAff_ $ runSpec [consoleReporter] do
+    IndexTest.spec

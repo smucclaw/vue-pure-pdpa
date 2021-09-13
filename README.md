@@ -38,3 +38,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### FAQ
+- running spago test will produce `.spago` and `output/` which will cause errors for npm
