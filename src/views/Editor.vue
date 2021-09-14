@@ -39,7 +39,7 @@ export default {
       try {
         eval(editor.contentDOM.innerText);
       } catch (e) {
-        this.$store.state.editor_str += `\n${e}`;
+        this.$store.state.editor_str += `${e}`;
       }
       /* eslint-enable no-eval */
     },
