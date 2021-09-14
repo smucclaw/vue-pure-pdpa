@@ -12,17 +12,18 @@ import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { indentWithTab } from '@codemirror/commands';
 
+const initStr = `console.log("hello world!");
+const fib = (xs) => [...xs, xs[xs.length-1] + xs[xs.length -2]];
+const repeat = (f, n, x) => n <= 0 ? x : repeat(f, n-1, f(x));
+console.log(repeat(fib,10,[0,1]));`;
 let editor;
+
 export default {
   mounted() {
     try {
       editor = new EditorView({
         state: EditorState.create({
-          doc: `
-console.log("hello world!");
-const fib = (xs) => [...xs, xs[xs.length-1] + xs[xs.length -2]];
-const repeat = (f, n, x) => n <= 0 ? x : repeat(f, n-1, f(x));
-console.log(repeat(fib,10,[0,1]));`.trim(),
+          doc: initStr,
           extensions: [
             basicSetup,
             keymap.of([indentWithTab]),
