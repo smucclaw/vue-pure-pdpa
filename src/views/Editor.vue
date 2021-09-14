@@ -1,5 +1,9 @@
 <template>
+  <div class="rows">
   <div id="editor"></div>
+  <button class="button" v-on:click="eval_input">eval</button>
+  <textarea v-model="this.$store.state.editor_str"></textarea>
+  </div>
 </template>
 
 <script>
@@ -8,11 +12,11 @@ import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { indentWithTab } from '@codemirror/commands';
 
+let editor;
 export default {
   mounted() {
     try {
-      /* eslint-disable no-unused-vars */
-      const editor = new EditorView({
+      editor = new EditorView({
         state: EditorState.create({
           doc: 'console.log("hello world!");',
           extensions: [
@@ -22,20 +26,40 @@ export default {
         }),
         parent: document.querySelector('#editor'),
       });
-      /* eslint-enable no-unused-vars */
     } catch (e) {
       console.log(e);
     }
+  },
+  methods: {
+    eval_input() {
+      this.$store.state.editor_str = '';
+      const console = {};
+      console.log = (x) => { this.$store.state.editor_str += `${x}\n`; };
+      /* eslint-disable no-eval */
+      try {
+        eval(editor.contentDOM.innerText);
+      } catch (e) {
+        this.$store.state.editor_str += `\n${e}`;
+      }
+      /* eslint-enable no-eval */
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 #editor {
-  width: 500px;
+  width: 100%;
   height: 500px;
   border: 1px solid black;
   text-align: left;
   overflow: scroll;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  height: 100px;
 }
 </style>
