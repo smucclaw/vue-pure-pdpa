@@ -18,7 +18,11 @@ export default {
     try {
       editor = new EditorView({
         state: EditorState.create({
-          doc: 'console.log("hello world!");',
+          doc: `
+console.log("hello world!");
+const fib = (xs) => [...xs, xs[xs.length-1] + xs[xs.length -2]];
+const repeat = (f, n, x) => n <= 0 ? x : repeat(f, n-1, f(x));
+console.log(repeat(fib,10,[0,1]));`.trim(),
           extensions: [
             basicSetup,
             keymap.of([indentWithTab]),
@@ -61,5 +65,6 @@ export default {
 }
 textarea {
   height: 100px;
+  font-family: monospace;
 }
 </style>
