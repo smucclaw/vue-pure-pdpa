@@ -2,7 +2,7 @@
   <div class="rows">
     <div id="editor"></div>
     <button class="button is-primary is-light" v-on:click="eval_input">eval</button>
-    <textarea v-model="this.$store.state.editor_str"></textarea>
+    <textarea v-model="editor_str"></textarea>
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import { EditorState, basicSetup } from '@codemirror/basic-setup';
 import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { indentWithTab } from '@codemirror/commands';
+import { mapFields } from 'vuex-map-fields';
 
 const initStr = `console.log("hello world!");
 const fib = (xs) => [...xs, xs[xs.length-1] + xs[xs.length -2]];
@@ -19,6 +20,9 @@ console.log(repeat(fib,10,[0,1]));`;
 let editor;
 
 export default {
+  computed: {
+    ...mapFields(['editor_str']),
+  },
   mounted() {
     try {
       editor = new EditorView({
@@ -37,16 +41,16 @@ export default {
   },
   methods: {
     eval_input() {
-      this.$store.state.editor_str = '';
+      this.$store.commit('reset_editor_str');
       const console = {};
-      console.log = (x) => { this.$store.state.editor_str += `${x}\n`; };
-      /* eslint-disable no-eval */
+      console.log = (x) => { this.$store.commit('append_editor_str', `${x}\n`); };
       try {
+        /* eslint-disable no-eval */
         eval(editor.contentDOM.innerText);
+        /* eslint-enable no-eval */
       } catch (e) {
-        this.$store.state.editor_str += `${e}`;
+        this.$store.commit('append_editor_str', `\n${e}`);
       }
-      /* eslint-enable no-eval */
     },
   },
 };
