@@ -1,7 +1,7 @@
 <template>
   <div class="rows">
     <div id="editor"></div>
-    <button class="button is-light" v-on:click="eval_input">eval</button>
+    <button class="button is-primary is-light" v-on:click="eval_input">eval</button>
     <textarea v-model="this.$store.state.editor_str"></textarea>
   </div>
 </template>
@@ -69,5 +69,6 @@ textarea {
   height: 100%;
   font-family: monospace;
   border: none;
+  padding: 1em;
 }
 </style>
