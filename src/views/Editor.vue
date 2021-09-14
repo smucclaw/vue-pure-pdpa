@@ -1,8 +1,8 @@
 <template>
   <div class="rows">
-  <div id="editor"></div>
-  <button class="button" v-on:click="eval_input">eval</button>
-  <textarea v-model="this.$store.state.editor_str"></textarea>
+    <div id="editor"></div>
+    <button class="button is-light" v-on:click="eval_input">eval</button>
+    <textarea v-model="this.$store.state.editor_str"></textarea>
   </div>
 </template>
 
@@ -54,17 +54,20 @@ console.log(repeat(fib,10,[0,1]));`.trim(),
 <style scoped lang="scss">
 #editor {
   width: 100%;
-  height: 500px;
-  border: 1px solid black;
+  height: auto;
   text-align: left;
   overflow: scroll;
 }
 .rows {
-  display: flex;
-  flex-direction: column;
+  flex-grow: 1;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 100%;
+  grid-template-rows: 70% 5% 25%
 }
 textarea {
-  height: 100px;
+  height: 100%;
   font-family: monospace;
+  border: none;
 }
 </style>
