@@ -1,9 +1,8 @@
-<template>
-  <div class="rows">
-    <div id="editor"></div>
-    <button class="button is-primary is-light" v-on:click="eval_input">eval</button>
-    <textarea v-model="editor_str"></textarea>
-  </div>
+<template lang='pug'>
+div(class='rows')
+  div(id='editor')
+  button(class='button is-primary is-light' v-on:click='eval_input') eval
+  textarea(v-model='editor_str')
 </template>
 
 <script>
