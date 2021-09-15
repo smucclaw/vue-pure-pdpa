@@ -1,12 +1,12 @@
-<template>
-  <div id="rootcontainer">
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/editor">Editor</router-link>
-  </div>
-  <router-view/>
-  </div>
+<template lang='pug'>
+.column
+  div(id="nav")
+    router-link(to="/") Home
+    span(class='space') |
+    router-link(to="/about") About
+    span(class='space') |
+    router-link(to="/editor") Editor
+  router-view
 </template>
 
 <style lang="scss">
@@ -36,5 +36,10 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.space {
+  padding-left: 1em;
+  padding-right: 1em;
 }
 </style>
