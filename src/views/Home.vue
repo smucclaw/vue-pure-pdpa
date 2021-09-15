@@ -1,10 +1,9 @@
-<template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <h1 class="title"> {{pur_str}} </h1>
-    <button class="button is-large">Bulma button</button>
-  </div>
+<template lang='pug'>
+div(class='home')
+  img(alt='Vue logo' src='../assets/logo.png')
+  HelloWorld(msg='Welcome to Your Vue.js App')
+  h1(class='title') {{pur_str}}
+  button(class='button is-large') Bulma button
 </template>
 
 <script>

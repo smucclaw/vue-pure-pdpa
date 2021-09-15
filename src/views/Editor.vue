@@ -1,9 +1,8 @@
-<template>
-  <div class="rows">
-    <div id="editor"></div>
-    <button class="button is-primary is-light" v-on:click="eval_input">eval</button>
-    <textarea v-model="editor_str"></textarea>
-  </div>
+<template lang='pug'>
+.rows
+  #editor
+  button(class='button is-primary is-light' v-on:click='eval_input') eval
+  textarea(v-model='editor_str')
 </template>
 
 <script>
@@ -60,12 +59,10 @@ export default {
 .rows {
   flex-grow: 1;
   display: grid;
-  height: 100%;
   grid-template-columns: 100%;
   grid-template-rows: 70% 5% 25%
 }
 textarea {
-  height: 100%;
   font-family: monospace;
   border: none;
   padding: 1em;
