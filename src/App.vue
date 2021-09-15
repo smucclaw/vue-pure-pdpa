@@ -1,10 +1,12 @@
 <template>
+  <div id="rootcontainer">
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/editor">Editor</router-link>
   </div>
   <router-view/>
+  </div>
 </template>
 
 <style lang="scss">
@@ -14,6 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
 }
 
 #nav {
@@ -27,5 +30,11 @@
       color: #42b983;
     }
   }
+}
+
+#rootcontainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 </style>
