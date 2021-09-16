@@ -28,12 +28,22 @@ npm run test:e2e
 
 ### Run purescript tests
 ```
-npx spago test
+npm run test:purs
 ```
 
 ### Lints and fixes files
 ```
 npm run lint
+```
+
+### Clean generated files
+```
+npm run clean
+```
+
+### Clean only purescript files
+```
+npm run clean:purs
 ```
 
 ### Customize configuration
