@@ -5,7 +5,7 @@ import { str } from '../index.purs';
 export default createStore({
   state: {
     pur_str: str,
-    editor_str: 'press eval to eval js',
+    editor_str: 'press eval to parse input according to calc.jison grammar',
   },
   getters: {
     getField,

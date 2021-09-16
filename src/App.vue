@@ -1,5 +1,5 @@
 <template lang='pug'>
-.column
+div(class="column is-flex is-flex-direction-column")
   div(id="nav")
     router-link(to="/") Home
     span(class='space') |
@@ -32,14 +32,12 @@
   }
 }
 
-#rootcontainer {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 .space {
   padding-left: 1em;
   padding-right: 1em;
+}
+
+.column {
+  min-height: 100vh;
 }
 </style>
