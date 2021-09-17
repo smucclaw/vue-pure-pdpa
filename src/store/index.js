@@ -1,10 +1,11 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
 import { str } from '../index.purs';
+import * as AnyAll from '../AnyAll.purs';
 
 export default createStore({
   state: {
-    pur_str: str,
+    pur_str: AnyAll.fromNode2(str),
     editor_str: 'press eval to parse input according to calc.jison grammar',
   },
   getters: {
