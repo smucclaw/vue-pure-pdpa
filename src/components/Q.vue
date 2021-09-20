@@ -5,17 +5,17 @@
   <div v-if='q.andOr.contents'><label>{{ q.andOr.contents }}</label>: {{ q.andOr.nl.en }}
     <div class="level" v-if='editable'>
       <div class="level-item has-text-centered">
-        <input type='radio' v-bind:name='q.andOr.contents' value='yes' v-model='radioChecked' />
+        <input type='radio' v-model='value' v-bind:value='radioValue' />
         <p>yes</p>
         <p v-if='defaultTrue'>(default)</p>
       </div>
       <div class="level-item has-text-centered">
-        <input type='radio' v-bind:name='q.andOr.contents' value='unknown' v-model='radioChecked'/>
+        <input type='radio' v-model='value' v-bind:value='radioValue'/>
         <p>don't know</p>
         <p v-if='defaultUndefined'>(default)</p>
       </div>
       <div class="level-item has-text-centered">
-        <input type='radio' v-bind:name='q.andOr.contents' value='no' v-model='radioChecked'/>
+        <input type='radio' v-model='value' v-bind:value='radioValue'/>
         <p>no</p>
         <p v-if='defaultFalse'>(default)</p>
       </div>
@@ -37,7 +37,9 @@ export default {
   props: {
     q: Object,
     depth: Number,
+    modelValue: Object,
   },
+  emits: ['update:modelValue'],
   computed: {
     depth1() { return this.depth + 1; },
     isShouldAsk() { return this.q.shouldView === 'Ask'; },
@@ -50,12 +52,21 @@ export default {
     defaultTrue() { return this.q.mark.source === 'default' && this.q.mark.value === 'true'; },
     defaultFalse() { return this.q.mark.source === 'default' && this.q.mark.value === 'false'; },
     defaultUndefined() { return this.q.mark.source === 'default' && this.q.mark.value === 'undefined'; },
-    radioChecked() {
+    radioValue() {
       if (this.q.mark.source === 'user' && this.q.mark.value === 'true') return 'yes';
       if (this.q.mark.source === 'user' && this.q.mark.value === 'false') return 'no';
       if (this.q.mark.source === 'user') return 'unknown';
       return 'none';
     },
+    value: {
+      get() {
+        return this.q.andOr.contents;
+      },
+      set(value) {
+        this.$emit('update:modelValue', value);
+      },
+    },
+
   },
 };
 </script>
