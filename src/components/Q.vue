@@ -1,25 +1,23 @@
 <template>
   <!-- eslint-disable max-len -->
-<div class="box has-text-left">
-  <div class="level">
-    <div class="level-right has-text-right is-one-third">
-      <em>{{q.shouldView}}</em> {{ verdict }}
-    </div>
-    <div class="level-left has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}:</div>
-  </div>
+<div class="box has-text-left" :class="{ 'has-background-info-light': isShouldAsk, 'has-background-grey-light': isShouldHide }" >
+  <div class="has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}:</div>
   <div v-if='q.andOr.contents'><label>{{ q.andOr.contents }}</label>: {{ q.andOr.nl.en }}
-    <div class="level" v-if='shouldAskBool'>
+    <div class="level" v-if='editable'>
       <div class="level-item has-text-centered">
-        <input type='radio' name='{{ q.andOr.contents }}' value='yes' />
+        <input type='radio' v-bind:name='q.andOr.contents' value='yes' v-model='radioChecked' />
         <p>yes</p>
+        <p v-if='defaultTrue'>(default)</p>
       </div>
       <div class="level-item has-text-centered">
-        <input type='radio' name='{{ q.andOr.contents }}' value='no' />
-        <p>no</p>
-      </div>
-      <div class="level-item has-text-centered">
-        <input type='radio' name='{{ q.andOr.contents }}' value='unknown' />
+        <input type='radio' v-bind:name='q.andOr.contents' value='unknown' v-model='radioChecked'/>
         <p>don't know</p>
+        <p v-if='defaultUndefined'>(default)</p>
+      </div>
+      <div class="level-item has-text-centered">
+        <input type='radio' v-bind:name='q.andOr.contents' value='no' v-model='radioChecked'/>
+        <p>no</p>
+        <p v-if='defaultFalse'>(default)</p>
       </div>
     </div>
   </div>
@@ -42,11 +40,22 @@ export default {
   },
   computed: {
     depth1() { return this.depth + 1; },
+    isShouldAsk() { return this.q.shouldView === 'Ask'; },
+    isShouldHide() { return this.q.shouldView === 'Hide'; },
     verdict() {
       const str = this.q.mark.value === 'undefined' ? 'unknown' : this.q.mark.value;
       return this.q.mark.source === 'user' ? str.toUpperCase() : str;
     },
-    shouldAskBool() { return this.q.shouldView === 'Ask'; },
+    editable() { return this.q.shouldView === 'Ask' || this.q.shouldView === 'View'; },
+    defaultTrue() { return this.q.mark.source === 'default' && this.q.mark.value === 'true'; },
+    defaultFalse() { return this.q.mark.source === 'default' && this.q.mark.value === 'false'; },
+    defaultUndefined() { return this.q.mark.source === 'default' && this.q.mark.value === 'undefined'; },
+    radioChecked() {
+      if (this.q.mark.source === 'user' && this.q.mark.value === 'true') return 'yes';
+      if (this.q.mark.source === 'user' && this.q.mark.value === 'false') return 'no';
+      if (this.q.mark.source === 'user') return 'unknown';
+      return 'none';
+    },
   },
 };
 </script>

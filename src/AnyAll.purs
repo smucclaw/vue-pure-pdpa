@@ -75,8 +75,8 @@ pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
 marking1 :: Marking
 marking1 = markup $ Map.fromFoldable [Tuple "walk"  $ Right ( Just true )
                                      ,Tuple "run"   $ Left  ( Just true )
-                                     ,Tuple "eat"   $ Right ( Just true )
-                                     ,Tuple "drink" $ Left  ( Just false)]
+                                     ,Tuple "eat"   $ Left  ( Just true )
+                                     ,Tuple "drink" $ Right  ( Just false)]
 
 marking1_encoded = encode marking1
 
