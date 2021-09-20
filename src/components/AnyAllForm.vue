@@ -1,6 +1,6 @@
 <template>
   <div class="anyallform">
-    <h1 class="title">AnyAllForm: {{ burf }}</h1>
+    <h1 class="title">AnyAllForm: {{ anyallform }}</h1>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   name: 'AnyAllForm',
   props: {
-    burf: String,
+    anyallform: String,
   },
 };
 </script>

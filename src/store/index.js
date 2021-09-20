@@ -6,7 +6,7 @@ import * as AnyAll from '../AnyAll.purs';
 export default createStore({
   state: {
     pur_str: AnyAll.fromNode2(str),
-    burf: AnyAll.fromNode1,
+    anyallform: AnyAll.fromNode1,
     editor_str: 'press eval to parse input according to calc.jison grammar',
   },
   getters: {
