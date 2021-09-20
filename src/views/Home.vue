@@ -2,7 +2,7 @@
 div(class='home')
   HelloWorld(msg='hardcoded msg string')
   h2() Burf string is "{{burf}}" ... let's try passing that to HelloWorld.
-  HelloWorld(msg=burf)
+  HelloWorld(v-bind:msg='burf')
   h1(class='title') pur_str: {{pur_str}}
   button(class='button is-large') Bulma button
   AnyAllForm(burf=burf)
