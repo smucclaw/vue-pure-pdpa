@@ -1,9 +1,9 @@
 <template>
   <p>AnyAllForm top level</p>
-  <div class="anyallform">
+  <form>
     <h1 class="title">AnyAllForm: {{ formTitle }}</h1>
     <Q v-bind:q='anyallform' v-bind:depth=0 />
-  </div>
+  </form>
 </template>
 
 <script>
