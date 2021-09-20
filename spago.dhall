@@ -28,7 +28,6 @@ to generate this file without the comments in this block.
   , "partial"
   , "prelude"
   , "psci-support"
-  , "simple-json"
   , "spec"
   , "strings"
   , "transformers"
