@@ -165,7 +165,6 @@ newtype QoutJS = QoutJS (Option.Option ( shouldView :: String
                                        , prePost    :: PrePostRecord
                                        , post       :: String
                                        , mark       :: DefaultRecord
-                                       , formTitle  :: String
                                        ))
 
 derive instance  eqQoutJS :: Eq QoutJS
@@ -174,18 +173,17 @@ instance showQoutJS :: Show QoutJS where show eta = genericShow eta
 
 
 
-qoutjs :: String -> Q -> QoutJS
-qoutjs formTitle (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
+qoutjs :: Q -> QoutJS
+qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
   QoutJS $ Option.fromRecord {
     shouldView : show shouldView
-    , andOr      : case andOr of And -> Option.fromRecord { tag: "All", children: qoutjs formTitle <$> children, nl: miniNL }
-                                 Or  -> Option.fromRecord { tag: "Any", children: qoutjs formTitle <$> children, nl: miniNL }
+    , andOr      : case andOr of And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: miniNL }
+                                 Or  -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: miniNL }
                                  (Simply x) -> Option.fromRecord { tag: "Leaf"
                                                                  , contents: Just x
                                                                  , nl: miniNL }
     , prePost    : dumpPrePost prePost
     , mark       : dumpDefault mark
-    , formTitle  : formTitle
     }
  where miniNL =
          FO.fromFoldable (Map.toUnfoldable tagNL :: Array (Tuple String String))

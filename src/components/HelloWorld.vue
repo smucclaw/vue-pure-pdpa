@@ -1,14 +1,12 @@
 <template>
-  <div class="hello">
-    <h1 class="title">HelloWorld got ... msg={{ msg }}</h1>
-  </div>
+  <pre align='left'>HelloWorld got ... msg={{ msg }}</pre>
 </template>
 
 <script>
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
+    msg: Object,
   },
 };
 </script>

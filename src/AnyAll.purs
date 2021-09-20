@@ -93,7 +93,7 @@ marking1_decoded = decodeMarking marking1_encoded
 marking1_recoded x = decodeMarking $ encode x
 
 output1 :: QoutJS
-output1 = qoutjs "form output1" $ relevant Hard DPNormal marking1 Nothing example1_nl example1
+output1 = qoutjs $ relevant Hard DPNormal marking1 Nothing example1_nl example1
 
 anyallform1 = output1
 
@@ -106,9 +106,9 @@ itemLibrary = Map.fromFoldable [Tuple "example1" example1
 nlLibrary = Map.fromFoldable [Tuple "example1" example1_nl
                              ,Tuple "pdpa_dbno_s1p1" pdpa_dbno_s1p1_nl]
 
-paint :: String -> Hardness -> Foreign -> NLDict -> Item String -> QoutJS
-paint ft h fm nl item =
-  qoutjs ft $ relevant h DPNormal (decodeMarking fm) Nothing nl item
+paint :: Hardness -> Foreign -> NLDict -> Item String -> QoutJS
+paint h fm nl item =
+  qoutjs $ relevant h DPNormal (decodeMarking fm) Nothing nl item
 
 getItemByName :: String -> Item String
 getItemByName itemname =

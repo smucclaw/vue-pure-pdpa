@@ -1,9 +1,9 @@
 <template lang='pug'>
 div(class='home')
-  HelloWorld(v-bind:msg='anyallform')
-  h1(class='title') pur_str: {{pur_str}}
+  AnyAllForm(v-bind:anyallform='anyallform', v-bind:formTitle='formTitle')
   button(class='button is-large') Bulma button
-  AnyAllForm(v-bind:anyallform='anyallform')
+  h1(class='title') pur_str: {{pur_str}}
+  HelloWorld(v-bind:msg='anyallform')
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import AnyAllForm from '@/components/AnyAllForm.vue';
 export default {
   name: 'Home',
   computed: {
-    ...mapFields(['pur_str', 'anyallform']),
+    ...mapFields(['pur_str', 'anyallform', 'formTitle']),
   },
   components: {
     HelloWorld,
