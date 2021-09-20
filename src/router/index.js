@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
+import MustSing from '../views/MustSing.vue';
 
 const routes = [
   {
@@ -22,6 +23,11 @@ const routes = [
     path: '/editor',
     name: 'Editor',
     component: Editor,
+  },
+  {
+    path: '/mustsing',
+    name: 'MustSing',
+    component: MustSing,
   },
 ];
 
