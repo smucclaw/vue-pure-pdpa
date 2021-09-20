@@ -1,8 +1,10 @@
 <template>
 <div class="box has-text-left">
   <div class="level">
-    <div class="level-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}:</div>
-    <div class="level-right has-text-right">{{ verdict }}</div>
+    <div class="level-right has-text-right is-one-third">
+      <em>{{q.shouldView}}</em> {{ verdict }}
+    </div>
+    <div class="level-left has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}:</div>
   </div>
   <div v-if='q.andOr.contents'>{{ q.andOr.contents }}: {{ q.andOr.nl.en }}</div>
    <ul v-else>
@@ -24,7 +26,10 @@ export default {
   },
   computed: {
     depth1() { return this.depth + 1; },
-    verdict() { return this.q.mark.value === 'undefined' ? '' : this.q.mark.value; },
+    verdict() {
+      const str = this.q.mark.value === 'undefined' ? 'unknown' : this.q.mark.value;
+      return this.q.mark.source === 'user' ? str.toUpperCase() : str;
+    },
   },
 };
 </script>
