@@ -5,12 +5,14 @@
       .menu
         p.menu-label Question List
         ul.menu-list
-          li
-            a.is-active Are checkboxes allowed?
-          li
-            a Are checkboxes allowed again?
+          li(v-for='question in questions')
+            a {{ question.title }}
     .column
-      Question(title='Are buttons allowed?')
+      Question(
+        v-for='question in questions',
+        :title='question.title',
+        :choices='question.options'
+      )
 </template>
 
 <script>
@@ -18,6 +20,29 @@ import Question from '@/components/Question.vue';
 
 export default {
   name: 'Questions',
+  data() {
+    return {
+      questions: [
+        {
+          title: 'Are buttons allowed?',
+          options: [
+            'Yes',
+            'No',
+            'I don\'t know',
+          ],
+        },
+        {
+          title: 'Are buttons allowed again?',
+          options: [
+            'Yes',
+            'No',
+            'I don\'t know',
+            'Lorem ipsum',
+          ],
+        },
+      ],
+    };
+  },
   components: {
     Question,
   },

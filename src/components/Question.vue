@@ -2,7 +2,7 @@
 .box.has-text-left-tablet
   h1.title {{ title }}
   .buttons
-    Button(text='lorem ipsum dolor sit amet')
+    Button(v-for='choice in choices', :text='choice')
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {
   name: 'Question',
   props: {
     title: String,
+    choices: Array,
   },
   components: {
     Button,
