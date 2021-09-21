@@ -15,6 +15,7 @@ export default {
     return {
       isActive: false,
       iconProps: {
+        active: ['fas', 'check-square'],
         inactive: ['far', 'square'],
       },
     };
@@ -28,7 +29,7 @@ export default {
     toggleActive() {
       return {
         button: this.isActive ? 'is-primary' : '',
-        icon: this.isActive ? 'check-square' : 'square',
+        icon: this.isActive ? this.iconProps.active : this.iconProps.inactive,
       };
     },
   },
