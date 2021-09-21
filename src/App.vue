@@ -1,13 +1,18 @@
 <template lang='pug'>
-div(class="column is-flex is-flex-direction-column")
-  div(id="nav")
-    router-link(to="/") Home
-    span(class='space') |
-    router-link(to="/about") About
-    span(class='space') |
-    router-link(to="/editor") Editor
+Nav
+main.container
   router-view
 </template>
+
+<script>
+import Nav from '@/components/Nav.vue';
+
+export default {
+  components: {
+    Nav,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
