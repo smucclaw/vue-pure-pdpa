@@ -1,8 +1,8 @@
 <template lang='pug'>
 .rows
   #editor
-  button(class='button is-primary is-light' v-on:click='eval_input') eval
-  textarea(v-model='editor_str')
+  button.button.is-primary.is-light(@click='eval_input') eval
+  textarea.textarea.has-fixed-size(v-model='editor_str', readonly)
 </template>
 
 <script>
