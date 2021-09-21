@@ -1,15 +1,23 @@
 <template lang="pug">
 .box.has-text-left-tablet
-  h1.title Are buttons allowed?
+  h1.title {{ title }}
   .buttons
-    button.button.has-text-left-tablet.is-fullwidth.question
-      font-awesome-icon(icon="check-square")
-      |
-      span Lorem ipsum dolor sit amet
-    button.button.has-text-left-tablet.is-fullwidth.question
-      font-awesome-icon(icon='check-square')
-      span Lorem ipsum dolor sit amet
+    Button(text='lorem ipsum dolor sit amet')
 </template>
+
+<script>
+import Button from '@/components/Button.vue';
+
+export default {
+  name: 'Question',
+  props: {
+    title: String,
+  },
+  components: {
+    Button,
+  },
+};
+</script>
 
 <style lang="scss">
 .question {

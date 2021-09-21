@@ -14,5 +14,6 @@ nav.navbar.is-dark
     .navbar-menu
       .navbar-end
         router-link.navbar-item(to='/about') About
+        router-link.navbar-item(to='/questions') Questions
         router-link.navbar-item(to='/editor') Editor
 </template>
