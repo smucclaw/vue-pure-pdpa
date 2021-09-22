@@ -1,6 +1,7 @@
 module AnyAll ( fromNode1
               , fromNode2
               , fromNode3
+              , emptyMarking
               , example1_nl
               , example1
               , example1_encoded
@@ -37,6 +38,8 @@ import Foreign.Generic
 import Control.Monad.Except
 import Foreign
 
+main = log "AnyAll main"
+
 hard = Hard
 soft = Soft
 
@@ -71,6 +74,8 @@ example1_encoded = encode example1
 
 pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
 pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
+
+emptyMarking = markup Map.empty
 
 marking1 :: Marking
 marking1 = markup $ Map.fromFoldable [Tuple "walk"  $ Right ( Just true )

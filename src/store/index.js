@@ -7,7 +7,7 @@ export default createStore({
   state: {
     pur_str: AnyAll.fromNode2(str),
     anyallform: AnyAll.anyallform1,
-    marking: AnyAll.marking1_encoded,
+    marking: AnyAll.emptyMarking,
     rules: AnyAll.example1,
     nl: AnyAll.example1_nl,
     formTitle: 'test form 1',

@@ -24,18 +24,19 @@ relevant sh dp marking parentValue nl self =
                                                                                       else Hide
                                         else if isJust (evaluate Hard marking self)   then View
                                                                                       else Ask
-      -- we are able to compute the initial visibility of the subtree; TODO we can modify it according to our display preference
-      paintedChildren = relevant sh dp marking selfValue nl <$> getChildren self
-      -- if i am myself hidden, then convert all my descendants' Ask to Hide
-      repaintedChildren = if initVis /= Hide then paintedChildren
-                          else ask2hide <$> paintedChildren
+      -- we compute the initial visibility of the subtree.
+      -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
+      paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
+      newVis = case self of
+        Leaf x -> case Map.lookup x (getMarking marking) of
+          Just something -> if initVis /= Hide then initVis else Hide
+          Nothing        -> if initVis /= Hide then Ask     else Hide
+        _ -> initVis
   in -- convert to a QTree for output
   case self of
-             Leaf x -> case Map.lookup x (getMarking marking) of
-                         Just d           -> mkQ (if initVis /= Hide then Ask else Hide)  (Simply x) (nlMap x nl) Nothing d                        []
-                         Nothing          -> mkQ (if initVis /= Hide then Ask else Hide)  (Simply x) (nlMap x nl) Nothing (Default $ Left Nothing) []
-             Any label items -> ask2view (mkQ initVis  Or (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) repaintedChildren)
-             All label items -> ask2view (mkQ initVis And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) repaintedChildren)
+    Leaf x          -> mkQ (newVis)    (Simply x) (nlMap x nl)                  Nothing     (fromMaybe (Default $ Left Nothing) (Map.lookup x (getMarking marking))) []
+    Any label items -> mkQ (ask2view initVis)  Or (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
+    All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
   where
     -- from a dictionary of { langID: { shortword: longtext } }
     -- to a dictionary of { langID: longtext }
@@ -52,11 +53,11 @@ relevant sh dp marking parentValue nl self =
     getChildren (All _ c) = c
 
     ask2hide :: Q -> Q
-    ask2hide (Q q@{ shouldView: Ask }) = Q (q { shouldView = Hide })
+    ask2hide (Q q@{ shouldView: Ask }) = Q $ q { shouldView = Hide }
     ask2hide x = x
     
-    ask2view :: Q -> Q
-    ask2view (Q q@{ shouldView: Ask }) = Q $ q { shouldView = View }
+    ask2view :: ShouldView -> ShouldView
+    ask2view Ask = View
     ask2view x = x
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.

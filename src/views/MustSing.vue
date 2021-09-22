@@ -1,6 +1,9 @@
 <template>
   <form>
-    <h1 class="title">You Must Sing If</h1>
+    <h1 class="title">Must You Sing?</h1>
+    <h1 v-if="qroot.mark.value == 'true'" class="title">Yes!</h1>
+    <h1 v-if="qroot.mark.value == 'false'" class="title">No!</h1>
+    <h1 v-if="qroot.mark.value == 'undefined'" class="title">It depends...</h1>
     <Q v-bind:q='qroot' v-bind:depth=0 />
   </form>
   <HelloWorld v-bind:msg='qroot' />

@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable max-len -->
   <div class="box has-text-left" :class="{ 'has-background-white': isShouldAsk
-                                         , 'has-background-grey-light': isShouldHide
+                                         , 'has-background-grey-lighter': isShouldHide
                                          , 'has-background-warning-light': bgAny
                                          , 'has-background-danger-light': bgAll
                                          }" >
