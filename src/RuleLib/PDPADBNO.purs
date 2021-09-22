@@ -21,8 +21,6 @@ schedule1_part1 =
                        , Leaf "5.d"
                        , Leaf "5.e"
                        , Leaf "5.f"
-                       , Leaf "5.g"
-                       , Leaf "5.h"
                        ]
        , Any (Pre "6") [ Leaf "6.a"
                        , Leaf "6.b"
