@@ -156,8 +156,7 @@ So please add a little layer to convert them back to the appropriate JS values.
 
 * Visibility
 
-- when is a node painted View | Ask | Hide?
-- how is a node coloured?
+** when is a node painted View | Ask | Hide?
 
 | parentValue | self Value     | self Maybe | node initVis | alwaysShowUserInput | shouldView | comment                                                            |
 | Maybe Bool  | Maybe Bool     |            |              |                     |            |                                                                    |
@@ -168,6 +167,14 @@ So please add a little layer to convert them back to the appropriate JS values.
 | isJust      | /= parentValue | Nothing    | Hide         | -                   | Hide       | user input, or lack of it, does not contribute to the parent       |
 | Nothing     |                | isJust     | View         | -                   | View       | user has given input but it is not decisive for the parent         |
 | Nothing     |                | Nothing    | Ask          | -                   | Ask        | user has not given input; ask for it.                              |
+
+** how is a node coloured?
+
+it gets a grey if it's a hide
+
+it gets a white if it's an ask
+
+it gets the same colour if its parent if it's a view and it agrees with its parent
 
 * Questions
 
@@ -212,3 +219,14 @@ Now you can run ~paint~:
 Soft takes the default values into account when computing the short-circuits and the evaluation of the subtree answers.
 
 Hard only considers end-user input.
+
+** How does the Vue and Vuex stuff work?
+
+- store/index.js sets up a ~state.marking~
+- store/index.js has a getter called ~qroot~ which paints an output Q tree based on the marking
+- (Q stands for questions, btw)
+- that Q tree gets rendered to the user by ~Q.vue~
+- when a user clicks on a ~leaf~ input, the ~leaf~ setter commits an ~updateMarkingField~ to the store
+- the store updates the ~state.marking~ with the new value
+- ~qroot~ automatically recomputes
+- ~Q.vue~ automatically updates the DOM
