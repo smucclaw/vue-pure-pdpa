@@ -1,5 +1,5 @@
 <template>
-  <pre align='left'>HelloWorld got ... msg={{ msg }}</pre>
+  <pre align='left'>{{ msg }}</pre>
 </template>
 
 <script>

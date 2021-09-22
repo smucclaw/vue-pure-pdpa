@@ -32,13 +32,7 @@ relevant sh dp marking parentValue nl self =
   in -- convert to a QTree for output
   case self of
              Leaf x -> case Map.lookup x (getMarking marking) of
-                         Just (Default (Right b)) -> Q { shouldView: View
-                                                       , andOr: Simply x
-                                                       , tagNL: nlMap x nl
-                                                       , prePost: Nothing
-                                                       , mark: Default $ Right b
-                                                       , children: [] }
-                         Just (Default (Left  b)) -> mkQ (if initVis /= Hide then Ask else Hide)  (Simply x) (nlMap x nl) Nothing (Default $ Left  b) []
+                         Just d           -> mkQ (if initVis /= Hide then Ask else Hide)  (Simply x) (nlMap x nl) Nothing d                        []
                          Nothing          -> mkQ (if initVis /= Hide then Ask else Hide)  (Simply x) (nlMap x nl) Nothing (Default $ Left Nothing) []
              Any label items -> ask2view (mkQ initVis  Or (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) repaintedChildren)
              All label items -> ask2view (mkQ initVis And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) repaintedChildren)
