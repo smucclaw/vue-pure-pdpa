@@ -1,6 +1,6 @@
 <template lang="pug">
-button.button.has-text-left-tablet.is-fullwidth.is-justify-content-flex-start(
-  :class='toggleActive.button', @click='toggle'
+button.button.is-fullwidth.is-justify-content-flex-start(
+  :class='toggleActive.button,toggleHidden', @click='toggle'
 )
   font-awesome-icon.icon(:icon='toggleActive.icon')
   span {{ text }}
@@ -10,6 +10,7 @@ button.button.has-text-left-tablet.is-fullwidth.is-justify-content-flex-start(
 export default {
   props: {
     text: String,
+    hidden: Boolean,
   },
   data() {
     return {
@@ -23,6 +24,7 @@ export default {
   methods: {
     toggle() {
       this.isActive = !this.isActive;
+      this.$emit('selected', this.text);
     },
   },
   computed: {
@@ -31,6 +33,9 @@ export default {
         button: this.isActive ? 'is-primary' : '',
         icon: this.isActive ? this.iconProps.active : this.iconProps.inactive,
       };
+    },
+    toggleHidden() {
+      return this.hidden ? 'is-hidden' : '';
     },
   },
 };
