@@ -1,13 +1,13 @@
 <!-- eslint-disable max-len -->
 <template>
   <form>
-    <h1 class="title">Must You Sing?</h1>
-    <h1 v-if="qrootExample1.mark.value == 'true'" class="title">Yes!</h1>
-    <h1 v-if="qrootExample1.mark.value == 'false'" class="title">No!</h1>
-    <h1 v-if="qrootExample1.mark.value == 'undefined'" class="title">It depends...</h1>
-    <Q v-bind:q='qrootExample1' v-bind:depth=0 />
+    <h1 class="title">Must You Notify?</h1>
+    <h1 v-if="qrootPDPA.mark.value == 'true'" class="title">Yes!</h1>
+    <h1 v-if="qrootPDPA.mark.value == 'false'" class="title">No!</h1>
+    <h1 v-if="qrootPDPA.mark.value == 'undefined'" class="title">It depends...</h1>
+    <Q v-bind:q='qrootPDPA' v-bind:depth=0 />
   </form>
-  <HelloWorld v-bind:msg='qrootExample1' />
+  <HelloWorld v-bind:msg='qrootPDPA' />
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     ...mapFields(['marking', 'anyallform', 'formTitle']),
-    ...mapGetters(['qrootExample1']),
+    ...mapGetters(['qrootPDPA']),
   },
   components: {
     Q,

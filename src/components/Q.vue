@@ -6,7 +6,7 @@
                                          , 'has-background-danger-light': bgAll
                                          }" >
     <div class="has-text-right" v-if="q.mark.value != 'unknown'">{{ q.mark.value }}</div>
-    <div class="has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}:</div>
+    <div class="has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}: {{ q.andOr.nl.en }}</div>
     <div v-if='q.andOr.contents'><label>{{ q.andOr.contents }}</label>: {{ q.andOr.nl.en }}
       <div class="level" v-if='editable'>
         <div class="level-item has-text-centered">

@@ -8,6 +8,8 @@ div(class="column is-flex is-flex-direction-column")
     router-link(to="/editor") Editor
     span(class='space') |
     router-link(to="/mustsing") Must Sing
+    span(class='space') |
+    router-link(to="/pdpa") PDPA
   router-view
 </template>
 

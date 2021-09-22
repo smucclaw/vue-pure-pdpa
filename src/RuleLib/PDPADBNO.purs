@@ -10,7 +10,7 @@ import AnyAll.Types
 
 schedule1_part1 :: Item String
 schedule1_part1 = 
-  Any (Pre "any of the following are prescribed personal data:")
+  Any (Pre "any of the following are prescribed personal data")
        [ Leaf "1"
        , Leaf "2"
        , Leaf "3"

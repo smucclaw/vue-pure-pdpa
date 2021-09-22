@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
 import MustSing from '../views/MustSing.vue';
+import PDPA from '../views/PDPA.vue';
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: '/mustsing',
     name: 'MustSing',
     component: MustSing,
+  },
+  {
+    path: '/pdpa',
+    name: 'PDPA',
+    component: PDPA,
   },
 ];
 
