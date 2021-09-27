@@ -1,20 +1,26 @@
 <template lang="pug">
-.control
-  label.is-check.is-fullwidth.is-justify-content-flex-start
-    input(type='checkbox', v-model='checked')
-    font-awesome-icon.icon.checkmark(icon='check')
-    span {{ text }}
+label.is-check.is-fullwidth.is-justify-content-flex-start.mb-2(
+  :for='key'
+)
+  input(type='checkbox', :value='key')
+  font-awesome-icon.icon.checkmark(icon='check')
+  span {{ value }}
 </template>
 
 <script>
 export default {
   name: 'Checkbox',
   props: {
-    text: String,
+    key: String,
+    value: String,
   },
   data() {
     return {
     };
+  },
+  methods: {
+    toggle() {
+    },
   },
 };
 </script>
