@@ -1,5 +1,5 @@
 <template lang="pug">
-nav.navbar.is-dark
+nav.navbar.is-dark.mb-4
   .container
     .navbar-brand
       router-link.navbar-item(to='/') Dolores
