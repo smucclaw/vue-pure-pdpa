@@ -13,6 +13,7 @@ import Data.String
 import Data.Symbol
 import Data.Map      as Map
 import Option        as Option
+import Simple.JSON   as JSON
 
 import Partial.Unsafe
 import Data.List
@@ -137,6 +138,13 @@ newtype Q = Q { shouldView :: ShouldView
 derive instance  eqQ :: Eq (Q)
 derive instance genericQ :: Generic (Q) _
 instance showQ :: Show (Q) where show eta = genericShow eta
+
+type R = { shouldView :: ShouldView
+         , andOr      :: AndOr String
+         , tagNL      :: Map.Map String String
+         , prePost    :: Maybe (Label String)
+         , mark       :: Default Bool
+         }
 
 -- instance encodeQ :: Encode (Q) where
 --   encode (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
@@ -265,3 +273,26 @@ getForUI qt = encode (Map.fromList [("view" :: TL.Text, getViews qt)
                                    ,("ask" :: TL.Text, getAsks qt)])
 
 -}
+
+newtype ForD3 = ForD3 { name :: String
+                      , children :: Array ForD3
+                      , value :: Int }
+derive instance  eqForD3 :: Eq (ForD3)
+derive instance genericForD3 :: Generic (ForD3) _
+instance showForD3 :: Show (ForD3) where show eta = genericShow eta
+instance encodeForD3 :: Encode ForD3 where encode eta = unsafeToForeign eta
+
+forD3 :: String -> Q -> ForD3
+forD3 lang (Q q) = ForD3 { name: qName
+                         , children: forD3 lang <$> q.children
+                         , value: 100 }
+  where
+    qName = case q.andOr of
+      And        -> "all of" -- todo: replace with prePost
+      Or         -> "any of"
+      (Simply x) -> case Map.lookup lang q.tagNL of
+        Nothing -> x
+        (Just t) -> t
+
+d3_tag = JSON.writeJSON <<< encode <<< forD3 ""
+d3_en  = JSON.writeJSON <<< encode <<< forD3 "en"

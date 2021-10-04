@@ -12,7 +12,8 @@ module AnyAll ( fromNode1
               , anyallform1
               , decodeMarking
               , pdpa_dbno_s1p1 , pdpa_dbno_s1p1_nl
-              , paint
+              , pdpaQ
+              , paint, paintQ
               , hard, soft
               , howDoWeEven
               , getItemByName, getNLByName
@@ -98,7 +99,12 @@ marking1_decoded = decodeMarking marking1_encoded
 marking1_recoded x = decodeMarking $ encode x
 
 output1 :: QoutJS
-output1 = qoutjs $ relevant Hard DPNormal marking1 Nothing example1_nl example1
+output1 = qoutjs $ output1q
+output1q = paintQ marking1 example1_nl example1
+
+pdpaQ = paintQ emptyMarking pdpa_dbno_s1p1_nl pdpa_dbno_s1p1
+
+paintQ m nl i = relevant Hard DPNormal m Nothing nl i
 
 anyallform1 = output1
 
