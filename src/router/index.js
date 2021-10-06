@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
 import MustSing from '../views/MustSing.vue';
 import PDPA from '../views/PDPA.vue';
+import D3 from '../views/D3.vue';
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
     path: '/mustsing',
     name: 'MustSing',
     component: MustSing,
+  },
+  {
+    path: '/d3',
+    name: 'D3',
+    component: D3,
   },
   {
     path: '/pdpa',
