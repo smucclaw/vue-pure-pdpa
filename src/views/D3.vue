@@ -1,6 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-unused-vars */
 <template>
   <!-- <form>
     <h1 v-if="qrootExample1.mark.value == 'true'" class="title">Yes!</h1>
@@ -9,12 +6,7 @@
   <Q v-bind:q='qrootExample1' v-bind:depth=0 />
   </form> -->
   <div>
-    <svg id="tree">
-      <!-- <g>
-         <g class="links"></g>
-         <g class="nodes"></g>
-     </g> -->
-    </svg>
+    <svg id="tree" />
   </div>
   -------
   <!-- <HelloWorld v-bind:msg='qrootExample1' /> -->
@@ -38,19 +30,26 @@ export default {
     };
   },
   methods: {
-    init(x) {
-      console.log(x);
-      console.log('check ', x.andOr.tag);
-      // const clusterx = d3.cluster();
+    addObject(target, obj) {
+      return Object.assign(target, obj);
+    },
+    reformatdata(data) {
+      const viewChild = (data.andOr.children.filter((child) => child.shouldView === 'View'))[0].andOr;
+      const getObject = { ...viewChild };
+      const newTree = data;
+      const newChildren = data.andOr.children
+        .filter((child) => child.shouldView === 'Ask');
+      newChildren.map((leaf) => this.addObject(leaf.andOr, getObject));
+      newTree.andOr.children = newChildren;
+      return newTree;
+    },
+    init(data) {
+      console.log('reformat ', this.reformatdata(data));
 
-      // sort nodes by height and names
+      // const cluster = d3.cluster();
+      // console.log('cluster ', cluster);
 
-      let nodes = d3.hierarchy(x, (d) => d.andOr.children);
-      console.log('hierarchy ', nodes);
-
-      // const stratifyx = d3.stratify(x)
-      //   .parentId((d) => d.id.substring(0, d.id.lastIndexOf('.')));
-      // console.log('stratify ', stratifyx);
+      let nodes = d3.hierarchy(data, (d) => d.andOr.children);
 
       // set the dimensions and margins of the diagram
       const margin = {
@@ -63,12 +62,9 @@ export default {
       const treemap = d3.tree()
         .size([width, height]);
 
-      //  assigns the data to a hierarchy using parent-child relationships
-
       // maps the node data to the tree layout
       nodes = treemap(nodes);
 
-      // append the svg obgect to the body of the page
       // appends a 'group' element to 'svg'
       // moves the 'group' element to the top left margin
       const svg = d3.select('#tree')
@@ -78,26 +74,37 @@ export default {
         .attr('transform',
           `translate(${margin.left},${margin.top})`);
 
-      console.log('descendants ', nodes.descendants());
       // adds the links between the nodes
-      // eslint-disable-next-line no-unused-vars
       const link = g.selectAll('.link')
         .data(nodes.links())
-        .enter().append('line')
-        .attr('class', 'link')
+        .enter();
+
+      function chooseColors(d, tags, color) {
+        for (let i = 0; i < tags.length; i += 1) {
+          if (d.data.andOr.tag === tags[i]) {
+            return color[i];
+          }
+        }
+        return 'black';
+      }
+
+      link.append('line')
+        .attr('class', 'path')
         .attr('x1', (d) => d.source.x)
         .attr('y1', (d) => d.source.y)
         .attr('x2', (d) => d.target.x)
         .attr('y2', (d) => d.target.y)
-        .attr('stroke', 'darkgray')
+        // .attr('stroke', 'red')
+        .attr('stroke', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .attr('stroke-width', 2);
 
       // add text to the links
       link.append('text')
-        .attr('dy', '.35em')
-        .attr('y', (d) => (d.children ? -20 : 20))
+        .attr('x', (d) => (d.source.x + d.target.x) / 2)
+        .attr('y', (d) => (d.source.y + d.target.y) / 2)
+        .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
-        .text((d) => console.log('line ', d));
+        .text((d) => d.source.data.andOr.tag);
 
       // adds each node as a group
       const node = g.selectAll('.node')
@@ -116,14 +123,7 @@ export default {
         .attr('dy', '.35em')
         .attr('y', (d) => (d.children ? -20 : 20))
         .style('text-anchor', 'middle')
-        .text((d) => {
-          if (d.data.andOr.tag === 'Leaf') {
-            return d.data.andOr.contents;
-          }
-          return d.data.andOr.tag;
-
-          // return d.data.andOr.contents;
-        });
+        .text((d) => d.data.andOr.contents);
     },
   },
   computed: {
