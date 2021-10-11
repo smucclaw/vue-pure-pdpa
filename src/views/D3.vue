@@ -116,6 +116,11 @@ export default {
 
       // adds the circle to the node
       node.append('circle')
+        .attr('fill', (d) => {
+          if (d.parent) { return chooseColors(d.parent, ['All', 'Any'], ['red', 'blue']); }
+          return 'black';
+        })
+        .attr('fill-opacity', 0.5)
         .attr('r', 10);
 
       // adds the text to the node
