@@ -25,8 +25,7 @@ export default {
   data() {
     return {
       width: 800,
-      height: 600,
-      i: 0,
+      height: 800,
     };
   },
   methods: {
@@ -44,19 +43,16 @@ export default {
       return newTree;
     },
     init(data) {
-      console.log('reformat ', this.reformatdata(data));
+      this.reformatdata(data);
 
-      // const cluster = d3.cluster();
-      // console.log('cluster ', cluster);
-
-      let nodes = d3.hierarchy(data, (d) => d.andOr.children);
+      let nodes = d3.hierarchy((data), (d) => d.andOr.children);
 
       // set the dimensions and margins of the diagram
       const margin = {
-        top: 40, right: 90, bottom: 50, left: 90,
+        top: 10, right: 15, bottom: 10, left: 15,
       };
-      const width = 660 - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
+      const width = this.width - margin.left - margin.right;
+      const height = this.height - margin.top - margin.bottom;
 
       // declares a tree layout and assigns the size
       const treemap = d3.tree()
@@ -64,20 +60,21 @@ export default {
 
       // maps the node data to the tree layout
       nodes = treemap(nodes);
+      let x0 = Infinity;
+      let x1 = -x0;
+      nodes.each((d) => {
+        if (d.x > x1) x1 = d.x;
+        if (d.x < x0) x0 = d.x;
+      });
+
+      const svg = d3.select('#tree')
+        .attr('viewBox', [0, 0, width * 2, x1 - x0 + nodes.x]);
 
       // appends a 'group' element to 'svg'
-      // moves the 'group' element to the top left margin
-      const svg = d3.select('#tree')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom);
       const g = svg.append('g')
-        .attr('transform',
-          `translate(${margin.left},${margin.top})`);
-
-      // adds the links between the nodes
-      const link = g.selectAll('.link')
-        .data(nodes.links())
-        .enter();
+        .attr('font-family', 'sans-serif')
+        .attr('font-size', 10)
+        .attr('transform', `translate(${nodes.y / 3},${nodes.x - x0})`);
 
       function chooseColors(d, tags, color) {
         for (let i = 0; i < tags.length; i += 1) {
@@ -88,31 +85,31 @@ export default {
         return 'black';
       }
 
-      link.append('line')
-        .attr('class', 'path')
-        .attr('x1', (d) => d.source.x)
-        .attr('y1', (d) => d.source.y)
-        .attr('x2', (d) => d.target.x)
-        .attr('y2', (d) => d.target.y)
-        // .attr('stroke', 'red')
+      const link = g.append('g')
+        .attr('fill', 'none')
+        .selectAll('path')
+        .data(nodes.links())
+        .join('path')
         .attr('stroke', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
-        .attr('stroke-width', 2);
+        .attr('stroke-width', 2)
+        .attr('d', d3.linkHorizontal()
+          .x((d) => d.y)
+          .y((d) => d.x));
 
       // add text to the links
       link.append('text')
-        .attr('x', (d) => (d.source.x + d.target.x) / 2)
-        .attr('y', (d) => (d.source.y + d.target.y) / 2)
+        .attr('x', (d) => d.x)
+        .attr('y', (d) => d.y)
         .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
         .text((d) => d.source.data.andOr.tag);
 
       // adds each node as a group
-      const node = g.selectAll('.node')
+      const node = g.append('g')
+        .selectAll('g')
         .data(nodes.descendants())
-        .enter().append('g')
-        .attr('class', (d) => `node${
-          d.children ? ' node--internal' : ' node--leaf'}`)
-        .attr('transform', (d) => `translate(${d.x},${d.y})`);
+        .join('g')
+        .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
       // adds the circle to the node
       node.append('circle')
@@ -144,3 +141,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+  svg#tree {
+    width: 100vw;
+    height: auto;
+  }
+</style>
