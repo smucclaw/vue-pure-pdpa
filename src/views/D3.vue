@@ -49,7 +49,7 @@ export default {
 
       // set the dimensions and margins of the diagram
       const margin = {
-        top: 10, right: 15, bottom: 10, left: 15,
+        top: 10, right: 15, bottom: 10, left: 100,
       };
       const width = this.width - margin.left - margin.right;
       const height = this.height - margin.top - margin.bottom;
@@ -68,13 +68,15 @@ export default {
       });
 
       const svg = d3.select('#tree')
-        .attr('viewBox', [0, 0, width * 2, x1 - x0 + nodes.x]);
+        .attr('viewBox', [0, 0, width * 1.5, height]);
 
       // appends a 'group' element to 'svg'
       const g = svg.append('g')
         .attr('font-family', 'sans-serif')
         .attr('font-size', 10)
-        .attr('transform', `translate(${nodes.y / 3},${nodes.x - x0})`);
+        // root node has depth of zero, leaf nodes have height of zero
+        // but it looks better at nodes.height + 1
+        .attr('transform', `translate(${nodes.x / (nodes.height + 1)},0)`);
 
       function chooseColors(d, tags, color) {
         for (let i = 0; i < tags.length; i += 1) {
