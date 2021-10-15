@@ -26,6 +26,7 @@ export default {
     return {
       width: 800,
       height: 800,
+      i: 0,
     };
   },
   methods: {
@@ -78,6 +79,15 @@ export default {
         // but it looks better at nodes.height + 1
         .attr('transform', `translate(${nodes.x / (nodes.height + 1)},0)`);
 
+      function zoomed({ transform }) {
+        g.attr('transform', transform);
+      }
+
+      svg.call(d3.zoom()
+        .extent([[0, 0], [width, height]])
+        .scaleExtent([1, 8])
+        .on('zoom', zoomed));
+
       function chooseColors(d, tags, color) {
         for (let i = 0; i < tags.length; i += 1) {
           if (d.data.andOr.tag === tags[i]) {
@@ -96,14 +106,16 @@ export default {
         .attr('stroke-width', 2)
         .attr('d', d3.linkHorizontal()
           .x((d) => d.y)
-          .y((d) => d.x));
+          .y((d) => d.x))
+        .attr('id', (d, i) => (`path${i + 1}`));
 
-      // add text to the links
-      link.append('text')
-        .attr('x', (d) => d.x)
-        .attr('y', (d) => d.y)
+      link
+        .append('textPath')
+        .attr('x', (d) => (d.target.x - d.source.x) / 2)
+        .attr('y', (d) => (d.target.y - d.source.y) / 2)
         .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
+        .attr('href', (d, i) => (`#path${i + 1}`))
         .text((d) => d.source.data.andOr.tag);
 
       // adds each node as a group
