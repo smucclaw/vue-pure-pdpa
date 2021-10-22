@@ -6,7 +6,9 @@
   <Q v-bind:q='qrootExample1' v-bind:depth=0 />
   </form> -->
   <div>
-    <svg id="tree" />
+    <svg id="tree">
+      <clipPath id="clip"></clipPath>
+    </svg>
   </div>
   -------
   <!-- <HelloWorld v-bind:msg='qrootExample1' /> -->
@@ -83,10 +85,40 @@ export default {
         g.attr('transform', transform);
       }
 
-      svg.call(d3.zoom()
-        .extent([[0, 0], [width, height]])
-        .scaleExtent([1, 8])
-        .on('zoom', zoomed));
+      function dragStart() {
+        d3.select(this).raise();
+        g.attr('cursor', 'grabbing');
+      }
+
+      function dragDo(e) {
+        const { x } = e;
+        const { y } = e;
+        d3.select(this)
+          .attr('x', x)
+          .attr('y', y);
+      }
+
+      function dragEnd() {
+        g.attr('cursor', 'grab');
+      }
+
+      function drag() {
+        svg.call(d3.drag()
+          .on('start', dragStart)
+          .on('drag', dragDo)
+          .on('end', dragEnd));
+      }
+
+      function zoom() {
+        svg.call(d3.zoom()
+          .extent([[0, 0], [width, height]])
+          .scaleExtent([1, 8])
+          .on('zoom', zoomed));
+      }
+
+      zoom();
+
+      drag();
 
       function chooseColors(d, tags, color) {
         for (let i = 0; i < tags.length; i += 1) {
