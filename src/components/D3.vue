@@ -1,33 +1,26 @@
 <template>
-  <!-- <form>
-    <h1 v-if="qrootExample1.mark.value == 'true'" class="title">Yes!</h1>
-    <h1 v-if="qrootExample1.mark.value == 'false'" class="title">No!</h1>
-    <h1 v-if="qrootExample1.mark.value == 'undefined'" class="title">It depends...</h1>
-  <Q v-bind:q='qrootExample1' v-bind:depth=0 />
-  </form> -->
   <div>
     <svg id="tree">
       <clipPath id="clip"></clipPath>
     </svg>
   </div>
   -------
-  <!-- <HelloWorld v-bind:msg='qrootExample1' /> -->
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { mapFields } from 'vuex-map-fields';
+// import { mapGetters } from 'vuex';
+// import { mapFields } from 'vuex-map-fields';
 import * as d3 from 'd3';
-// import { tree } from 'vued3tree';
-// import Q from '@/components/Q.vue';
-// import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'D3',
+  props: {
+    qroot: Object,
+  },
   data() {
     return {
-      width: 800,
-      height: 800,
+      width: 1500,
+      height: 1500,
       i: 0,
     };
   },
@@ -46,6 +39,7 @@ export default {
       return newTree;
     },
     init(data) {
+      console.log(data);
       this.reformatdata(data);
 
       let nodes = d3.hierarchy((data), (d) => d.andOr.children);
@@ -71,7 +65,7 @@ export default {
       });
 
       const svg = d3.select('#tree')
-        .attr('viewBox', [0, 0, width * 1.5, height]);
+        .attr('viewBox', [0, 0, width * 3, height]);
 
       // appends a 'group' element to 'svg'
       const g = svg.append('g')
@@ -175,15 +169,15 @@ export default {
     },
   },
   computed: {
-    ...mapFields(['marking', 'anyallform', 'formTitle']),
-    ...mapGetters(['qrootExample1']),
+    // ...mapFields(['marking', 'anyallform', 'formTitle']),
+    // ...mapGetters(['qrootExample1']),
   },
   components: {
     // Q,
     // HelloWorld,
   },
   mounted() {
-    this.init(this.qrootExample1);
+    this.init(this.qroot);
   },
 };
 </script>
