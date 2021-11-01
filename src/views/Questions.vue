@@ -1,50 +1,36 @@
 <template lang='pug'>
-.section
-  .columns
-    aside.column.is-one-third
-      .menu
-        p.menu-label Question List
-        ul.menu-list
-          li(v-for='question in questions')
-            a {{ question.title }}
-    .column
-      Question(
-        v-for='question in questions',
-        :title='question.title',
-        :choices='question.options'
-      )
+.columns
+  //-aside.column.is-one-third
+    span.h3 Menu
+    // Menu(:list-items='menuItems')
+  section.column
+    Notification(:theme-color='theme')
+      .title.is-spaced Must you sing?
+      .subtitle Yes
+    .block.has-text-left-tablet
+      Question(:question-list='questions')
 </template>
 
 <script>
-import Question from '@/components/Question.vue';
+import data from '@/utils/anyall.json';
+import Menu from '@/components/questions/Menu.vue';
+import Notification from '@/components/questions/Notification.vue';
+import Question from '@/components/questions/Question.vue';
 
 export default {
   name: 'Questions',
   data() {
     return {
-      questions: [
-        {
-          title: 'Are buttons allowed?',
-          options: [
-            'Yes',
-            'No',
-            'I don\'t know',
-          ],
-        },
-        {
-          title: 'Are buttons allowed again?',
-          options: [
-            'Yes',
-            'No',
-            'I don\'t know',
-            'Lorem ipsum',
-          ],
-        },
-      ],
+      questions: data.andOr.children,
+      theme: 'is-info',
     };
   },
   components: {
     Question,
+    Menu,
+    Notification,
+  },
+  mounted() {
   },
 };
 </script>

@@ -1,0 +1,79 @@
+{
+    "shouldView": "View",
+    "prePost": {
+      "pre": "all of"
+    },
+    "mark": {
+      "source": "default",
+      "value": "false"
+    },
+    "andOr": {
+      "tag": "All",
+      "children": [
+        {
+          "shouldView": "Hide",
+          "prePost": {},
+          "mark": {
+            "source": "default",
+            "value": "true"
+          },
+          "andOr": {
+            "tag": "Leaf",
+            "contents": "walk"
+          }
+        },
+        {
+          "shouldView": "View",
+          "prePost": {},
+          "mark": {
+            "source": "user",
+            "value": "false"
+          },
+          "andOr": {
+            "tag": "Leaf",
+            "contents": "run"
+          }
+        },
+        {
+          "shouldView": "Hide",
+          "prePost": {
+            "pre": "either"
+          },
+          "mark": {
+            "source": "default",
+            "value": "undefined"
+          },
+          "andOr": {
+            "tag": "Any",
+            "children": [
+              {
+                "shouldView": "Hide",
+                "prePost": {},
+                "mark": {
+                  "source": "default",
+                  "value": "true"
+                },
+                "andOr": {
+                  "tag": "Leaf",
+                  "contents": "eat"
+                }
+              },
+              {
+                "shouldView": "Hide",
+                "prePost": {},
+                "mark": {
+                  "source": "default",
+                  "value": "true"
+                },
+                "andOr": {
+                  "tag": "Leaf",
+                  "contents": "drink"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+  
