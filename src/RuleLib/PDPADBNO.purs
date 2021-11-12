@@ -4,9 +4,27 @@ import Prelude
 import Data.Tuple
 import Data.Map as Map
 import Data.Maybe
+import Data.String
+import Data.Array
 import AnyAll.Types
 
 -- in the future the front-end will break out the source content into these structures
+
+asCSV :: Int -> NLDict -> Item String -> String
+asCSV d nldict (Leaf str) = joinWith "," (show <$> indent d <>
+                                          [ "OR"
+                                          , str
+                                          , fromMaybe "not found in nldict" $ Map.lookup str $
+                                            fromMaybe Map.empty (Map.lookup "en" nldict) ])
+  where indent :: Int -> Array String
+        indent d = replicate d ""
+asCSV d nldict (Any (Pre     p1   ) xs) = unlines $ ("-- " <> show p1) : (asCSV (d+1) nldict <$> xs)
+asCSV d nldict (All (Pre     p1   ) xs) = unlines $ ("-- " <> show p1) : (asCSV (d+1) nldict <$> xs)
+asCSV d nldict (Any (PrePost p1 p2) xs) = unlines $ ("-- " <> show p1) : (asCSV (d+1) nldict <$> xs)
+asCSV d nldict (All (PrePost p1 p2) xs) = unlines $ ("-- " <> show p1) : (asCSV (d+1) nldict <$> xs)
+
+unlines :: Array String -> String
+unlines xs = joinWith "\n" xs
 
 schedule1_part1 :: Item String
 schedule1_part1 = 
@@ -74,8 +92,9 @@ schedule1_part1 =
 
 schedule1_part1_nl :: NLDict
 schedule1_part1_nl =
-  Map.fromFoldable
-  [ Tuple "en" $ Map.fromFoldable
+  Map.fromFoldable [ Tuple "en" $ Map.fromFoldable rawTuplesEn ]
+
+rawTuplesEn =
     [ Tuple "1" "The amount of any wages, salary, fee, commission, bonus, gratuity, allowance or other remuneration paid or payable to the individual by any person, whether under a contract of service or a contract for services."
     , Tuple "2" "The income of the individual from the sale of any goods or property."
     , Tuple "3" "The number of any credit card, charge card or debit card issued to or in the name of the individual."
@@ -136,5 +155,5 @@ schedule1_part1_nl =
     , Tuple "23.e" "the identity of any person whose consent is necessary under that Act for an adoption order to be made, whether or not the court has dispensed with the consent of that person in accordance with that Act;"
     , Tuple "23.f" "any other information that the individual is or had been an adopted child or relating to the adoption of the individual."
     ]
-  ]
+
 
