@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
-// import { str } from '../index.purs';
+import { str } from '../index.purs';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
 
@@ -8,14 +8,13 @@ const isMustSing = false;
 
 export default createStore({
   state: {
-    // pur_str: AnyAll.fromNode2(str),
+    pur_str: AnyAll.fromNode2(str),
     anyallform: AnyAll.anyallform1,
     marking: AnyAll.emptyMarking,
     rulesExample1: AnyAll.example1,
     nlExample1: AnyAll.example1_nl,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
-    // formTitle: 'test form 1',
     editor_str: 'press eval to parse input according to calc.jison grammar',
   },
   getters: {
@@ -38,11 +37,7 @@ export default createStore({
     append_editor_str(s, x) { s.editor_str += x; },
     updateField,
     updateMarkingField(state, payload) {
-      console.log('receiving updateMarkingField');
-      console.log(payload);
       state.marking[payload.mField] = payload.vValue;
-      console.log('marking is now');
-      console.log(state.marking);
     },
   },
   actions: {
