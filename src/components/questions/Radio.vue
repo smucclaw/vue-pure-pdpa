@@ -1,12 +1,26 @@
 <template lang="pug">
-label.is-check.mr-2(v-for='opt in btnOptions')
-  input(type='checkbox')
+label.is-check.mr-2(
+  v-for='(opt, index) in btnOptions',
+  :key='index',
+  :class='displayChecked',
+)
+  input(
+    type='radio',
+    v-model='checked',
+    :name='questionName',
+    :id='opt.value',
+    :value='opt.value',
+    @change='onChange'
+  )
   span {{ opt.name }}
 </template>
 
 <script>
 export default {
   props: {
+    questionName: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -14,27 +28,28 @@ export default {
       btnOptions: [
         {
           name: 'Yes',
-          value: true,
+          value: 'true',
         },
         {
           name: 'No',
-          value: false,
+          value: 'false',
         },
         {
           name: 'Don\'t Know',
-          value: undefined,
+          value: 'undefined',
         },
       ],
+      checked: false,
     };
   },
   methods: {
-    clicked(value) {
-      this.$emit('input', value);
+    onChange() {
+      this.$emit('input', this.checked);
     },
   },
   computed: {
     displayChecked() {
-      return 'is-primary';
+      return this.checked ? 'is-primary' : '';
     },
   },
 };

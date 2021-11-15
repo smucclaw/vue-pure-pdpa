@@ -2,7 +2,7 @@
 nav.navbar.is-dark.mb-4
   .container
     .navbar-brand
-      router-link.navbar-item(to='/') Dolores
+      router-link.navbar-item(to='/') {{ appName }}
       a.navbar-burger(
         role='button',
         aria-label='menu',
@@ -10,17 +10,20 @@ nav.navbar.is-dark.mb-4
         @click='toggleNav',
         :class='showNav'
       )
-        span(aria-hidden='true')
-        span(aria-hidden='true')
-        span(aria-hidden='true')
+        span(
+          v-for='_ in 3',
+          aria-hidden='true'
+        )
     .navbar-menu(
       @click='toggleNav',
       :class='showNav'
     )
       .navbar-end
-        router-link.navbar-item(to='/about') About
-        router-link.navbar-item(to='/questions') Questions
-        router-link.navbar-item(to='/editor') Editor
+        router-link.navbar-item(
+          v-for='menu in menuItems',
+          active-class='is-active',
+          :to='menu.link'
+        ) {{ menu.name }}
 </template>
 
 <script>
@@ -28,6 +31,21 @@ export default {
   data() {
     return {
       isNavActive: false,
+      appName: 'Dolores',
+      menuItems: [
+        {
+          name: 'About',
+          link: '/about',
+        },
+        {
+          name: 'Questions',
+          link: '/questions',
+        },
+        {
+          name: 'Editor',
+          link: '/editor',
+        },
+      ],
     };
   },
   methods: {
