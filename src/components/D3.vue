@@ -39,8 +39,7 @@ export default {
       return newTree;
     },
     init(data) {
-      console.log(data);
-      this.reformatdata(data);
+      // this.reformatdata(data);
 
       let nodes = d3.hierarchy((data), (d) => d.andOr.children);
 
@@ -142,7 +141,7 @@ export default {
         .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
         .attr('href', (d, i) => (`#path${i + 1}`))
-        .text((d) => d.source.data.andOr.tag);
+        .text((d) => d.source.data.andOr.nl.en);
 
       // adds each node as a group
       const node = g.append('g')
@@ -165,7 +164,7 @@ export default {
         .attr('dy', '.35em')
         .attr('y', (d) => (d.children ? -20 : 20))
         .style('text-anchor', 'middle')
-        .text((d) => d.data.andOr.contents);
+        .text((d) => d.data.andOr.nl.en);
     },
   },
   computed: {
