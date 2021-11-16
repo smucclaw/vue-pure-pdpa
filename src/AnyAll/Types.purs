@@ -10,6 +10,7 @@ import Data.Tuple
 import Data.Either
 import Data.Maybe
 import Data.String
+import Data.String   as DString
 import Data.Symbol
 import Data.Map      as Map
 import Option        as Option
@@ -288,11 +289,16 @@ forD3 lang (Q q) = ForD3 { name: qName
                          , value: 100 }
   where
     qName = case q.andOr of
-      And        -> "all of" -- todo: replace with prePost
-      Or         -> "any of"
-      (Simply x) -> case Map.lookup lang q.tagNL of
+      And        -> maybe "all of" ({- getNL <<< -} label2pre) q.prePost
+      Or         -> maybe "any of" ({- getNL <<< -} label2pre) q.prePost
+      (Simply x) -> shorten 45 $ getNL x
+    getNL x = case Map.lookup lang q.tagNL of
         Nothing -> x
-        (Just t) -> t
+        (Just t) -> x <> ". " <> t
+    shorten n x =
+      if DString.length x > n
+      then DString.take (n-3) x <> "..."
+      else x
 
 d3_tag = JSON.writeJSON <<< encode <<< forD3 ""
 d3_en  = JSON.writeJSON <<< encode <<< forD3 "en"
