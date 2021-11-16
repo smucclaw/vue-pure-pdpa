@@ -33,7 +33,7 @@ export default {
         parent: document.querySelector('#editor'),
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   },
   methods: {
