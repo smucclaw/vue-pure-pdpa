@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
+// import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
 import MustSing from '../views/MustSing.vue';
 import PDPA from '../views/PDPA.vue';
@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: PDPA,
   },
   {
     path: '/about',
