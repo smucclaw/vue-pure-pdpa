@@ -17,8 +17,12 @@
 import { mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import Q from '@/components/Q.vue';
+<<<<<<< HEAD
 import HelloWorld from '@/components/HelloWorld.vue';
 import D3 from '@/components/D3.vue';
+=======
+// import HelloWorld from '@/components/HelloWorld.vue';
+>>>>>>> tweak publicPath, set PDPA to be the "home"
 
 export default {
   name: 'PDPA',
@@ -30,8 +34,12 @@ export default {
   },
   components: {
     Q,
+<<<<<<< HEAD
     HelloWorld,
     D3,
+=======
+    //    HelloWorld,
+>>>>>>> tweak publicPath, set PDPA to be the "home"
   },
 };
 </script>

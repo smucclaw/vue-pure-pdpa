@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
-  publicPath: '/mengwong',
+  publicPath: '/mengwong/pdpa',
   chainWebpack: (config) => {
     // Purescript Loader
     config.module

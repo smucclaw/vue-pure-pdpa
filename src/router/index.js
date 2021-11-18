@@ -7,7 +7,7 @@ import PDPA from '../views/PDPA.vue';
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'PDPA',
     component: PDPA,
   },
   {
@@ -31,9 +31,9 @@ const routes = [
     component: MustSing,
   },
   {
-    path: '/pdpa',
-    name: 'PDPA',
-    component: PDPA,
+    path: '/debug',
+    name: 'Debug',
+    component: Home,
   },
 ];
 
