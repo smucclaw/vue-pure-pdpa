@@ -7,14 +7,14 @@
     <h1 v-if="qrootPDPA.mark.value == 'undefined'" class="title">It depends...</h1>
     <Q v-bind:q='qrootPDPA' v-bind:depth=0 />
   </form>
-  <HelloWorld v-bind:msg='qrootPDPA' />
+  <!-- <HelloWorld v-bind:msg='qrootPDPA' /> -->
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import Q from '@/components/Q.vue';
-import HelloWorld from '@/components/HelloWorld.vue';
+// import HelloWorld from '@/components/HelloWorld.vue';
 
 export default {
   name: 'MustSing',
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     Q,
-    HelloWorld,
+    //    HelloWorld,
   },
 };
 </script>
