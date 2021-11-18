@@ -1,7 +1,9 @@
 <template>
   <div>
+    <button id="zoomin">+</button>
     <svg id="tree">
-      <clipPath id="clip"></clipPath>
+      <!-- preserveAspectRatio="xMinYMin meet"> -->
+     <clipPath id="clip"></clipPath>
     </svg>
   </div>
   -------
@@ -19,8 +21,7 @@ export default {
   },
   data() {
     return {
-      width: 1500,
-      height: 1500,
+      width: window.innerWidth,
       i: 0,
     };
   },
@@ -48,7 +49,9 @@ export default {
         top: 10, right: 15, bottom: 10, left: 100,
       };
       const width = this.width - margin.left - margin.right;
-      const height = this.height - margin.top - margin.bottom;
+      const height = (nodes.children.length * 50) - margin.top - margin.bottom;
+
+      console.log(nodes);
 
       // declares a tree layout and assigns the size
       const treemap = d3.tree()
@@ -64,7 +67,9 @@ export default {
       });
 
       const svg = d3.select('#tree')
-        .attr('viewBox', [0, 0, width * 3, height]);
+        .attr('width', width + margin.right + margin.left)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('viewBox', [0, 0, width, height]);
 
       // appends a 'group' element to 'svg'
       const g = svg.append('g')
@@ -80,7 +85,7 @@ export default {
 
       function dragStart() {
         d3.select(this).raise();
-        g.attr('cursor', 'grabbing');
+        g.attr('cursor', 'grab');
       }
 
       function dragDo(e) {

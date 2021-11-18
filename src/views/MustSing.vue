@@ -35,19 +35,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.viz-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.viz-item {
-  padding: 5px;
-  width: 40vw;
-  margin-top: 10px;
-}
-</style>

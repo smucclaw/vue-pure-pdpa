@@ -44,4 +44,19 @@ div(class="column is-flex is-flex-direction-column")
 .column {
   min-height: 100vh;
 }
+
+.viz-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.viz-item {
+  padding: 5px;
+  width: 100vw;
+  margin-top: 10px;
+}
 </style>
