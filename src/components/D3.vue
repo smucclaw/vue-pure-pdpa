@@ -49,7 +49,8 @@ export default {
         top: 10, right: 15, bottom: 10, left: 100,
       };
       const width = this.width - margin.left - margin.right;
-      const height = (nodes.children.length * 50) - margin.top - margin.bottom;
+      const height = (nodes.children.length * (width / nodes.children.length))
+      - margin.top - margin.bottom;
 
       console.log(nodes);
 

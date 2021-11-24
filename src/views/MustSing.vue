@@ -9,7 +9,7 @@
   </form>
   <ul class="viz-container">
     <li class="viz-item"><HelloWorld v-bind:msg='qrootExample1' /></li>
-    <li class="viz-item"><D3 v-bind:qroot='qrootExample1' /></li>
+    <li class="viz-item"><D3 v-bind:qroot='reformatdata' /></li>
   </ul>
 </template>
 
@@ -27,6 +27,16 @@ export default {
   computed: {
     ...mapFields(['marking', 'anyallform', 'formTitle']),
     ...mapGetters(['qrootExample1']),
+    reformatdata() {
+      const viewChild = (this.qrootExample1.andOr.children.filter((child) => child.shouldView === 'View'))[0].andOr;
+      const getObject = { ...viewChild };
+      const newTree = this.qrootExample1;
+      const newChildren = this.qrootExample1.andOr.children
+        .filter((child) => child.shouldView === 'Ask');
+      newChildren.map((leaf) => Object.assign(leaf.andOr, getObject));
+      newTree.andOr.children = newChildren;
+      return newTree;
+    },
   },
   components: {
     Q,
