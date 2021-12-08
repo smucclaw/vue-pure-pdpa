@@ -38,10 +38,6 @@ export default {
           link: '/about',
         },
         {
-          name: 'Questions',
-          link: '/questions',
-        },
-        {
           name: 'Editor',
           link: '/editor',
         },
