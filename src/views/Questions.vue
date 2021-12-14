@@ -19,11 +19,19 @@ import Question from '@/components/questions/Question.vue';
 // import D3 from '@/components/D3.vue';
 
 export default {
-  name: 'Home',
+  name: 'Questions',
   components: {
     Question,
     Notification,
     // D3,
+  },
+  data() {
+    return {
+    };
+  },
+  methods: {
+  },
+  mounted() {
   },
   computed: {
     ...mapFields(['marking', 'anyallform', 'formTitle']),
