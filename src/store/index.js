@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
-import { str } from '../index.purs';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
 
@@ -8,8 +7,6 @@ const isMustSing = false;
 
 export default createStore({
   state: {
-    pur_str: AnyAll.fromNode2(str),
-    anyallform: AnyAll.anyallform1,
     marking: AnyAll.emptyMarking,
     rulesExample1: AnyAll.example1,
     nlExample1: AnyAll.example1_nl,

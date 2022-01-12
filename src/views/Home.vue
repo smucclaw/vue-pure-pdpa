@@ -26,7 +26,7 @@ export default {
     // D3,
   },
   computed: {
-    ...mapFields(['marking', 'anyallform', 'formTitle']),
+    ...mapFields(['marking']),
     ...mapGetters(['questions', 'questionPrompt']),
     responseMsg() {
       return ({
