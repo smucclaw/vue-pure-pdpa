@@ -15,7 +15,6 @@ export default createStore({
     nlExample1: AnyAll.example1_nl,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
-    editor_str: 'press eval to parse input according to calc.jison grammar',
   },
   getters: {
     getField,
@@ -33,8 +32,6 @@ export default createStore({
   },
   mutations: {
     /* eslint no-param-reassign: ["error", { "props": false }] */
-    reset_editor_str(s) { s.editor_str = ''; },
-    append_editor_str(s, x) { s.editor_str += x; },
     updateField,
     updateMarkingField(state, payload) {
       state.marking[payload.mField] = payload.vValue;
