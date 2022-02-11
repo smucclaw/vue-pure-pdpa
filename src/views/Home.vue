@@ -7,7 +7,6 @@
   section.column
     .block
       D3(:qroot='questions')
-  section.column
     .block.has-text-left
       Question(:question='questions', :depth=0)
 
