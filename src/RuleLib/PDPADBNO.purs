@@ -10,7 +10,13 @@ import AnyAll.Types
 
 schedule1_part1 :: Item String
 schedule1_part1 = 
-  Any (Pre "any of the following are prescribed personal data")
+ All (Pre "please share as much as you know:")
+ [ And (Pre "qualifiers:") [ Leaf "Is the Organisation a Public Agency?"
+                           , Leaf "Did the data breach occur on or after the date of commencement of PDP(A)A 2020 §13?"
+                           , Leaf "Is the Organisation a Data Intermediary?"
+                           , Leaf "Is the Data Intermediary processing personal data on behalf of and for the purposes of a public agency?"
+                           ]
+ , Any (Pre "any of the following are prescribed personal data")
        [ Leaf "1"
        , Leaf "2"
        , Leaf "3"
@@ -71,6 +77,7 @@ schedule1_part1 =
                         , Leaf "23.f"
                         ]
        ]
+ ]
 
 schedule1_part1_nl :: NLDict
 schedule1_part1_nl =
@@ -120,7 +127,7 @@ schedule1_part1_nl =
     , Tuple "18.c" "schizophrenia or delusional disorder;"
     , Tuple "18.d" "substance abuse and addiction, including drug addiction and alcoholism."
     , Tuple "19" "The provision of treatment to the individual for or in respect of —"
-    , Tuple "19.a" "the donation or receipt of a human egg or human sperm; or"
+`    , Tuple "19.a" "the donation or receipt of a human egg or human sperm; or"
     , Tuple "19.b" "any contraceptive operation or procedure or abortion."
     , Tuple "20" "Any of the following:"
     , Tuple "20.a" "subject to section 4(4)(b) of the Act, the donation and removal of any organ from the body of the deceased individual for the purpose of its transplantation into the body of another individual;"
