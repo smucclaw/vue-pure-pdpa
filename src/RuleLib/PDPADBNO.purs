@@ -1,82 +1,136 @@
 module RuleLib.PDPADBNO where
 
-import Prelude
-import Data.Tuple
-import Data.Map as Map
-import Data.Maybe
 import AnyAll.Types
+import Data.Maybe
+import Data.Tuple
+import Prelude
+
+import Data.Map as Map
 
 -- in the future the front-end will break out the source content into these structures
 
 schedule1_part1 :: Item String
 schedule1_part1 = 
  All (Pre "please share as much as you know:")
- [ And (Pre "qualifiers:") [ Leaf "Is the Organisation a Public Agency?"
+ [ All (Pre "qualifiers:") [ Leaf "Is the Organisation NOT a Public Agency?"
                            , Leaf "Did the data breach occur on or after the date of commencement of PDP(A)A 2020 §13?"
-                           , Leaf "Is the Organisation a Data Intermediary?"
-                           , Leaf "Is the Data Intermediary processing personal data on behalf of and for the purposes of a public agency?"
+                           -- , Any (Pre "data intermediary")
+                           --   [ Leaf "Is the Organisation a Data Intermediary?"
+                           --   , Leaf "Is the Data Intermediary processing personal data on behalf of and for the purposes of a public agency?"
+                           --   ]
                            ]
- , Any (Pre "any of the following are prescribed personal data")
-       [ Leaf "1"
-       , Leaf "2"
-       , Leaf "3"
-       , Leaf "4"
-       , Any (Pre "5") [ Leaf "5.a"
-                       , Leaf "5.b"
-                       , Leaf "5.c"
-                       , Leaf "5.d"
-                       , Leaf "5.e"
-                       , Leaf "5.f"
-                       ]
-       , Any (Pre "6") [ Leaf "6.a"
-                       , Leaf "6.b"
-                       , Leaf "6.c"
-                       , Leaf "6.d"
-                       , Leaf "6.e"
-                       ]
-       , Any (Pre "7") [ Leaf "7.a"
-                       , Leaf "7.b"
-                       , Leaf "7.c"
-                       ]
-       , Leaf "8"
-       , Leaf "9"
-       , Leaf "10"
-       , Leaf "11"
-       , Leaf "12"
-       , Leaf "13"
-       , Leaf "14"
-       , Leaf "15"
-       , Any (Pre "16") [ Leaf "16.a"
-                        , Leaf "16.b"
-                        ]
-       , Any (Pre "17") [ Leaf "17.a"
-                        , Leaf "17.b"
-                        , Leaf "17.c"
-                        , Leaf "17.d"
-                        , Leaf "17.e"
-                        ]
-       , Any (Pre "18") [ Leaf "18.a"
-                        , Leaf "18.b"
-                        , Leaf "18.c"
-                        , Leaf "18.d"
-                        ]
-       , Any (Pre "19") [ Leaf "19.a"
-                        , Leaf "19.b"
-                        ]
-       , Any (Pre "20") [ Leaf "20.a"
-                        , Leaf "20.b"
-                        , Leaf "20.c"
-                        ]
-       , Leaf "21"
-       , Leaf "22"
-       , Any (Pre "23") [ Leaf "23.a"
-                        , Leaf "23.b"
-                        , Leaf "23.c"
-                        , Leaf "23.d"
-                        , Leaf "23.e"
-                        , Leaf "23.f"
-                        ]
+ , All (Pre "was it a notifiable data breach?") 
+   [ Any (Pre "Did a data breach occur?")
+     [ Any (Pre "Was there any")
+       [ Leaf "unauthorised access of personal data"
+       , Leaf "unauthorised use of personal data"
+       , Leaf "unauthorised disclosure of personal data"
+       , Leaf "unauthorised copying of personal data"
+       , Leaf "unauthorised modification of personal data"
+       , Leaf "unauthorised disposal of personal data"
        ]
+     , Any (PrePost "Was there any loss of storage medium on which personal data is stored in circumstances where the unauthorised" "of the personal data is likely to occur")
+       [ Leaf "access"
+       , Leaf "use"
+       , Leaf "disclosure"
+       , Leaf "copying"
+       , Leaf "modification"
+       , Leaf "disposal"
+       ]
+     ]
+   , Leaf "the data breach did not occur only within the Organisation"
+   , Any (Pre "26B.1")
+     [ Any (Pre "26B.1.b it is, or is likely to be, of a significant scale")
+       [ Leaf "the data breach affects not fewer than 500 individuals" ]
+
+     , Any (Pre "26B.1.a: it results in, or is likely to result in, significant harm to an affected individual")
+       [ All (Pre "26B.2.b: (in other prescribed circumstances) the breach is in relation to")
+         [ All (Pre "all of the following personal data relating to an individual's account with an organisation")
+           [ Any (Pre "the individual's account identifier")
+             [ Leaf "an account name"
+             , Leaf "an account number"
+             , Leaf "a number assigned to any account the individual has with an organisation that is a bank or finance company." ]
+           , Any (Pre "any")
+             [ Leaf "password"
+             , Leaf "security code"
+             , Leaf "access code"
+             , Leaf "response to a security question"
+             , Leaf "biometric data"
+             , Leaf "other data that is used or required to allow access to or use of the individual's account"
+             ]
+           ]
+         ]
+       , All (Pre "26B.2.a: the data breach is in relation to any prescribed personal data or class of personal data relating to the individual")
+         [ Any (Pre "the data breach relates to")
+           [ Leaf "the individual's full name"
+           , Leaf "the individual's alias"
+           , Leaf "the individual's identification number"
+           ]
+         , Any (Pre "Part1: any of the following are prescribed personal data")
+           [ Leaf "1"
+           , Leaf "2"
+           , Leaf "3"
+           , Leaf "4"
+           , Any (Pre "5") [ Leaf "5.a"
+                           , Leaf "5.b"
+                           , Leaf "5.c"
+                           , Leaf "5.d"
+                           , Leaf "5.e"
+                           , Leaf "5.f"
+                           ]
+           , Any (Pre "6") [ Leaf "6.a"
+                           , Leaf "6.b"
+                           , Leaf "6.c"
+                           , Leaf "6.d"
+                           , Leaf "6.e"
+                           ]
+           , Any (Pre "7") [ Leaf "7.a"
+                           , Leaf "7.b"
+                           , Leaf "7.c"
+                           ]
+           , Leaf "8"
+           , Leaf "9"
+           , Leaf "10"
+           , Leaf "11"
+           , Leaf "12"
+           , Leaf "13"
+           , Leaf "14"
+           , Leaf "15"
+           , Any (Pre "16") [ Leaf "16.a"
+                            , Leaf "16.b"
+                            ]
+           , Any (Pre "17") [ Leaf "17.a"
+                            , Leaf "17.b"
+                            , Leaf "17.c"
+                            , Leaf "17.d"
+                            , Leaf "17.e"
+                            ]
+           , Any (Pre "18") [ Leaf "18.a"
+                            , Leaf "18.b"
+                            , Leaf "18.c"
+                            , Leaf "18.d"
+                            ]
+           , Any (Pre "19") [ Leaf "19.a"
+                            , Leaf "19.b"
+                            ]
+           , Any (Pre "20") [ Leaf "20.a"
+                            , Leaf "20.b"
+                            , Leaf "20.c"
+                            ]
+           , Leaf "21"
+           , Leaf "22"
+           , Any (Pre "23") [ Leaf "23.a"
+                            , Leaf "23.b"
+                            , Leaf "23.c"
+                            , Leaf "23.d"
+                            , Leaf "23.e"
+                            , Leaf "23.f"
+                            ]
+           ]
+         ]
+       ]
+     ]
+   ]
  ]
 
 schedule1_part1_nl :: NLDict
@@ -127,7 +181,7 @@ schedule1_part1_nl =
     , Tuple "18.c" "schizophrenia or delusional disorder;"
     , Tuple "18.d" "substance abuse and addiction, including drug addiction and alcoholism."
     , Tuple "19" "The provision of treatment to the individual for or in respect of —"
-`    , Tuple "19.a" "the donation or receipt of a human egg or human sperm; or"
+    , Tuple "19.a" "the donation or receipt of a human egg or human sperm; or"
     , Tuple "19.b" "any contraceptive operation or procedure or abortion."
     , Tuple "20" "Any of the following:"
     , Tuple "20.a" "subject to section 4(4)(b) of the Act, the donation and removal of any organ from the body of the deceased individual for the purpose of its transplantation into the body of another individual;"
