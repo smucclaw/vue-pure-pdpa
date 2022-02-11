@@ -1,7 +1,7 @@
 <template lang="pug">
 .card
   button#zoomin +
-  svg#tree
+  svg#tree.tree
     // preserveAspectRatio="xMinYMin meet">
     clippath#clip
 </template>
@@ -185,9 +185,10 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-  svg#tree {
-    width: 100vw;
-    height: auto;
-  }
+.tree {
+  overflow-x: scroll;
+  width: 100%;
+}
 </style>
