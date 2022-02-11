@@ -7,7 +7,7 @@
                                          , 'has-background-danger-light': bgAll
                                          }" >
     <div class="has-text-right" v-if="q.mark.value != 'undefined'">{{ q.mark.value }}</div>
-    <div class="has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }}: {{ q.andOr.nl.en }}</div>
+    <div class="has-text-left" v-if='q.prePost.pre'>{{ q.prePost.pre }} {{ q.andOr.nl.en }}</div>
     <div v-if='q.andOr.contents'><label>{{ q.andOr.contents }}</label>: {{ q.andOr.nl.en }}
       <div class="level" v-if='editable'>
         <div class="level-item has-text-centered">
@@ -32,6 +32,7 @@
         <Q :q='child' :depth=depth1 :parentTag='q.andOr.tag' :parentView='q.shouldView' />
       </li>
     </ul>
+    <div class="has-text-left" v-if='q.prePost.post'>{{ q.prePost.post }} {{ q.andOr.nl.en }}</div>
   </div>
 </template>
 

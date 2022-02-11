@@ -11,15 +11,15 @@ import Data.Map as Map
 
 schedule1_part1 :: Item String
 schedule1_part1 = 
- All (Pre "please share as much as you know:")
- [ All (Pre "qualifiers:") [ Leaf "Is the Organisation NOT a Public Agency?"
+ All (Pre "Please share as much as you know:")
+ [ All (Pre "Qualifiers:") [ Leaf "Is the Organisation NOT a Public Agency?"
                            , Leaf "Did the data breach occur on or after 1 February 2021?"
                            -- , Any (Pre "data intermediary")
                            --   [ Leaf "Is the Organisation a Data Intermediary?"
                            --   , Leaf "Is the Data Intermediary processing personal data on behalf of and for the purposes of a public agency?"
                            --   ]
                            ]
- , All (Pre "was it a notifiable data breach?") 
+ , All (Pre "Was it a notifiable data breach?") 
    [ Any (Pre "Did a data breach occur?")
      [ Any (Pre "Was there any")
        [ Leaf "unauthorised access of personal data"
@@ -29,7 +29,7 @@ schedule1_part1 =
        , Leaf "unauthorised modification of personal data"
        , Leaf "unauthorised disposal of personal data"
        ]
-     , Any (PrePost "Was there any loss of storage medium on which personal data is stored in circumstances where the unauthorised" "of the personal data is likely to occur")
+     , Any (PrePost "Was there any loss of storage medium on which personal data is stored in circumstances where the unauthorised" "of the personal data is likely to occur?")
        [ Leaf "access"
        , Leaf "use"
        , Leaf "disclosure"
@@ -38,8 +38,8 @@ schedule1_part1 =
        , Leaf "disposal"
        ]
      ]
-   , Leaf "the data breach did not occur only within the Organisation"
-   , Any (Pre "26B.1")
+   , Leaf "Did the data breach NOT occur only within the Organisation"
+   , Any (Pre "26B.1 and 26B.2 criteria:")
      [ Any (Pre "26B.1.b it is, or is likely to be, of a significant scale")
        [ Leaf "the data breach affects not fewer than 500 individuals" ]
 
