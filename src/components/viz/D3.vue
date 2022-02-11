@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+.card
   button#zoomin +
   svg#tree
     // preserveAspectRatio="xMinYMin meet">
