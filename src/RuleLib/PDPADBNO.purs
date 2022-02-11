@@ -13,7 +13,7 @@ schedule1_part1 :: Item String
 schedule1_part1 = 
  All (Pre "please share as much as you know:")
  [ All (Pre "qualifiers:") [ Leaf "Is the Organisation NOT a Public Agency?"
-                           , Leaf "Did the data breach occur on or after the date of commencement of PDP(A)A 2020 §13?"
+                           , Leaf "Did the data breach occur on or after 1 February 2021?"
                            -- , Any (Pre "data intermediary")
                            --   [ Leaf "Is the Organisation a Data Intermediary?"
                            --   , Leaf "Is the Data Intermediary processing personal data on behalf of and for the purposes of a public agency?"
