@@ -33,14 +33,10 @@ export default {
       isNavActive: false,
       appName: 'Dolores',
       menuItems: [
-        {
+        /* {
           name: 'About',
           link: '/about',
-        },
-        {
-          name: 'Editor',
-          link: '/editor',
-        },
+        }, */
       ],
     };
   },
