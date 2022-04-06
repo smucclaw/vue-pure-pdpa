@@ -1,6 +1,8 @@
 // vue.config.js
 module.exports = {
-  publicPath: '/mengwong/pdpa',
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-pure-pdpa/'
+    : '/',
   chainWebpack: (config) => {
     // Purescript Loader
     config.module

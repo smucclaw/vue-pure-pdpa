@@ -1,2 +1,68 @@
 // Bulma Import
 @import '~bulma';
+//- @import '~bulmaswatch/darkly/bulmaswatch';
+//-@import '~bulma-list/sass/bulma-list';
+
+label.is-check {
+  @extend .button;
+  .icon {
+    $icon-margin: 0.35em;
+
+    &,
+    &.is-small,
+    &.is-medium,
+    &.is-large {
+      height: $icon-dimensions;
+      width: $icon-dimensions;
+      margin-left: -$icon-margin;
+      margin-right: $icon-margin;
+    }
+    &:first-child:not(:last-child) {
+      margin-right: 0.1875em;
+      margin-left: calc(-0.375em - #{$button-border-width});
+    }
+    &:last-child:not(:first-child) {
+      margin-left: 0.1875em;
+      margin-right: calc(-0.375em - #{$button-border-width});
+    }
+    &:first-child:last-child {
+      margin-left: calc(-0.575em - #{$button-border-width});
+    }
+  }
+  .checkmark {
+    color: transparent;
+    position: relative;
+    i {
+      z-index: 1;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 0;
+      border-radius: $radius-small;
+      background: rgba($dark, 0.3);
+      border: 1px solid rgba($dark, 0.2);
+    }
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: absolute;
+    visibility: hidden;
+    cursor: pointer;
+    &:checked ~ .checkmark {
+      color: inherit;
+    }
+  }
+}
+
+$card-border-width: 1px !default;
+$card-border-color: rgba(#000, .125) !default;
+
+.card-border {
+  @extend .is-shadowless;
+  border: $card-border-width solid $card-border-color;
+}

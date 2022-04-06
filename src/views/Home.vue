@@ -1,22 +1,48 @@
 <template lang='pug'>
-div(class='home')
-  button(class='button is-large') Bulma button
-  h1(class='title') pur_str: {{pur_str}}
-  HelloWorld(v-bind:msg='anyallform')
+.columns
+  aside.column.is-one-third
+    Notification(:theme-color='responseTheme')
+      .title.is-spaced {{ questionPrompt }}
+      .subtitle {{ responseMsg }}
+  section.column
+    .block
+      D3(:qroot='questions')
+    .block.has-text-left
+      Question(:question='questions', :depth=0)
+
 </template>
 
 <script>
-// @ is an alias to /src
+import { mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
-import HelloWorld from '@/components/HelloWorld.vue';
+import Notification from '@/components/questions/Notification.vue';
+import Question from '@/components/questions/Question.vue';
+import D3 from '@/components/viz/D3.vue';
 
 export default {
   name: 'Home',
-  computed: {
-    ...mapFields(['pur_str', 'anyallform']),
-  },
   components: {
-    HelloWorld,
+    Question,
+    Notification,
+    D3,
+  },
+  computed: {
+    ...mapFields(['marking']),
+    ...mapGetters(['questions', 'questionPrompt']),
+    responseMsg() {
+      return ({
+        true: 'Yes!',
+        false: 'No!',
+        undefined: 'It depends...',
+      })[this.questions.mark.value];
+    },
+    responseTheme() {
+      return ({
+        true: 'is-success',
+        false: 'is-danger',
+        undefined: 'is-info',
+      })[this.questions.mark.value];
+    },
   },
 };
 </script>

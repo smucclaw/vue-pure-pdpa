@@ -1,10 +1,9 @@
-<template>
-  <div>
-    <svg id="tree">
-      <clipPath id="clip"></clipPath>
-    </svg>
-  </div>
-  -------
+<template lang="pug">
+.card
+  button#zoomin +
+  svg#tree.tree
+    // preserveAspectRatio="xMinYMin meet">
+    clippath#clip
 </template>
 
 <script>
@@ -19,8 +18,7 @@ export default {
   },
   data() {
     return {
-      width: 1500,
-      height: 1500,
+      width: window.innerWidth,
       i: 0,
     };
   },
@@ -29,7 +27,9 @@ export default {
       return Object.assign(target, obj);
     },
     reformatdata(data) {
-      const viewChild = (data.andOr.children.filter((child) => child.shouldView === 'View'))[0].andOr;
+      const viewChild = (
+        data.andOr.children.filter((child) => child.shouldView === 'View')
+      )[0].andOr;
       const getObject = { ...viewChild };
       const newTree = data;
       const newChildren = data.andOr.children
@@ -39,8 +39,7 @@ export default {
       return newTree;
     },
     init(data) {
-      console.log(data);
-      this.reformatdata(data);
+      // this.reformatdata(data);
 
       let nodes = d3.hierarchy((data), (d) => d.andOr.children);
 
@@ -49,7 +48,10 @@ export default {
         top: 10, right: 15, bottom: 10, left: 100,
       };
       const width = this.width - margin.left - margin.right;
-      const height = this.height - margin.top - margin.bottom;
+      const height = (nodes.children.length * (width / nodes.children.length))
+      - margin.top - margin.bottom;
+
+      console.log(nodes);
 
       // declares a tree layout and assigns the size
       const treemap = d3.tree()
@@ -65,7 +67,9 @@ export default {
       });
 
       const svg = d3.select('#tree')
-        .attr('viewBox', [0, 0, width * 3, height]);
+        .attr('width', width + margin.right + margin.left)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('viewBox', [0, 0, width, height]);
 
       // appends a 'group' element to 'svg'
       const g = svg.append('g')
@@ -81,7 +85,7 @@ export default {
 
       function dragStart() {
         d3.select(this).raise();
-        g.attr('cursor', 'grabbing');
+        g.attr('cursor', 'grab');
       }
 
       function dragDo(e) {
@@ -142,7 +146,7 @@ export default {
         .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
         .attr('href', (d, i) => (`#path${i + 1}`))
-        .text((d) => d.source.data.andOr.tag);
+        .text((d) => d.source.data.andOr.nl.en);
 
       // adds each node as a group
       const node = g.append('g')
@@ -165,7 +169,7 @@ export default {
         .attr('dy', '.35em')
         .attr('y', (d) => (d.children ? -20 : 20))
         .style('text-anchor', 'middle')
-        .text((d) => d.data.andOr.contents);
+        .text((d) => d.data.andOr.nl.en);
     },
   },
   computed: {
@@ -181,9 +185,10 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-  svg#tree {
-    width: 100vw;
-    height: auto;
-  }
+.tree {
+  overflow-x: scroll;
+  width: 100%;
+}
 </style>
