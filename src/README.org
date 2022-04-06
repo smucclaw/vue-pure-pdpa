@@ -1,0 +1,232 @@
+* Regarding the Purescript codebase
+
+#+begin_src sh
+  cd vue-pure-pdpa
+  spago bundle-module --to ./src/purescript/anyall.js
+  tsc purescript/js-to-ps.ts && node purescript/js-to-ps.js | tee output.org
+#+end_src
+
+should produce
+
+#+begin_example
+  ,* now we call fromNode1
+  hello node
+  ,* now we call fromNode2
+  hello node, you said moo
+  ,* now we call fromNode3
+  {
+    "shouldView": "View",
+    "andOr": {
+      "tag": "And",
+      "contents": "And"
+    },
+    "prePost": "(Just (Pre \"all of\"))",
+  ...
+#+end_example
+
+it will be easier to open the output in emacs org-mode:
+
+#+begin_example
+  emacs output.org
+#+end_example
+
+and once in emacs press TAB to toggle folding visibility
+
+* Usage
+
+From a JS codebase such as Vue, the AnyAll library helps you paint each input component appropriately.
+
+#+begin_src javascript
+  import * as AA from "./anyall"
+#+end_src
+
+Construct your marking based on the current state of user input:
+
+#+begin_src javascript
+  let simpleMarking = {
+      walk : { source: "default", value: "undefined" },
+      run  : { source: "user",    value: "false" },       // "i don't like to run"
+      drink: { source: "default", value: "true" },
+      eat  : { source: "default", value: "true" }
+  }
+#+end_src
+
+Call the ~paint()~ function, which will compute the view/ask/hide status of each element and tree:
+
+#+begin_src 
+  let paintOut = AA.paint(AA.hard)(simpleMarking)(AA.getItemByName("example1"))
+#+end_src
+
+~example1~ is a ruleset written natively in Purescript; it can be accessed from the rule library.
+
+This produces a tree which should be suitable for the front-end to transform into a UI.
+
+#+begin_src javascript
+  {
+    "shouldView": "View",
+    "prePost": {
+      "pre": "all of"
+    },
+    "mark": {
+      "source": "default",
+      "value": "false"
+    },
+    "andOr": {
+      "tag": "All",
+      "children": [
+        {
+          "shouldView": "Hide",
+          "prePost": {},
+          "mark": {
+            "source": "default",
+            "value": "true"
+          },
+          "andOr": {
+            "tag": "Leaf",
+            "contents": "walk"
+          }
+        },
+        {
+          "shouldView": "View",
+          "prePost": {},
+          "mark": {
+            "source": "user",
+            "value": "false"
+          },
+          "andOr": {
+            "tag": "Leaf",
+            "contents": "run"
+          }
+        },
+        {
+          "shouldView": "Hide",
+          "prePost": {
+            "pre": "either"
+          },
+          "mark": {
+            "source": "default",
+            "value": "undefined"
+          },
+          "andOr": {
+            "tag": "Any",
+            "children": [
+              {
+                "shouldView": "Hide",
+                "prePost": {},
+                "mark": {
+                  "source": "default",
+                  "value": "true"
+                },
+                "andOr": {
+                  "tag": "Leaf",
+                  "contents": "eat"
+                }
+              },
+              {
+                "shouldView": "Hide",
+                "prePost": {},
+                "mark": {
+                  "source": "default",
+                  "value": "true"
+                },
+                "andOr": {
+                  "tag": "Leaf",
+                  "contents": "drink"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+#+end_src
+
+* Note
+
+The boolean and optional types returned by the ~paint~ function are rendered as actual strings:
+
+#+begin_example
+  "true"
+  "false"
+  "undefined"
+#+end_example
+
+So please add a little layer to convert them back to the appropriate JS values.
+
+* Visibility
+
+** when is a node painted View | Ask | Hide?
+
+| parentValue | self Value     | self Maybe | node initVis | alwaysShowUserInput | shouldView | comment                                                            |
+| Maybe Bool  | Maybe Bool     |            |              |                     |            |                                                                    |
+|-------------+----------------+------------+--------------+---------------------+------------+--------------------------------------------------------------------|
+| isJust      | == parentValue | -          | View         | -                   | View       | user has given input which is decisive for the parent              |
+| isJust      | /= parentValue | isJust     | Hide         | no                  | Hide       | user input, or lack of it, does not contribute to the parent       |
+| isJust      | /= parentValue | isJust     | Hide         | yes                 | View       | but we show respect to the user by always displaying their choices |
+| isJust      | /= parentValue | Nothing    | Hide         | -                   | Hide       | user input, or lack of it, does not contribute to the parent       |
+| Nothing     |                | isJust     | View         | -                   | View       | user has given input but it is not decisive for the parent         |
+| Nothing     |                | Nothing    | Ask          | -                   | Ask        | user has not given input; ask for it.                              |
+
+** how is a node coloured?
+
+it gets a grey if it's a hide
+
+it gets a white if it's an ask
+
+it gets the same colour if its parent if it's a view and it agrees with its parent
+
+* Questions
+
+** How do I write my own rules?
+
+This will turn into a Purescript ~Item String~:
+
+#+begin_src javascript
+  let fancyRules = {
+    tag: "All", contents:
+    [ { tag: "Pre", contents: "all of" },
+      [ { tag: "Leaf", contents: "perambulate" },
+        { tag: "Leaf", contents: "accelerate"  },
+        { tag: "Any",  contents: [
+          { tag: "Pre", contents: "either" },
+          [ { tag: "Leaf", contents: "ingest" },
+            { tag: "Leaf", contents: "imbibe" } ]
+        ] }
+      ] ]
+  }
+#+end_src
+
+The corresponding marking looks like:
+
+#+begin_src javascript
+  let fancyMarking = {
+    imbibe      : { source: "default", value: "true" },
+    ingest      : { source: "default", value: "true" },
+    perambulate : { source: "default", value: "true" },
+    accelerate  : { source: "default", value: "undefined" }
+  }
+#+end_src
+
+Now you can run ~paint~:
+
+#+begin_src javascript
+  AA.paint(AA.soft)(fancyMarking)(example2)
+#+end_src
+
+** What's up with the Soft and Hard modes?
+
+Soft takes the default values into account when computing the short-circuits and the evaluation of the subtree answers.
+
+Hard only considers end-user input.
+
+** How does the Vue and Vuex stuff work?
+
+- store/index.js sets up a ~state.marking~
+- store/index.js has a getter called ~qroot~ which paints an output Q tree based on the marking
+- (Q stands for questions, btw)
+- that Q tree gets rendered to the user by ~Q.vue~
+- when a user clicks on a ~leaf~ input, the ~leaf~ setter commits an ~updateMarkingField~ to the store
+- the store updates the ~state.marking~ with the new value
+- ~qroot~ automatically recomputes
+- ~Q.vue~ automatically updates the DOM
