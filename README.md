@@ -1,50 +1,38 @@
-# vue-pure-pdpa
+# Dolores - Frontend Expert System
 
-## Project setup
-```
-npm install
-npx spago install
-```
+This is a demo of a frontend expert system with the Personal Data Protection Act (PDPA) example.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Installation
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Requirements:
+- NodeJS (only version 16 tested)
 
-### Run your unit tests
-```
-npm run test:unit
+Before starting the application, install the following packages globally:
+- purescript
+- spago
+
+This can be done by issuing the following command:
+
+```shell
+$ npm install -g purescript spago
 ```
 
-### Run your end-to-end tests
-```
-npm run test:e2e
+Then run:
+
+```shell
+$ npm install
+$ npx spago install
 ```
 
-### Run purescript tests
-```
-npm run test:purs
+## Running
+
+Start the application in development mode by running:
+
+```shell
+$ npm run serve
 ```
 
-### Lints and fixes files
+To compile and minify for distribution:
+```shell
+$ npm run build
 ```
-npm run lint
-```
-
-### Clean generated files
-```
-npm run clean
-```
-
-### Clean only purescript files
-```
-npm run clean:purs
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
