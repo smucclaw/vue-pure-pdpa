@@ -1,50 +1,51 @@
-# vue-pure-pdpa
+# Dolores - Frontend Expert System
 
-## Project setup
-```
-npm install
-npx spago install
-```
+This is a demo of a frontend expert system with the Personal Data Protection Act (PDPA) example.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Requirements
+- NodeJS (only version 16 tested)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Setup and Usage
 
-### Run your unit tests
-```
-npm run test:unit
+### Using Docker
+
+Configure `vue.config.js` such that the `publicPath` looks like the following:
+
+```javascript
+publicPath: process.env.NODE_ENV === 'production'
+  ? '/'
+  : '/',
 ```
 
-### Run your end-to-end tests
-```
-npm run test:e2e
+This is because the `Dockerfile` is set to build the application for production with the assumption that it initally loads from root (i.e. `/`), but the Vue config file is configured for the purpose of building to Github pages. A fix will be made such that it can adapt to different deployment environments.
+
+Then run:
+
+```shell
+$ docker build
+$ docker-compose up
+``` 
+
+### Using Local Machine
+
+Before starting the application, run the following set of install scripts:
+
+```shell
+$ npm install -g purescript spago
+$ npm install
+$ npx spago install
 ```
 
-### Run purescript tests
-```
-npm run test:purs
+Start the application in development mode by running:
+
+```shell
+$ npm run serve
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+The application can be accessed at `localhost:8080`.
 
-### Clean generated files
-```
-npm run clean
-```
+To compile and minify for distribution:
 
-### Clean only purescript files
+```shell
+$ npm run build
 ```
-npm run clean:purs
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
