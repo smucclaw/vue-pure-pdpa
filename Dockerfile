@@ -11,9 +11,9 @@ COPY . .
 RUN npm run build
 
 # Production
-FROM nginx:3 as production-stage
+FROM nginx as production-stage
 
-COPY --from=build-stage /app/dist /usr/share/ngnix/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-EXPOSE 8080
-CMD [ "ngnix", "-g", "daemon off;" ]
+EXPOSE 80
+CMD [ "nginx", "-g", "daemon off;" ]
