@@ -5,7 +5,8 @@ WORKDIR /app
 COPY package*.json *.dhall ./
 
 RUN npm install -g npm spago purescript
-RUN npm run deps
+RUN npm install
+RUN npx spago install
 
 COPY . .
 RUN npm run build
