@@ -5,22 +5,19 @@
       .title.is-spaced {{ questionPrompt }}
       .subtitle {{ responseMsg }}
   section.column
-    .block.has-text-left
-      Question(:question='questions', :depth=0)
-
+    .block
+      D3(:qroot='questions')
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import Notification from '@/components/questions/Notification.vue';
-import Question from '@/components/questions/Question.vue';
 import D3 from '@/components/viz/D3.vue';
 
 export default {
   name: 'Home',
   components: {
-    Question,
     Notification,
     D3,
   },

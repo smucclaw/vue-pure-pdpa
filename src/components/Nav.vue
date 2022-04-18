@@ -18,7 +18,7 @@ nav.navbar.is-dark.mb-4
       @click='toggleNav',
       :class='showNav'
     )
-      .navbar-end
+      .navbar-start
         router-link.navbar-item(
           v-for='menu in menuItems',
           active-class='is-active',
@@ -33,6 +33,10 @@ export default {
       isNavActive: false,
       appName: 'Dolores',
       menuItems: [
+        {
+          name: 'Diagram',
+          link: '/diagram',
+        },
         /* {
           name: 'About',
           link: '/about',
