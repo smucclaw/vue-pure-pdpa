@@ -1,15 +1,15 @@
 <template lang='pug'>
-Nav
+NavigationTop
 main.container
   router-view
 </template>
 
 <script>
-import Nav from '@/components/Nav.vue';
+import NavigationTop from '@/components/NavigationTop.vue';
 
 export default {
   components: {
-    Nav,
+    NavigationTop,
   },
 };
 </script>

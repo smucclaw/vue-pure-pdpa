@@ -1,18 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-const rtHome = () => import('@/views/Home.vue');
-const rtDiagram = () => import('@/views/Diagram.vue');
+import {
+  faHome,
+  faProjectDiagram,
+} from '@fortawesome/free-solid-svg-icons';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: rtHome,
+    component: () => import('@/views/Home.vue'),
+    meta: {
+      icon: faHome,
+    },
   },
   {
     path: '/diagram',
     name: 'Diagram',
-    component: rtDiagram,
+    component: () => import('@/views/Diagram.vue'),
+    meta: {
+      icon: faProjectDiagram,
+    },
   },
 ];
 
