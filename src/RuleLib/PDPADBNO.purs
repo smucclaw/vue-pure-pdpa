@@ -38,7 +38,7 @@ schedule1_part1 =
        , Leaf "disposal"
        ]
      ]
-   , Leaf "Did the data breach NOT occur only within the Organisation"
+   , Not ( Leaf "Did the data breach occur only within the Organisation" )
    , Any (Pre "26B.1 and 26B.2 criteria:")
      [ Any (Pre "26B.1.b it is, or is likely to be, of a significant scale")
        [ Leaf "the data breach affects not fewer than 500 individuals" ]
