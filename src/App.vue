@@ -2,14 +2,17 @@
 NavigationTop
 main.container
   router-view
+NavigationBottom
 </template>
 
 <script>
 import NavigationTop from '@/components/NavigationTop.vue';
+import NavigationBottom from '@/components/NavigationBottom.vue';
 
 export default {
   components: {
     NavigationTop,
+    NavigationBottom,
   },
 };
 </script>
