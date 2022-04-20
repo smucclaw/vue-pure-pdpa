@@ -1,18 +1,16 @@
 <template>
-  <div class="columns">
-    <section class="column">
-      <Notification :theme-color='responseTheme'>
-        <p class="title is-spaced">{{ questionPrompt }}</p>
-        <p class="subtitle">{{ responseMsg }}</p>
-      </Notification>
-      <Question
-        class="block has-text-left"
-        :question="questions"
-        :depth=0
-      >
-      </Question>
-    </section>
-  </div>
+  <section>
+    <Notification :theme-color='responseTheme'>
+      <p class="title is-spaced">{{ questionPrompt }}</p>
+      <p class="subtitle">{{ responseMsg }}</p>
+    </Notification>
+    <Question
+      class="block has-text-left"
+      :question="questions"
+      :depth=0
+    >
+    </Question>
+  </section>
 </template>
 
 <script>
