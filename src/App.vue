@@ -1,17 +1,27 @@
-<template lang='pug'>
-NavigationTop
-main.container
-  router-view
-NavigationBottom
+<template>
+  <NavigationTop />
+  <main class="container">
+    <div class="columns">
+      <div class="column is-one-quarter is-hidden-touch">
+        <NavigationSide />
+      </div>
+      <div class="column">
+        <router-view />
+      </div>
+    </div>
+  </main>
+  <NavigationBottom />
 </template>
 
 <script>
 import NavigationTop from '@/components/NavigationTop.vue';
+import NavigationSide from '@/components/NavigationSide.vue';
 import NavigationBottom from '@/components/NavigationBottom.vue';
 
 export default {
   components: {
     NavigationTop,
+    NavigationSide,
     NavigationBottom,
   },
 };
