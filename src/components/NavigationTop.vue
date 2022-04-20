@@ -5,7 +5,7 @@
         <div class="navbar-item">{{ appName }}</div>
       </NavigationMenuBrand>
       <NavigationMenuMain :active="isNavActive">
-        <template v-slot:start>
+        <!-- <template v-slot:start>
           <router-link
             class="navbar-item"
             active-class="is-active"
@@ -18,20 +18,20 @@
               />
             <span>{{ menu.name }}</span>
           </router-link>
-        </template>
+        </template> -->
       </NavigationMenuMain>
     </div>
   </nav>
 </template>
 
 <script>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import NavigationMenuBrand from '@/components/NavigationMenuBrand.vue';
 import NavigationMenuMain from '@/components/NavigationMenuMain.vue';
 
 export default {
   components: {
-    FontAwesomeIcon,
+    // FontAwesomeIcon,
     NavigationMenuBrand,
     NavigationMenuMain,
   },
