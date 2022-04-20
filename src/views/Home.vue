@@ -1,13 +1,18 @@
-<template lang='pug'>
-.columns
-  aside.column.is-one-third
-    Notification(:theme-color='responseTheme')
-      .title.is-spaced {{ questionPrompt }}
-      .subtitle {{ responseMsg }}
-  section.column
-    .block.has-text-left
-      Question(:question='questions', :depth=0)
-
+<template>
+  <div class="columns">
+    <section class="column">
+      <Notification :theme-color='responseTheme'>
+        <p class="title is-spaced">{{ questionPrompt }}</p>
+        <p class="subtitle">{{ responseMsg }}</p>
+      </Notification>
+      <Question
+        class="block has-text-left"
+        :question="questions"
+        :depth=0
+      >
+      </Question>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -15,14 +20,12 @@ import { mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import Notification from '@/components/questions/Notification.vue';
 import Question from '@/components/questions/Question.vue';
-import D3 from '@/components/viz/D3.vue';
 
 export default {
   name: 'Home',
   components: {
     Question,
     Notification,
-    D3,
   },
   computed: {
     ...mapFields(['marking']),

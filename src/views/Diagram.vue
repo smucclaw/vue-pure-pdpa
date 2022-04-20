@@ -1,12 +1,17 @@
-<template lang='pug'>
-.columns
-  aside.column.is-one-third
-    Notification(:theme-color='responseTheme')
-      .title.is-spaced {{ questionPrompt }}
-      .subtitle {{ responseMsg }}
-  section.column
-    .block
-      D3(:qroot='questions')
+<template>
+  <div class="columns">
+    <section class="column">
+      <Notification :theme-color='responseTheme'>
+        <p class="title is-spaced">{{ questionPrompt }}</p>
+        <p class="subtitle">{{ responseMsg }}</p>
+      </Notification>
+      <D3
+        class="block"
+        :qroot="questions"
+      >
+      </D3>
+    </section>
+  </div>
 </template>
 
 <script>
