@@ -1,48 +1,25 @@
 <template>
-  <div class="columns">
-    <section class="column">
-      <Notification :theme-color='responseTheme'>
-        <p class="title is-spaced">{{ questionPrompt }}</p>
-        <p class="subtitle">{{ responseMsg }}</p>
-      </Notification>
-      <D3
-        class="block"
-        :qroot="questions"
-      >
-      </D3>
-    </section>
-  </div>
+  <TheMain>
+    <D3
+      class="block"
+      :qroot="questions"
+      />
+  </TheMain>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { mapFields } from 'vuex-map-fields';
-import Notification from '@/components/questions/Notification.vue';
+import TheMain from '@/components/TheMain.vue';
 import D3 from '@/components/viz/D3.vue';
 
 export default {
-  name: 'Home',
+  name: 'Diagram',
   components: {
-    Notification,
+    TheMain,
     D3,
   },
   computed: {
-    ...mapFields(['marking']),
-    ...mapGetters(['questions', 'questionPrompt']),
-    responseMsg() {
-      return ({
-        true: 'Yes!',
-        false: 'No!',
-        undefined: 'It depends...',
-      })[this.questions.mark.value];
-    },
-    responseTheme() {
-      return ({
-        true: 'is-success',
-        false: 'is-danger',
-        undefined: 'is-info',
-      })[this.questions.mark.value];
-    },
+    ...mapGetters(['questions']),
   },
 };
 </script>
