@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-dark mb-4">
     <div class="container">
-      <NavigationMenuBrand extended-menu @is-expanded="toggleNav">
+      <NavigationMenuBrand @is-expanded="toggleNav">
         <div class="navbar-item">{{ appName }}</div>
       </NavigationMenuBrand>
       <NavigationMenuMain :active="isNavActive">
