@@ -9,7 +9,7 @@
         :to="menu.path">
         <li>
           <a
-            class="is-flex is-align-items-center"
+            class="is-flex is-align-items-center py-4"
             :href="href"
             :class="isActiveClass(isActive)"
             @click="navigate"
