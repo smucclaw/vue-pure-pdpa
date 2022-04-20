@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar is-dark mb-4">
-    <div class="container">
+  <nav class="navbar is-dark is-fixed-top">
+    <div class="container is-fluid">
       <NavigationMenuBrand @is-expanded="toggleNav">
         <div class="navbar-item">{{ appName }}</div>
       </NavigationMenuBrand>

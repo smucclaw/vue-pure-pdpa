@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Notification :theme-color='responseTheme'>
+    <Notification class="is-always-on-top" :theme-color='responseTheme'>
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
     </Notification>
@@ -45,3 +45,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.is-always-on-top {
+  top: 4rem !important;
+  position: sticky;
+  z-index: 900;
+}
+</style>
