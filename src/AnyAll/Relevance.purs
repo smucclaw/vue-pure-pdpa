@@ -12,6 +12,7 @@ import Data.Set as Set
 import Data.Tuple
 import Data.Map as Map
 import Data.List (any, all, elem, List(..))
+import Data.Foldable (class Foldable)
 
 import Data.Maybe
 import Data.Either (Either(..), either)
@@ -55,7 +56,7 @@ relevant sh dp marking parentValue nl self =
     ask2hide :: Q -> Q
     ask2hide (Q q@{ shouldView: Ask }) = Q $ q { shouldView = Hide }
     ask2hide x = x
-    
+
     ask2view :: ShouldView -> ShouldView
     ask2view Ask = View
     ask2view x = x
@@ -69,12 +70,17 @@ evaluate Soft (Marking marking) (Leaf x) = case Map.lookup x marking of
 evaluate Hard (Marking marking) (Leaf x) = case Map.lookup x marking of
                                              Just (Default (Right (Just y))) -> Just y
                                              _                               -> Nothing
-evaluate sh marking (Any label items)
-  | Just true `elem`      (evaluate sh marking <$> items) = Just true
-  | all (_ == Just false) (evaluate sh marking <$> items) = Just false
-  | otherwise = Nothing
-evaluate sh marking (All label items)
-  | all (_ == Just true) (evaluate sh marking <$> items) = Just true
-  | Just false `elem`    (evaluate sh marking <$> items) = Just false
+evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
+evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
+
+evaluateAny :: forall f. Foldable f => f (Maybe Bool) -> Maybe Bool
+evaluateAny items
+  | Just true `elem`       items = Just true
+  | all (_ == Just false)  items = Just false
   | otherwise = Nothing
 
+evaluateAll :: forall f. Foldable f => f (Maybe Bool) -> Maybe Bool
+evaluateAll items
+  | all (_ == Just true) items = Just true
+  | Just false `elem`    items = Just false
+  | otherwise = Nothing
