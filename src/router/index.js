@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import {
-  faHome,
+  faQuestionCircle,
   faProjectDiagram,
 } from '@fortawesome/free-solid-svg-icons';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    name: 'Questions',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/questions',
     meta: {
-      icon: faHome,
+      icon: faQuestionCircle,
     },
   },
   {
