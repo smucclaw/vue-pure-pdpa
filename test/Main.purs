@@ -7,11 +7,12 @@ import Effect.Aff (launchAff_)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (runSpec)
 
-import Test.IndexTest (spec) as IndexTest
+import Test.AnyAll.RelevanceTest (spec) as RelevanceTest
 
 main :: Effect Unit
 main = do
   log "🍝"
   launchAff_ $ runSpec [consoleReporter] do
-    IndexTest.spec
+    RelevanceTest.spec
+
 -- https://purescript-spec.github.io/purescript-spec/
