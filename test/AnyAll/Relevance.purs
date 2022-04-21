@@ -5,14 +5,12 @@ import Control.Monad.Error.Class (class MonadThrow)
 import Effect.Exception (Error)
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
-import AnyAll.Types (Marking(..), Item(..), Hardness(..), Default(..))
+import AnyAll.Types (Default(..), Hardness(..), Item(..), Label(..), Marking(..))
 import Data.Map as Map
 import Data.Tuple (Tuple(..))
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import AnyAll.Relevance (evaluate)
-import AnyAll.Types (Label(..))
-import Data.List.Types (List)
 
 keyString :: String
 keyString = "key"
@@ -34,6 +32,9 @@ any leafs = (Any (Pre "dummy") (Leaf <$> leafs))
 
 all :: Array String -> Item String
 all leafs = (All (Pre "dummy") (Leaf <$> leafs))
+
+not :: String -> Item String
+not leaf = (Not (Leaf leaf))
 
 spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
 spec = describe "evaluate" do
@@ -89,3 +90,11 @@ spec = describe "evaluate" do
       evaluate Soft (right false) (all [ "key", "run" ]) `shouldEqual` (Just false)
     it "missing key" do
       evaluate Soft (right false) (all [ "missing" ]) `shouldEqual` Nothing
+
+  describe "Not" do
+    it "not true" do
+      evaluate Soft (right true) (not  "key" ) `shouldEqual` (Just false)
+    it "not false" do
+      evaluate Soft (right false) (not "key") `shouldEqual` (Just true)
+    it "missing key" do
+      evaluate Soft (right false) (not  "missing" ) `shouldEqual` Nothing
