@@ -74,11 +74,7 @@ evaluate Hard (Marking marking) (Leaf x) = case Map.lookup x marking of
                                              Just (Default (Right (Just y))) -> Just y
                                              _                               -> Nothing
 
-evaluate sh marking (Not item) = case evaluate sh marking item of
-  Just true  -> Just false
-  Just false -> Just true
-  Nothing    -> Nothing
-
+evaluate sh marking (Not item) = not <$> (evaluate sh marking item)
 evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
 evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
 
