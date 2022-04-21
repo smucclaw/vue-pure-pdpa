@@ -33,11 +33,13 @@ relevant sh dp marking parentValue nl self =
           Just something -> if initVis /= Hide then initVis else Hide
           Nothing        -> if initVis /= Hide then Ask     else Hide
         _ -> initVis
+      innerfunc self' = case self' of
+        Leaf x          -> mkQ (newVis)    (Simply x) (nlMap x nl)                  Nothing     (fromMaybe (Default $ Left Nothing) (Map.lookup x (getMarking marking))) []
+        Not  x          -> innerfunc x
+        Any label items -> mkQ (ask2view initVis)  Or (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
+        All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
   in -- convert to a QTree for output
-  case self of
-    Leaf x          -> mkQ (newVis)    (Simply x) (nlMap x nl)                  Nothing     (fromMaybe (Default $ Left Nothing) (Map.lookup x (getMarking marking))) []
-    Any label items -> mkQ (ask2view initVis)  Or (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
-    All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label)            (Default $ Left selfValue)                       paintedChildren
+    innerfunc self
   where
     -- from a dictionary of { langID: { shortword: longtext } }
     -- to a dictionary of { langID: longtext }
@@ -50,6 +52,7 @@ relevant sh dp marking parentValue nl self =
             pure $ Tuple lg longtext
 
     getChildren (Leaf _) = []
+    getChildren (Not x ) = getChildren x
     getChildren (Any _ c) = c
     getChildren (All _ c) = c
 
@@ -70,6 +73,12 @@ evaluate Soft (Marking marking) (Leaf x) = case Map.lookup x marking of
 evaluate Hard (Marking marking) (Leaf x) = case Map.lookup x marking of
                                              Just (Default (Right (Just y))) -> Just y
                                              _                               -> Nothing
+
+evaluate sh marking (Not item) = case evaluate sh marking item of
+  Just true  -> Just false
+  Just false -> Just true
+  Nothing    -> Nothing
+
 evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
 evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
 
@@ -84,3 +93,4 @@ evaluateAll items
   | all (_ == Just true) items = Just true
   | Just false `elem`    items = Just false
   | otherwise = Nothing
+

@@ -12,7 +12,7 @@ import Data.Map as Map
 schedule1_part1 :: Item String
 schedule1_part1 = 
  All (Pre "Please share as much as you know:")
- [ All (Pre "Qualifiers:") [ Leaf "Is the Organisation a Public Agency?"
+ [ All (Pre "Qualifiers:") [ Not ( Leaf "Is the Organisation a Public Agency?" )
                            , Leaf "Did the data breach occur on or after 1 February 2021?"
                            -- , Any (Pre "data intermediary")
                            --   [ Leaf "Is the Organisation a Data Intermediary?"
@@ -38,7 +38,7 @@ schedule1_part1 =
        , Leaf "disposal"
        ]
      ]
-   , Leaf "Did the data breach NOT occur only within the Organisation"
+   , Not ( Leaf "Did the data breach occur only within the Organisation" )
    , Any (Pre "26B.1 and 26B.2 criteria:")
      [ Any (Pre "26B.1.b it is, or is likely to be, of a significant scale")
        [ Leaf "the data breach affects not fewer than 500 individuals" ]
