@@ -37,6 +37,7 @@ data Item a =
     Leaf a
   | All (Label a) (Array (Item a))
   | Any (Label a) (Array (Item a))
+  | Not                  (Item a)
 
 -- boilerplate for class derivations
 derive instance  eqItem :: (Eq a) => Eq (Item a)
