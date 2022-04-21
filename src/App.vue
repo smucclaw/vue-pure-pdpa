@@ -1,23 +1,23 @@
 <template>
   <NavigationTop />
   <main class="container is-fluid mt-8">
-    <div class="columns">
+    <router-view />
+    <!--<div class="columns">
       <NavigationSide class="column is-one-quarter is-hidden-touch" />
-      <router-view class="column" />
-    </div>
+    </div>-->
   </main>
   <NavigationBottom />
 </template>
 
 <script>
 import NavigationTop from '@/components/NavigationTop.vue';
-import NavigationSide from '@/components/NavigationSide.vue';
+// import NavigationSide from '@/components/NavigationSide.vue';
 import NavigationBottom from '@/components/NavigationBottom.vue';
 
 export default {
   components: {
     NavigationTop,
-    NavigationSide,
+    // NavigationSide,
     NavigationBottom,
   },
 };
