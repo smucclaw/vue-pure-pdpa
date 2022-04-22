@@ -93,8 +93,8 @@ spec = describe "evaluate" do
 
   describe "Not" do
     it "not true" do
-      evaluate Soft (right true) (not  "key" ) `shouldEqual` (Just false)
+      evaluate Soft (right true) (not "key") `shouldEqual` (Just false)
     it "not false" do
       evaluate Soft (right false) (not "key") `shouldEqual` (Just true)
     it "missing key" do
-      evaluate Soft (right false) (not  "missing" ) `shouldEqual` Nothing
+      evaluate Soft (right false) (not "missing") `shouldEqual` Nothing
