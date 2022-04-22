@@ -7,18 +7,7 @@
     .card-header-title.p-0(:class='theme.text')
       | {{ question.andOr.contents }}: {{ question.andOr.nl.en }}
     .control.mt-2(v-if='!isHidden')
-      label.mr-2(
-        v-for='(opt, index) in btnOptions',
-        :key='index',
-      )
-        input(
-          type='radio',
-          :name='question.andOr.contents',
-          v-model='leaf',
-          :id='opt.value',
-          :value='opt.value'
-        )
-        span.ml-1 {{ opt.name }}
+      QuestionRadio(v-model='leaf')
   .card-content.px-2.pt-0.pb-2(
     v-if='question.andOr.children',
     v-for='child in question.andOr.children',
@@ -33,7 +22,7 @@
 </template>
 
 <script>
-import Radio from '@/components/questions/Radio.vue';
+import QuestionRadio from '@/components/QuestionRadio.vue';
 
 export default {
   name: 'Question',
@@ -44,7 +33,7 @@ export default {
     depth: Number,
   },
   components: {
-    Radio,
+    QuestionRadio,
   },
   data() {
     return {
@@ -62,7 +51,6 @@ export default {
           value: 'false',
         },
       ],
-      selected: '',
     };
   },
   methods: {
