@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Notification from '@/components/questions/Notification.vue';
+import Notification from '@/components/BaseNotification.vue';
 
 export default {
   name: 'BaseView',
