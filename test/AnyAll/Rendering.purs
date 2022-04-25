@@ -48,6 +48,7 @@ example1_nl =
 pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
 pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
 
+emptyMarking :: Marking
 emptyMarking = markup Map.empty
 
 marking1 :: Marking
