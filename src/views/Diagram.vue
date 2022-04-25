@@ -1,8 +1,8 @@
 <template>
   <TheMain>
-    <D3
+    <QuestionDiagram
       class="block"
-      :qroot="questions"
+      :question="questions"
       />
   </TheMain>
 </template>
@@ -10,13 +10,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import TheMain from '@/components/TheMain.vue';
-import D3 from '@/components/viz/D3.vue';
+import QuestionDiagram from '@/components/QuestionDiagram.vue';
 
 export default {
   name: 'Diagram',
   components: {
     TheMain,
-    D3,
+    QuestionDiagram,
   },
   computed: {
     ...mapGetters(['questions']),
