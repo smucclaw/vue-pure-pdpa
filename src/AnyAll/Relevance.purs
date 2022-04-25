@@ -26,13 +26,8 @@ relevant sh dp marking parentValue nl self =
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
-    newVis = case self of
-      Leaf x -> case Map.lookup x (getMarking marking) of
-        Just _ -> if initVis /= Hide then initVis else Hide
-        Nothing -> if initVis /= Hide then Ask else Hide
-      _ -> initVis
     makeQNode itemNode = case itemNode of
-      Leaf x -> mkQ (newVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
+      Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x
       Any label items -> mkQ (ask2view initVis) Or (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
       All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
