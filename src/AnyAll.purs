@@ -5,6 +5,7 @@ module AnyAll
   , emptyMarking
   , example1_nl
   , example1
+  , exampleAny
   , example1_encoded
   , marking1
   , marking1_encoded
@@ -66,6 +67,14 @@ example1 =
           [ Leaf "eat"
           , Leaf "drink"
           ]
+      ]
+  )
+
+exampleAny :: Item String
+exampleAny =
+  ( Any (Pre "all of")
+      [ Leaf "walk"
+      , Leaf "run"
       ]
   )
 
