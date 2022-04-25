@@ -35,24 +35,6 @@ export default {
   components: {
     QuestionRadio,
   },
-  data() {
-    return {
-      btnOptions: [
-        {
-          name: 'Yes',
-          value: 'true',
-        },
-        {
-          name: 'Don\'t Know',
-          value: 'undefined',
-        },
-        {
-          name: 'No',
-          value: 'false',
-        },
-      ],
-    };
-  },
   methods: {
     isTag(tag) {
       const isCurrentTag = this.question.andOr.tag === tag;
