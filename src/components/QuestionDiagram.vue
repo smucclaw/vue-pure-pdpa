@@ -183,7 +183,7 @@ export default {
     // HelloWorld,
   },
   mounted() {
-    this.init(this.qroot);
+    this.init(this.question);
   },
 };
 </script>
