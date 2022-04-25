@@ -1,9 +1,11 @@
-<template lang="pug">
-.card
-  button#zoomin +
-  svg#tree.tree
-    // preserveAspectRatio="xMinYMin meet">
-    clippath#clip
+<template>
+  <div class="card">
+    <svg class="tree" id="tree">
+      <!-- preserveAspectRatio="xMinYMin meet"> -->
+      <clippath id="clip">
+      </clippath>
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -12,9 +14,9 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'D3',
+  name: 'QuestionDiagram',
   props: {
-    qroot: Object,
+    question: Object,
   },
   data() {
     return {
@@ -181,7 +183,7 @@ export default {
     // HelloWorld,
   },
   mounted() {
-    this.init(this.qroot);
+    this.init(this.question);
   },
 };
 </script>

@@ -1,21 +1,22 @@
 <template>
   <TheMain v-slot="slotProps">
-    <QuestionDiagram
-      class="block"
+    <Question
+      class="block has-text-left"
       :question="slotProps.questions"
+      :depth=0
       />
   </TheMain>
 </template>
 
 <script>
 import TheMain from '@/components/TheMain.vue';
-import QuestionDiagram from '@/components/QuestionDiagram.vue';
+import Question from '@/components/questions/Question.vue';
 
 export default {
-  name: 'Diagram',
+  name: 'Questions',
   components: {
     TheMain,
-    QuestionDiagram,
+    Question,
   },
 };
 </script>

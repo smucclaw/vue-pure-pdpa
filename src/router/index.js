@@ -1,24 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-const rtHome = () => import('@/views/Home.vue');
-const rtDiagram = () => import('@/views/Diagram.vue');
+import {
+  faQuestionCircle,
+  faProjectDiagram,
+} from '@fortawesome/free-solid-svg-icons';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: rtHome,
+    name: 'Questions',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/questions',
+    meta: {
+      icon: faQuestionCircle,
+    },
   },
   {
     path: '/diagram',
     name: 'Diagram',
-    component: rtDiagram,
+    component: () => import('@/views/Diagram.vue'),
+    meta: {
+      icon: faProjectDiagram,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to) => {
+  const name = 'Dolores: ';
+  const docTitle = to.name ? name.concat(to.name) : name;
+  window.document.title = docTitle;
 });
 
 export default router;

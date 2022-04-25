@@ -2,23 +2,12 @@
 .card.card-border.is-size-6(:class='theme.background')
   .card-header.mb-2(v-if='question.prePost.pre')
     .card-header-title(:class='theme.text')
-      | {{ question.prePost.pre }}: {{ question.andOr.nl.en }}
+      | {{ question.prePost.pre }} {{ question.andOr.nl.en }}
   .card-content.p-4(v-if='question.andOr.contents')
     .card-header-title.p-0(:class='theme.text')
-      | {{ question.andOr.contents }}: {{ question.andOr.nl.en }}
+      | {{ question.andOr.contents }} {{ question.andOr.nl.en }}
     .control.mt-2(v-if='!isHidden')
-      label.mr-2(
-        v-for='(opt, index) in btnOptions',
-        :key='index',
-      )
-        input(
-          type='radio',
-          :name='question.andOr.contents',
-          v-model='leaf',
-          :id='opt.value',
-          :value='opt.value'
-        )
-        span.ml-1 {{ opt.name }}
+      QuestionRadio(v-model='leaf')
   .card-content.px-2.pt-0.pb-2(
     v-if='question.andOr.children',
     v-for='child in question.andOr.children',
@@ -33,7 +22,7 @@
 </template>
 
 <script>
-import Radio from '@/components/questions/Radio.vue';
+import QuestionRadio from '@/components/QuestionRadio.vue';
 
 export default {
   name: 'Question',
@@ -44,26 +33,7 @@ export default {
     depth: Number,
   },
   components: {
-    Radio,
-  },
-  data() {
-    return {
-      btnOptions: [
-        {
-          name: 'Yes',
-          value: 'true',
-        },
-        {
-          name: 'Don\'t Know',
-          value: 'undefined',
-        },
-        {
-          name: 'No',
-          value: 'false',
-        },
-      ],
-      selected: '',
-    };
+    QuestionRadio,
   },
   methods: {
     isTag(tag) {

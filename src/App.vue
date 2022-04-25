@@ -1,15 +1,24 @@
-<template lang='pug'>
-Nav
-main.container
-  router-view
+<template>
+  <NavigationTop />
+  <main class="container is-fluid mt-8">
+    <router-view />
+    <!--<div class="columns">
+      <NavigationSide class="column is-one-quarter is-hidden-touch" />
+    </div>-->
+  </main>
+  <NavigationBottom />
 </template>
 
 <script>
-import Nav from '@/components/Nav.vue';
+import NavigationTop from '@/components/NavigationTop.vue';
+// import NavigationSide from '@/components/NavigationSide.vue';
+import NavigationBottom from '@/components/NavigationBottom.vue';
 
 export default {
   components: {
-    Nav,
+    NavigationTop,
+    // NavigationSide,
+    NavigationBottom,
   },
 };
 </script>
@@ -20,7 +29,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  min-height: 100vh;
+}
+
+.mt-8 {
+  margin-top: 4rem !important;
 }
 </style>

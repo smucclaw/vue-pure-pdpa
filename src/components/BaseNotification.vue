@@ -1,7 +1,8 @@
-<template lang="pug">
-.notification(:class='themeColor')
-  button.delete(:class='isCloseButtonVisible')
-  slot Hello World
+<template>
+  <div class="notification" :class="themeColor">
+    <button class="delete" :class="isCloseButtonVisible"></button>
+    <slot>Content</slot>
+  </div>
 </template>
 
 <script>
