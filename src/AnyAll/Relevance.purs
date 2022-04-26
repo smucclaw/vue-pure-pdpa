@@ -3,10 +3,6 @@ module AnyAll.Relevance where
 import AnyAll.Types
 import Prelude
 
-import Effect (Effect)
-import Effect.Console (log)
-import Partial.Unsafe (unsafePartial)
-
 import Data.Set as Set
 import Data.Tuple
 import Data.Map as Map
@@ -30,18 +26,13 @@ relevant sh dp marking parentValue nl self =
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
-    newVis = case self of
-      Leaf x -> case Map.lookup x (getMarking marking) of
-        Just something -> if initVis /= Hide then initVis else Hide
-        Nothing -> if initVis /= Hide then Ask else Hide
-      _ -> initVis
-    innerfunc self' = case self' of
-      Leaf x -> mkQ (newVis) (Simply x) (nlMap x nl) Nothing (fromMaybe (Default $ Left Nothing) (Map.lookup x (getMarking marking))) []
-      Not x -> innerfunc x
+    makeQNode itemNode = case itemNode of
+      Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
+      Not x -> makeQNode x
       Any label items -> mkQ (ask2view initVis) Or (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
       All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
-    innerfunc self
+    makeQNode self
   where
   -- from a dictionary of { langID: { shortword: longtext } }
   -- to a dictionary of { langID: longtext }
@@ -95,3 +86,5 @@ evaluateAll items
   | Just false `elem` items = Just false
   | otherwise = Nothing
 
+lookupMarking :: String -> Marking -> Default Boolean
+lookupMarking node marking = fromMaybe (Default $ Left Nothing) (Map.lookup node (getMarking marking))

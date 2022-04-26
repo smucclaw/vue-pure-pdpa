@@ -66,30 +66,95 @@ derive1 initVis = if initVis /= Hide then initVis else Hide
 
 spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
 spec = describe "hide view" do
-  it "Self Just T / Parent Just T" do
-    let qq = relevant Hard DPNormal (right true) (Just true) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` View
-  it "Self Just F / Parent Just T" do
-    let qq = relevant Hard DPNormal (right false) (Just true) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` Hide
-  it "Self Nothing / Parent Just T" do
-    let qq = relevant Hard DPNormal emptyMarking (Just true) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` Hide
-  it "Self Just T / Parent Just F" do
-    let qq = relevant Hard DPNormal (right true) (Just false) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` Hide
-  it "Self Just F / Parent Just F" do
-    let qq = relevant Hard DPNormal (right false) (Just false) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` View
-  it "Self Nothing / Parent Just F" do
-    let qq = relevant Hard DPNormal emptyMarking (Just false) example1_nl keyLeaf
-    getShouldView qq `shouldEqual` Hide
-  it "Self Just T / Parent Nothing" do
-    let qq = relevant Hard DPNormal (right true) Nothing example1_nl keyLeaf
-    getShouldView qq `shouldEqual` View
-  it "Self Just F / Parent Nothing" do
-    let qq = relevant Hard DPNormal (right false) Nothing example1_nl keyLeaf
-    getShouldView qq `shouldEqual` View
-  it "Self Nothing / Parent Nothing" do
-    let qq = relevant Hard DPNormal emptyMarking Nothing example1_nl keyLeaf
-    getShouldView qq `shouldEqual` Ask
+  describe "Hard" do
+    it "Self Just T / Parent Just T" do
+      let qq = relevant Hard DPNormal (left true) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just F / Parent Just T" do
+      let qq = relevant Hard DPNormal (left false) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Just T" do
+      let qq = relevant Hard DPNormal (right true) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just F / Parent Just T" do
+      let qq = relevant Hard DPNormal (right false) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Nothing / Parent Just T" do
+      let qq = relevant Hard DPNormal emptyMarking (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Just F" do
+      let qq = relevant Hard DPNormal (left true) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just F / Parent Just F" do
+      let qq = relevant Hard DPNormal (left false) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Just F" do
+      let qq = relevant Hard DPNormal (right true) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just F / Parent Just F" do
+      let qq = relevant Hard DPNormal (right false) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Nothing / Parent Just F" do
+      let qq = relevant Hard DPNormal emptyMarking (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Nothing" do
+      let qq = relevant Hard DPNormal (left true) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
+    it "Self Just F / Parent Nothing" do
+      let qq = relevant Hard DPNormal (left false) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
+    it "Self Just T / Parent Nothing" do
+      let qq = relevant Hard DPNormal (right true) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just F / Parent Nothing" do
+      let qq = relevant Hard DPNormal (right false) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Nothing / Parent Nothing" do
+      let qq = relevant Hard DPNormal emptyMarking Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
+  describe "Soft" do
+    it "Self Just T / Parent Just T" do
+      let qq = relevant Soft DPNormal (left true) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just F / Parent Just T" do
+      let qq = relevant Soft DPNormal (left false) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Just T" do
+      let qq = relevant Soft DPNormal (right true) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just F / Parent Just T" do
+      let qq = relevant Soft DPNormal (right false) (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Nothing / Parent Just T" do
+      let qq = relevant Soft DPNormal emptyMarking (Just true) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Just F" do
+      let qq = relevant Soft DPNormal (left true) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just F / Parent Just F" do
+      let qq = relevant Soft DPNormal (left false) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just T / Parent Just F" do
+      let qq = relevant Soft DPNormal (right true) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just F / Parent Just F" do
+      let qq = relevant Soft DPNormal (right false) (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Nothing / Parent Just F" do
+      let qq = relevant Soft DPNormal emptyMarking (Just false) example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Hide
+    it "Self Just T / Parent Nothing" do
+      let qq = relevant Soft DPNormal (left true) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
+    it "Self Just F / Parent Nothing" do
+      let qq = relevant Soft DPNormal (left false) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
+    it "Self Just T / Parent Nothing" do
+      let qq = relevant Soft DPNormal (right true) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Just F / Parent Nothing" do
+      let qq = relevant Soft DPNormal (right false) Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` View
+    it "Self Nothing / Parent Nothing" do
+      let qq = relevant Soft DPNormal emptyMarking Nothing example1_nl keyLeaf
+      getShouldView qq `shouldEqual` Ask
