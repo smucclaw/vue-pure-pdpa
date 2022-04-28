@@ -35,21 +35,6 @@ export default {
   components: {
     QuestionRadio,
   },
-  methods: {
-    isTag(tag) {
-      const isCurrentTag = this.question.andOr.tag === tag;
-      const isParentTag = this.parentTag === tag;
-      const isViewMode = this.question.shouldView === 'View';
-      const isUserSource = this.question.mark.source === 'user';
-      const isTrueValue = this.question.mark.value === 'true';
-
-      return isCurrentTag || (isViewMode && isParentTag && isUserSource && isTrueValue);
-    },
-    isDefaultValue(value) {
-      return this.question.mark.source === 'default'
-        && this.question.mark.value === value;
-    },
-  },
   computed: {
     isHidden() {
       const isHideMode = this.question.shouldView === 'Hide';
@@ -60,7 +45,6 @@ export default {
       return isHideMode || (isTagLeaf && isViewMode && isParentViewHide);
     },
     theme() {
-      // return this.isTag('All') ? 'is-danger' : 'is-warning';
       return this.isHidden
         ? {
           background: 'has-background-grey-lighter',
@@ -97,6 +81,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-</style>
