@@ -86,8 +86,8 @@ export default {
       },
       set(value) {
         this.$store.commit('updateMarkingField', {
-          mField: this.question.andOr.contents,
-          vValue: {
+          question: this.question.andOr.contents,
+          answer: {
             source: 'user',
             value,
           },

@@ -31,7 +31,7 @@ export default createStore({
     /* eslint no-param-reassign: ["error", { "props": false }] */
     updateField,
     updateMarkingField(state, payload) {
-      state.marking[payload.mField] = payload.vValue;
+      state.marking[payload.question] = payload.answer;
     },
   },
   actions: {
