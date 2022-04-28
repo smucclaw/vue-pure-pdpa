@@ -3,11 +3,11 @@
   .card-header.mb-2(v-if='question.prePost.pre')
     .card-header-title(:class='theme.text')
       | {{ question.prePost.pre }} {{ question.andOr.nl.en }}
-  .card-content.p-4(v-if='question.andOr.contents')
-    .card-header-title.p-0(:class='theme.text')
-      | {{ question.andOr.contents }} {{ question.andOr.nl.en }}
-    .control.mt-2(v-if='!isHidden')
-      QuestionRadio(v-model='leaf')
+  .card-content.py-3.px-4(v-if='question.andOr.contents')
+    .columns(:class='theme.text')
+      .column.is-9 {{ question.andOr.contents }} {{ question.andOr.nl.en }}
+      .column.has-text-right(v-if='!isHidden')
+        QuestionRadio(v-model='leaf')
   .card-content.px-2.pt-0.pb-2(
     v-if='question.andOr.children',
     v-for='child in question.andOr.children',
