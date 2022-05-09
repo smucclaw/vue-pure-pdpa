@@ -1,24 +1,22 @@
 <template lang="pug">
-.card.card-border.is-size-6(:class='theme.background')
-  .card-header.mb-2(v-if='question.prePost.pre')
-    .card-header-title(:class='theme.text')
-      | {{ question.prePost.pre }} {{ question.andOr.nl.en }}
-  .card-content.py-3.px-4(v-if='question.andOr.contents')
-    .columns(:class='theme.text')
-      .column.is-9 {{ question.andOr.contents }} {{ question.andOr.nl.en }}
-      .column.has-text-right(v-if='!isHidden')
-        QuestionRadio(v-model='leaf')
-  .card-content.px-2.pt-0.pb-2(
-    v-if='question.andOr.children',
-    v-for='child in question.andOr.children',
-    :key='child',
+.card.card-border.is-size-6.has-text-left(
+  :class='theme.background',
+  v-if='!question.andOr.contents'
   )
-    Question(
-      :question='child',
-      :parent-tag='question.andOr.tag',
-      :parent-view='question.shouldView',
-      :depth='newDepth',
-    )
+  .card-content.p-4(v-if='question.prePost.pre')
+    p.title.is-5(:class='theme.text') {{ question.prePost.pre }} {{ question.andOr.nl.en }}
+  template(v-if='question.andOr.children')
+    .card-content.p-4(v-for='child in question.andOr.children', :key='child')
+      Question(
+        :question='child',
+        :parent-tag='question.andOr.tag',
+        :parent-view='question.shouldView',
+        :depth='newDepth',
+        )
+.columns(:class='[theme.background, theme.text]', v-if='question.andOr.contents')
+  .column.is-flex-grow-2.has-text-left {{ question.andOr.contents }} {{ question.andOr.nl.en }}
+  .column.has-text-right(v-if='!isHidden')
+    QuestionRadio(v-model='leaf')
 </template>
 
 <script>
