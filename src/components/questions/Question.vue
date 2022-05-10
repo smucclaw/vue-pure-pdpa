@@ -1,5 +1,5 @@
 <template lang="pug">
-.card.card-border.is-size-6.has-text-left(
+.card.card-border(
   :class='theme.background',
   v-if='!question.andOr.contents'
   )

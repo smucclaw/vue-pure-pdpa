@@ -1,10 +1,11 @@
 <template>
   <TheMain v-slot="slotProps">
-    <Question
-      class="block has-text-left"
-      :question="slotProps.questions"
-      :depth=0
-      />
+    <div class="block has-text-left is-size-6">
+      <Question
+        :question="slotProps.questions"
+        :depth=0
+        />
+    </div>
   </TheMain>
 </template>
 
