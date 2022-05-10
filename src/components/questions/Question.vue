@@ -28,7 +28,10 @@ export default {
     question: Object,
     parentTag: String,
     parentView: String,
-    depth: Number,
+    depth: {
+      type: Number,
+      default: 0,
+    },
   },
   components: {
     QuestionRadio,
