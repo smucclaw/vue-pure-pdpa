@@ -112,6 +112,7 @@ export default {
     }
     .is-answering{
       flex-shrink: 0;
+      text-align: right;
     }
   }
 }

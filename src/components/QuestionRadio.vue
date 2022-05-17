@@ -17,7 +17,7 @@
         class="icon is-small m-0"
         :icon="opt.icon"
         />
-     <span class="is-hidden-touch ml-1">{{ opt.name }}</span>
+     <span class="is-hidden-mobile ml-1">{{ opt.name }}</span>
     </label>
   </div>
 </template>
