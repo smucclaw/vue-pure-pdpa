@@ -1,44 +1,38 @@
-<template lang="pug">
-//-.card.card-border(
-  :class='theme.background',
-  v-if='!question.andOr.contents'
-  )
-  .card-content.py-4.px-0(v-if='question.prePost.pre')
-    p.title.is-5(:class='theme.text') {{ question.prePost.pre }} {{ question.andOr.nl.en }}
-  template(v-if='question.andOr.children')
-    .card-content.py-4.px-0(v-for='child in question.andOr.children', :key='child')
-      Question(
-        :question='child',
-        :parent-tag='question.andOr.tag',
-        :parent-view='question.shouldView',
-        :depth='newDepth',
-        )
-.question-block(v-if='!question.andOr.contents')
-  .question-content(v-if='question.prePost.pre', :class='theme')
-    .is-single-question(:style='indentParent')
-      strong {{ question.prePost.pre }} {{ question.andOr.nl.en }}
-  template(v-if='question.andOr.children')
-    Question(
-      v-for='child in question.andOr.children',
-      :key='child',
-      :question='child',
-      :parent-tag='question.andOr.tag',
-      :parent-view='question.shouldView',
-      :depth='newDepth',
-      )
-.question-content(v-if='question.andOr.contents', :class='theme')
-  .columns.is-single-question(:style='indentParent')
-    .is-asking
-      strong {{ question.andOr.contents }} {{ question.andOr.nl.en }}
-    .is-answering(v-if='!isHidden')
-      QuestionRadio(v-model='leaf')
+<template>
+  <div class="question-block" v-if="!question.andOr.contents">
+    <div class="question-content" v-if="question.prePost.pre" :class="theme">
+      <div class="is-single-question" :style="indentParent">
+        <strong>{{ question.prePost.pre }} {{ question.andOr.nl.en }}</strong>
+      </div>
+    </div>
+    <template v-if="question.andOr.children">
+      <QuestionBase
+        v-for="child in question.andOr.children"
+        :key="child"
+        :question="child"
+        :parent-tag="question.andOr.tag"
+        :parent-view="question.shouldView"
+        :depth="newDepth"
+        />
+    </template>
+  </div>
+  <div class="question-content" v-if="question.andOr.contents" :class="theme">
+    <div class="columns is-single-question" :style="indentParent">
+      <div class="is-asking">
+        <strong>{{ question.andOr.contents }} {{ question.andOr.nl.en }}</strong>
+      </div>
+      <div class="is-answering" v-if="!isHidden">
+        <QuestionRadio v-model="leaf" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import QuestionRadio from '@/components/QuestionRadio.vue';
 
 export default {
-  name: 'Question',
+  name: 'QuestionBase',
   props: {
     question: Object,
     parentTag: String,
