@@ -49,16 +49,16 @@ export default {
           value: 'true',
         },
         {
-          name: 'Don\'t Know',
-          icon: faQuestion,
-          color: 'is-info',
-          value: 'undefined',
-        },
-        {
           name: 'No',
           icon: faTimes,
           color: 'is-danger',
           value: 'false',
+        },
+        {
+          name: 'Don\'t Know',
+          icon: faQuestion,
+          color: 'is-dark',
+          value: 'undefined',
         },
       ],
     };
