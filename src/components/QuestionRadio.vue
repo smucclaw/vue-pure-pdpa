@@ -14,9 +14,10 @@
         :value="opt.value"
         />
       <FontAwesomeIcon
-        class="icon is-small mx-0"
+        class="icon is-small m-0"
         :icon="opt.icon"
         />
+     <span class="is-hidden-touch ml-1">{{ opt.name }}</span>
     </label>
   </div>
 </template>
