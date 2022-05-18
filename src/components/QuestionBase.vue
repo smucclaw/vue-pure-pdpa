@@ -17,7 +17,7 @@
     </template>
   </div>
   <div class="question-content" v-if="question.andOr.contents" :class="theme">
-    <div class="columns is-single-question" :style="indentParent">
+    <div class="is-single-question" :style="indentParent">
       <div class="is-asking">
         <strong>{{ question.andOr.contents }} {{ question.andOr.nl.en }}</strong>
       </div>
