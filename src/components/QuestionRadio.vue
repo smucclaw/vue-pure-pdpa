@@ -1,22 +1,25 @@
 <template>
-  <label
-    class="button is-radio-button px-2 mr-2"
-    v-for="(opt, index) in btnOptions"
-    :key="index"
-    :class="getColor(opt.color, opt.value, selectedValue)"
-    :checked="opt.value === selectedValue"
-    >
-    <input
-      type="radio"
-      v-model="selectedValue"
-      :id="opt.value"
-      :value="opt.value"
-      />
-    <FontAwesomeIcon
-      class="icon is-small mx-0"
-      :icon="opt.icon"
-      />
-  </label>
+  <div class="control">
+    <label
+      class="button is-radio-button px-2"
+      v-for="(opt, index) in btnOptions"
+      :key="index"
+      :class="getColor(opt.color, opt.value, selectedValue)"
+      :checked="opt.value === selectedValue"
+      >
+      <input
+        type="radio"
+        v-model="selectedValue"
+        :id="opt.value"
+        :value="opt.value"
+        />
+      <FontAwesomeIcon
+        class="icon is-small m-0"
+        :icon="opt.icon"
+        />
+     <span class="is-hidden-mobile ml-1">{{ opt.name }}</span>
+    </label>
+  </div>
 </template>
 
 <script>
@@ -46,16 +49,16 @@ export default {
           value: 'true',
         },
         {
-          name: 'Don\'t Know',
-          icon: faQuestion,
-          color: 'is-info',
-          value: 'undefined',
-        },
-        {
           name: 'No',
           icon: faTimes,
           color: 'is-danger',
           value: 'false',
+        },
+        {
+          name: 'Don\'t Know',
+          icon: faQuestion,
+          color: 'is-dark',
+          value: 'undefined',
         },
       ],
     };
@@ -79,3 +82,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.control > label {
+  margin-right: 0.5rem !important;
+}
+
+.control > label:last-child {
+  margin-right: 0 !important;
+}
+</style>

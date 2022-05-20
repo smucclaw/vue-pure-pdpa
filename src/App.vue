@@ -33,5 +33,6 @@ export default {
 
 .mt-8 {
   margin-top: 4rem !important;
+  margin-bottom: 5rem !important;
 }
 </style>
