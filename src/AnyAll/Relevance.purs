@@ -29,7 +29,7 @@ relevant sh dp marking parentValue nl self =
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x
-      Any label items -> mkQ (ask2view initVis) Or (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
+      Any label items -> mkQ (ask2view initVis) Or  (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
       All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self

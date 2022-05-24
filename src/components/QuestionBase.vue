@@ -2,7 +2,7 @@
   <div class="question-block" v-if="!question.andOr.contents">
     <div class="question-content" v-if="question.prePost.pre" :class="theme">
       <div class="is-single-question" :style="indentParent">
-        <strong>{{ question.prePost.pre }} {{ question.andOr.nl.en }}</strong>
+        <strong><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong>
       </div>
     </div>
     <template v-if="question.andOr.children">
@@ -19,7 +19,7 @@
   <div class="question-content" v-if="question.andOr.contents" :class="theme">
     <div class="is-single-question" :style="indentParent">
       <div class="is-asking">
-        <strong>{{ question.andOr.contents }} {{ question.andOr.nl.en }}</strong>
+        <strong><em>{{ question.andOr.contents }}.</em> {{ question.andOr.nl.en }}</strong>
       </div>
       <div class="is-answering" v-if="!isHidden">
         <QuestionRadio v-model="leaf" />

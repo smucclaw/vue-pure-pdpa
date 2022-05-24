@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       isNavActive: false,
-      appName: 'Dolores',
+      appName: 'PDPA DBNO PoC -- draft',
       navigationLinks: [],
     };
   },
