@@ -38,9 +38,16 @@ export default {
   data() {
     return {
       isNavActive: false,
-      appName: 'PDPA DBNO PoC -- draft',
       navigationLinks: [],
     };
+  },
+  computed: {
+    appName() {
+      const name = process.env.VUE_APP_TITLE;
+      const isEmpty = !name || name === '';
+
+      return isEmpty ? 'Dolores' : name;
+    },
   },
   beforeMount() {
     this.navigationLinks = this.$router.options.routes;
