@@ -19,7 +19,11 @@
   <div class="question-content" v-if="question.andOr.contents" :class="theme">
     <div class="is-single-question" :style="indentParent">
       <div class="is-asking">
-        <strong><em>{{ question.andOr.contents }}.</em> {{ question.andOr.nl.en }}</strong>
+        <strong v-if="question.andOr.nl.en">
+          <em>{{ question.andOr.contents }}.</em>
+              {{ question.andOr.nl.en }}
+          </strong>
+        <strong v-else>{{ question.andOr.contents }}</strong>
       </div>
       <div class="is-answering" v-if="!isHidden">
         <QuestionRadio v-model="leaf" />

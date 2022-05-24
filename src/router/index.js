@@ -30,7 +30,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const name = 'Dolores: ';
+  const name = 'CCLAW: ';
   const docTitle = to.name ? name.concat(to.name) : name;
   window.document.title = docTitle;
 });
