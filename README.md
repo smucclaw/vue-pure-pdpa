@@ -100,7 +100,7 @@ then go over to the `smucclaw.github.io` repo, and check in the new rev in the u
 
     git add .
     git commit -m 'latest website'
-    git push
+    git push --set-upstream origin main
 	 
 A minute or two later you should be able to reload `smucclaw.github.io/mengwong/pdpa/` and see your changes!
 
