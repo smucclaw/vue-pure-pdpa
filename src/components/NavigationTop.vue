@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     appName() {
-      const name = process.env.VUE_APP_TITLE;
+      const name = process.env.VUE_APP_NAME;
       const isEmpty = !name || name === '';
 
       return isEmpty ? 'Dolores' : name;
