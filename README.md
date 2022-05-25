@@ -46,7 +46,7 @@ $ npm run build
 
 A `dist/` directory should be produced. Deploy the contents in the `dist/` directory to your application of choice (e.g. Github pages).
 
-An example can be found at <https://smucclaw.github.io/mengwong/pdpa/>.
+An example can be found at <https://smucclaw.github.io/vue-pure-pdpa/> or <https://smucclaw.github.io/mengwong/pdpa/>.
 
 ### Using Docker
 
