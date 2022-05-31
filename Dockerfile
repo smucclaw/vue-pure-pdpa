@@ -1,5 +1,5 @@
 # Build
-FROM node:18 as build-stage
+FROM node:16 as build-stage
 
 WORKDIR /app
 COPY package*.json *.dhall ./
@@ -7,7 +7,6 @@ COPY package*.json *.dhall ./
 RUN npm install
 RUN npx spago install
 
-ARG NODE_OPTIONS=--openssl-legacy-provider
 COPY . .
 RUN npm run build
 
