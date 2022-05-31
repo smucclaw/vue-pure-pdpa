@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
       - name: Test
         run: npm run test:purs
   deploy-gh-pages:
@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
       - name: Build
         run: npm run build
         env:
