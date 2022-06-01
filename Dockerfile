@@ -4,7 +4,6 @@ FROM node:16 as build-stage
 WORKDIR /app
 COPY package*.json *.dhall ./
 
-RUN npm install -g npm spago purescript
 RUN npm install
 RUN npx spago install
 

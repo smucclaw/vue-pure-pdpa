@@ -29,10 +29,11 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
-  const name = 'CCLAW: ';
-  const docTitle = to.name ? name.concat(to.name) : name;
-  window.document.title = docTitle;
+router.beforeEach(() => {
+  const name = process.env.VUE_APP_BROWSER_NAME;
+  const isEmpty = !name || name === '';
+
+  window.document.title = isEmpty ? 'Dolores' : name;
 });
 
 export default router;

@@ -1,0 +1,15 @@
+name: Setup
+description: "Setup the node environment"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16.x"
+    - name: Install Dependencies
+      run: npm install
+      shell: bash
+    - name: Install Spago Dependencies
+      run: npx spago install
+      shell: bash
