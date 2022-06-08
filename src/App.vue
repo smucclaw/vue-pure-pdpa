@@ -1,19 +1,15 @@
 <template>
-  <NavigationTop />
-  <main class="container is-fluid mt-8">
+  <TheMain>
     <router-view />
-  </main>
-  <NavigationBottom />
+  </TheMain>
 </template>
 
 <script>
-import NavigationTop from '@/components/NavigationTop.vue';
-import NavigationBottom from '@/components/NavigationBottom.vue';
+import TheMain from '@/components/TheMain.vue';
 
 export default {
   components: {
-    NavigationTop,
-    NavigationBottom,
+    TheMain,
   },
 };
 </script>
@@ -24,10 +20,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-}
-
-.mt-8 {
-  margin-top: 4rem !important;
-  margin-bottom: 5rem !important;
 }
 </style>
