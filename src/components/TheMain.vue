@@ -1,5 +1,5 @@
 <template>
-  <NavigationBase
+  <BaseNavigation
     navClasses="is-dark is-fixed-top"
     fluidWidth
     >
@@ -21,11 +21,11 @@
         <span>{{ menu.name }}</span>
       </router-link>
     </template>
-  </NavigationBase>
+  </BaseNavigation>
   <main class="container is-fluid mt-8">
     <slot></slot>
   </main>
-  <NavigationBase
+  <BaseNavigation
     navClasses="is-dark is-fixed-bottom is-hidden-desktop">
     <template v-slot:brand>
       <router-link
@@ -39,17 +39,18 @@
         <p class="is-size-7">{{ menu.name }}</p>
       </router-link>
     </template>
-  </NavigationBase>
+  </BaseNavigation>
 </template>
 
 <script>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import NavigationBase from '@/components/NavigationBase.vue';
+import BaseNavigation from '@/components/BaseNavigation.vue';
 
 export default {
+  name: 'TheMain',
   components: {
     FontAwesomeIcon,
-    NavigationBase,
+    BaseNavigation,
   },
   data() {
     return {
