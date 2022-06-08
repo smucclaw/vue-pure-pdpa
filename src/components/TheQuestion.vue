@@ -13,7 +13,7 @@ import { mapGetters } from 'vuex';
 import Notification from '@/components/BaseNotification.vue';
 
 export default {
-  name: 'BaseView',
+  name: 'TheQuestion',
   components: {
     Notification,
   },
