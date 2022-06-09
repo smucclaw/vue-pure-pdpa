@@ -1,46 +1,79 @@
 <template>
-  <section>
-    <Notification class="is-always-on-top" :theme-color='responseTheme'>
-      <p class="title is-spaced">{{ questionPrompt }}</p>
-      <p class="subtitle">{{ responseMsg }}</p>
-    </Notification>
-    <slot :questions="questions"></slot>
-  </section>
+  <BaseNavigation
+    navClasses="is-dark is-fixed-top"
+    fluidWidth
+    >
+    <template v-slot:brand>
+      <div class="navbar-item">{{ appName }}</div>
+    </template>
+    <template v-slot:end>
+      <router-link
+        class="navbar-item"
+        active-class="is-active"
+        v-for="menu in navigationLinks"
+        :key="menu.name"
+        :to="menu.path"
+        >
+        <FontAwesomeIcon
+          class="icon is-small mr-2"
+          :icon="menu.meta.icon"
+          />
+        <span>{{ menu.name }}</span>
+      </router-link>
+    </template>
+  </BaseNavigation>
+  <main class="container is-fluid mt-8">
+    <slot></slot>
+  </main>
+  <BaseNavigation
+    navClasses="is-dark is-fixed-bottom is-hidden-desktop">
+    <template v-slot:brand>
+      <router-link
+        class="navbar-item is-expanded is-block has-text-centered"
+        active-class="is-active"
+        v-for="menu in navigationLinks"
+        :key="menu.name"
+        :to="menu.path"
+        >
+        <FontAwesomeIcon :icon="menu.meta.icon" />
+        <p class="is-size-7">{{ menu.name }}</p>
+      </router-link>
+    </template>
+  </BaseNavigation>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Notification from '@/components/BaseNotification.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import BaseNavigation from '@/components/BaseNavigation.vue';
 
 export default {
-  name: 'BaseView',
+  name: 'TheMain',
   components: {
-    Notification,
+    FontAwesomeIcon,
+    BaseNavigation,
+  },
+  data() {
+    return {
+      navigationLinks: [],
+    };
   },
   computed: {
-    ...mapGetters(['questions', 'questionPrompt']),
-    responseMsg() {
-      return ({
-        true: 'Yes!',
-        false: 'No!',
-        undefined: 'It depends...',
-      })[this.questions.mark.value];
+    appName() {
+      const name = process.env.VUE_APP_NAME;
+      const isEmpty = !name || name === '';
+
+      return isEmpty ? 'Dolores' : name;
     },
-    responseTheme() {
-      return ({
-        true: 'is-success',
-        false: 'is-danger',
-        undefined: 'is-info',
-      })[this.questions.mark.value];
-    },
+  },
+  beforeMount() {
+    this.navigationLinks = this.$router.options.routes;
   },
 };
 </script>
 
-<style>
-.is-always-on-top {
-  top: 4rem !important;
-  position: sticky;
-  z-index: 900;
+<style lang="scss">
+.mt-8 {
+  margin-top: 4rem !important;
+  margin-bottom: 5rem !important;
 }
 </style>

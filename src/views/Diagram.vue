@@ -1,20 +1,20 @@
 <template>
-  <TheMain v-slot="slotProps">
+  <TheQuestion v-slot="slotProps">
     <QuestionDiagram
       class="block"
       :question="slotProps.questions"
       />
-  </TheMain>
+  </TheQuestion>
 </template>
 
 <script>
-import TheMain from '@/components/TheMain.vue';
+import TheQuestion from '@/components/TheQuestion.vue';
 import QuestionDiagram from '@/components/QuestionDiagram.vue';
 
 export default {
   name: 'Diagram',
   components: {
-    TheMain,
+    TheQuestion,
     QuestionDiagram,
   },
 };

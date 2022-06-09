@@ -1,19 +1,19 @@
 <template>
-  <TheMain v-slot="slotProps">
+  <TheQuestion v-slot="slotProps">
     <div class="block has-text-left is-size-6">
       <QuestionBase :question="slotProps.questions" />
     </div>
-  </TheMain>
+  </TheQuestion>
 </template>
 
 <script>
-import TheMain from '@/components/TheMain.vue';
+import TheQuestion from '@/components/TheQuestion.vue';
 import QuestionBase from '@/components/QuestionBase.vue';
 
 export default {
   name: 'Questions',
   components: {
-    TheMain,
+    TheQuestion,
     QuestionBase,
   },
 };
