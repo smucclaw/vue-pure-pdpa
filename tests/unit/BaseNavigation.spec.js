@@ -5,7 +5,7 @@ const factory = (propsData) => shallowMount(BaseNavigation, {
   ...propsData,
 });
 
-describe('', () => {
+describe('BaseNavigation', () => {
   it('renders correctly', () => {
     expect(true).toBe(true);
   });
