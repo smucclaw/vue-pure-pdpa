@@ -5,7 +5,7 @@ const factory = (propsData) => shallowMount(BaseNotification, {
   ...propsData,
 });
 
-describe('BaseNotification.vue', () => {
+describe('Test BaseNotification Component', () => {
   it('renders correctly', () => {
     expect(true).toBe(true);
   });
