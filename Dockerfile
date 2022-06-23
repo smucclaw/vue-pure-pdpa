@@ -1,6 +1,10 @@
 # Build
 FROM node:16 as build-stage
 
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y libncurses5
+
 WORKDIR /app
 COPY package*.json *.dhall ./
 
