@@ -1,0 +1,38 @@
+{
+    "contents": [
+        {
+            "contents": [
+                "any unauthorised",
+                "of personal data"
+            ],
+            "tag": "PrePost"
+        },
+        [
+            {
+                "contents": "access",
+                "tag": "Leaf"
+            },
+            {
+                "contents": "use",
+                "tag": "Leaf"
+            },
+            {
+                "contents": "disclosure",
+                "tag": "Leaf"
+            },
+            {
+                "contents": "copying",
+                "tag": "Leaf"
+            },
+            {
+                "contents": "modification",
+                "tag": "Leaf"
+            },
+            {
+                "contents": "disposal",
+                "tag": "Leaf"
+            }
+        ]
+    ],
+    "tag": "Any"
+}

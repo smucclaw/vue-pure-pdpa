@@ -27,36 +27,60 @@ import Foreign.Generic
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
+import Data.Argonaut.Types.Generic as Gen
+import Data.Argonaut.Encode.Class (class EncodeJson, encodeJson)
+import Data.Argonaut.Decode.Class (class DecodeJson, decodeJson)
+import Data.Argonaut.Encode.Generic (genericEncodeJsonWith)
+import Data.Argonaut.Decode.Generic (genericDecodeJsonWith)
+
 type Bool = Boolean
 
 --
 -- the "native" data type represents an And/Or structure as a simple tree of Items
 --
 
-data Item a
+data Item lbl a
   = Leaf a
-  | All (Label a) (Array (Item a))
-  | Any (Label a) (Array (Item a))
-  | Not (Item a)
+  | All lbl (Array (Item lbl a))
+  | Any lbl (Array (Item lbl a))
+  | Not (Item lbl a)
+
+type ItemJSONStr = Item (Label String) String
 
 -- boilerplate for class derivations
-derive instance eqItem :: (Eq a) => Eq (Item a)
-derive instance genericItem :: Generic (Item a) _
-instance showItem :: (Show a) => Show (Item a) where
+derive instance eqItem :: (Eq lbl, Eq a) => Eq (Item lbl a)
+derive instance genericItem :: Generic (Item lbl a) _
+instance showItem :: (Show lbl, Show a) => Show (Item lbl a) where
   show eta = genericShow eta
 
-instance encodeItem :: (Encode a) => Encode (Item a) where
+instance encodeItem :: (Encode lbl, Encode a) => Encode (Item lbl a) where
   encode eta = genericEncode defaultOptions eta
 
-instance decodeItem :: (Decode a) => Decode (Item a) where
+instance decodeItem :: (Decode lbl, Decode a) => Decode (Item lbl a) where
   decode eta = genericDecode defaultOptions eta
 
-decodeIt :: Foreign -> (Item String)
+decodeIt :: Foreign -> ItemJSONStr
 decodeIt f =
   either
     (\e -> unsafeCrashWith $ "error while decoding Item: " <> show e)
     (\v -> v)
     (runExcept (decode f))
+
+
+aesonEncoding :: Gen.Encoding
+aesonEncoding =
+  { tagKey: "tag"
+  , valuesKey: "contents"
+  , unwrapSingleArguments: true
+  }
+
+-- only instances using aesonEncoding are for JSON transformations
+
+instance encodeJsonItem :: (EncodeJson lbl, EncodeJson a) => EncodeJson (Item lbl a) where
+  encodeJson a = genericEncodeJsonWith aesonEncoding a
+instance decodeJsonItem :: (DecodeJson lbl, DecodeJson a) => DecodeJson (Item lbl a) where
+  decodeJson a = genericDecodeJsonWith aesonEncoding a
+
 
 --
 -- Item uses Label to prefix a tree with strings like "all of the following" or "any of the below"
@@ -69,6 +93,13 @@ derive instance eqLabel :: (Eq a) => Eq (Label a)
 derive instance genericLabel :: Generic (Label a) _
 instance showLabel :: (Show a) => Show (Label a) where
   show = genericShow
+
+-- only instances using aesonEncoding are for JSON transformations
+instance encodeJsonLabel :: EncodeJson a => EncodeJson (Label a) where
+  encodeJson a = genericEncodeJsonWith aesonEncoding a
+instance decodeJsonLabel :: DecodeJson a => DecodeJson (Label a) where
+  decodeJson a = genericDecodeJsonWith aesonEncoding a
+
 
 instance encodeLabel :: (Encode a) => Encode (Label a) where
   encode eta = genericEncode defaultOptions eta
@@ -296,17 +327,17 @@ instance encodeHardness :: Encode Hardness where
 instance decodeHardness :: Decode Hardness where
   decode eta = genericDecode defaultOptions eta
 
-data StdinSchema a = StdinSchema
+data StdinSchema lbl a = StdinSchema
   { marking :: Marking
-  , andOrTree :: Item a
+  , andOrTree :: Item lbl a
   }
 
-derive instance eqStdinSchema :: (Eq a) => Eq (StdinSchema a)
-derive instance genericStdinSchema :: Generic (StdinSchema a) _
-instance showStdinSchema :: (Show a) => Show (StdinSchema a) where
+derive instance eqStdinSchema :: (Eq lbl, Eq a) => Eq (StdinSchema lbl a)
+derive instance genericStdinSchema :: Generic (StdinSchema lbl a) _
+instance showStdinSchema :: (Show lbl, Show a) => Show (StdinSchema lbl a) where
   show = genericShow
 
-instance encodeStdinSchema :: (Show a, Encode a) => Encode (StdinSchema a) where
+instance encodeStdinSchema :: (Show lbl, Show a, Encode lbl, Encode a) => Encode (StdinSchema lbl a) where
   encode eta = genericEncode defaultOptions eta
 
 {-

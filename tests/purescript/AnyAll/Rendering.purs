@@ -22,7 +22,7 @@ import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import AnyAll.PdpaQ (pdpaQ2)
 
-example1 :: Item String
+example1 :: ItemJSONStr
 example1 =
   ( All (Pre "all of")
       [ Leaf "walk"
@@ -45,6 +45,7 @@ example1_nl =
         ]
     ]
 
+pdpa_dbno_s1p1 :: ItemJSONStr
 pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
 pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
 
@@ -59,7 +60,7 @@ marking1 = markup $ Map.fromFoldable
   , Tuple "drink" $ Right (Just false)
   ]
 
-paintQ :: Marking -> NLDict -> Item String -> Q
+paintQ :: Marking -> NLDict -> ItemJSONStr -> Q
 paintQ m nl i = relevant Hard DPNormal m Nothing nl i
 
 myq :: Q

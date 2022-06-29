@@ -5,7 +5,7 @@ import Control.Monad.Error.Class (class MonadThrow)
 import Effect.Exception (Error)
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
-import AnyAll.Types (Default(..), Hardness(..), Item(..), Label(..), Marking(..))
+import AnyAll.Types (Default(..), Hardness(..), Item(..), ItemJSONStr, Label(..), Marking(..))
 import Data.Map as Map
 import Data.Tuple (Tuple(..))
 import Data.Either (Either(..))
@@ -21,19 +21,19 @@ right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Right (Just
 left :: Boolean -> Marking
 left b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Left (Just b) ]
 
-keyLeaf :: Item String
+keyLeaf :: ItemJSONStr
 keyLeaf = Leaf keyString
 
-missingLeaf :: Item String
+missingLeaf :: ItemJSONStr
 missingLeaf = Leaf "missing"
 
-any :: Array String -> Item String
+any :: Array String -> ItemJSONStr
 any leafs = (Any (Pre "dummy") (Leaf <$> leafs))
 
-all :: Array String -> Item String
+all :: Array String -> ItemJSONStr
 all leafs = (All (Pre "dummy") (Leaf <$> leafs))
 
-not :: String -> Item String
+not :: String -> ItemJSONStr
 not leaf = (Not (Leaf leaf))
 
 spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit

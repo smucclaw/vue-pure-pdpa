@@ -13,6 +13,9 @@ to generate this file without the comments in this block.
 { name = "my-project"
 , dependencies =
   [ "aff"
+  , "argonaut-codecs"
+  , "argonaut-core"
+  , "argonaut-generic"
   , "console"
   , "effect"
   , "either"
@@ -23,6 +26,8 @@ to generate this file without the comments in this block.
   , "foreign-object"
   , "lists"
   , "maybe"
+  , "node-buffer"
+  , "node-fs"
   , "option"
   , "ordered-collections"
   , "partial"

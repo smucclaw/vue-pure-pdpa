@@ -21,19 +21,19 @@ right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Right (Just
 left :: Boolean -> Marking
 left b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Left (Just b) ]
 
-keyLeaf :: Item String
+keyLeaf :: ItemJSONStr
 keyLeaf = Leaf keyString
 
-missingLeaf :: Item String
+missingLeaf :: ItemJSONStr
 missingLeaf = Leaf "missing"
 
-any :: Array String -> Item String
+any :: Array String -> ItemJSONStr
 any leafs = (Any (Pre "dummy") (Leaf <$> leafs))
 
-all :: Array String -> Item String
+all :: Array String -> ItemJSONStr
 all leafs = (All (Pre "dummy") (Leaf <$> leafs))
 
-not :: String -> Item String
+not :: String -> ItemJSONStr
 not leaf = (Not (Leaf leaf))
 
 emptyMarking :: Marking
@@ -42,7 +42,7 @@ emptyMarking = markup Map.empty
 example1_nl :: NLDict
 example1_nl = Map.empty
 
-example1 :: Item String
+example1 :: ItemJSONStr
 example1 =
   (Leaf "single")
 

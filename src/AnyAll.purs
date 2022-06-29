@@ -44,6 +44,15 @@ import Foreign.Generic
 import Control.Monad.Except
 import Foreign
 
+import Node.FS.Sync (readTextFile, appendTextFile)
+import Node.Encoding (Encoding(..))
+import Data.Argonaut.Decode.Class (decodeJson)
+
+import Data.Argonaut.Core (Json)
+import Data.Argonaut.Decode (printJsonDecodeError)
+import Data.Argonaut.Decode.Error (JsonDecodeError)
+import Data.Argonaut.Decode.Parser (parseJson)
+
 main = log "AnyAll main"
 
 hard = Hard
@@ -58,7 +67,7 @@ fromNode2 x = "hello node, you said " <> x
 fromNode3 :: QoutJS
 fromNode3 = output1
 
-example1 :: Item String
+example1 :: ItemJSONStr
 example1 =
   ( All (Pre "all of")
       [ Leaf "walk"
@@ -70,7 +79,7 @@ example1 =
       ]
   )
 
-exampleAny :: Item String
+exampleAny :: ItemJSONStr
 exampleAny =
   ( Any (Pre "all of")
       [ Leaf "walk"
@@ -93,6 +102,7 @@ example1_encoded = encode example1
 
 pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
 pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
+
 
 emptyMarking = markup Map.empty
 
@@ -144,11 +154,11 @@ nlLibrary = Map.fromFoldable
   , Tuple "pdpa_dbno_s1p1" pdpa_dbno_s1p1_nl
   ]
 
-paint :: Hardness -> Foreign -> NLDict -> Item String -> QoutJS
+paint :: Hardness -> Foreign -> NLDict -> ItemJSONStr -> QoutJS
 paint h fm nl item =
   qoutjs $ relevant h DPNormal (decodeMarking fm) Nothing nl item
 
-getItemByName :: String -> Item String
+getItemByName :: String -> ItemJSONStr
 getItemByName itemname =
   case Map.lookup itemname itemLibrary of
     Nothing -> unsafeCrashWith $ "anyall: unable to find rule item named " <> itemname
@@ -165,3 +175,22 @@ howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
 
+
+
+itemFromJson :: Json -> Either JsonDecodeError ItemJSONStr
+itemFromJson = decodeJson
+
+-- how do we call this?
+json2Purs :: Effect Unit
+json2Purs = do
+  let rp = "/Users/johsi/smucclaw/vue-pure-pdpa/src/inline-1-m.json"
+  -- this should eventually write to PDPADBNO.purs
+  let wp = "/Users/johsi/smucclaw/vue-pure-pdpa/src/decoded.purs"
+
+  str <- readTextFile UTF8 rp
+  let decoded = itemFromJson =<< parseJson str
+  -- log $ show decoded
+
+  case decoded of
+    Left err -> log $ printJsonDecodeError err
+    Right item -> appendTextFile UTF8 wp $ show item
