@@ -2,11 +2,12 @@ import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
+import inline1m from '../inline-1-m.json';
 
 export default createStore({
   state: {
     marking: AnyAll.emptyMarking,
-    rulesPDPA: PDPA.schedule1_part1,
+    rulesPDPA: AnyAll.json2Purs(inline1m),
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
   },
   getters: {

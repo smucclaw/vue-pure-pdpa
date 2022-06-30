@@ -17,6 +17,7 @@ to generate this file without the comments in this block.
   , "argonaut-core"
   , "argonaut-generic"
   , "console"
+  , "debug"
   , "effect"
   , "either"
   , "exceptions"

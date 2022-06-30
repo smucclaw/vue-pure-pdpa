@@ -24,6 +24,7 @@ module AnyAll
   , getItemByName
   , getNLByName
   , decodeItemString
+  , json2Purs
   ) where
 
 import Prelude
@@ -48,10 +49,12 @@ import Node.FS.Sync (readTextFile, appendTextFile)
 import Node.Encoding (Encoding(..))
 import Data.Argonaut.Decode.Class (decodeJson)
 
-import Data.Argonaut.Core (Json)
+import Data.Argonaut.Core (Json, stringify)
 import Data.Argonaut.Decode (printJsonDecodeError)
 import Data.Argonaut.Decode.Error (JsonDecodeError)
 import Data.Argonaut.Decode.Parser (parseJson)
+
+import Debug
 
 main = log "AnyAll main"
 
@@ -176,21 +179,11 @@ howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 decodeItemString = decodeIt
 
 
-
 itemFromJson :: Json -> Either JsonDecodeError ItemJSONStr
 itemFromJson = decodeJson
 
--- how do we call this?
-json2Purs :: Effect Unit
-json2Purs = do
-  let rp = "/Users/johsi/smucclaw/vue-pure-pdpa/src/inline-1-m.json"
-  -- this should eventually write to PDPADBNO.purs
-  let wp = "/Users/johsi/smucclaw/vue-pure-pdpa/src/decoded.purs"
-
-  str <- readTextFile UTF8 rp
-  let decoded = itemFromJson =<< parseJson str
-  -- log $ show decoded
-
-  case decoded of
-    Left err -> log $ printJsonDecodeError err
-    Right item -> appendTextFile UTF8 wp $ show item
+json2Purs :: Json -> ItemJSONStr
+json2Purs json =
+  case itemFromJson json of
+    Left err -> Leaf $ printJsonDecodeError err
+    Right item -> item
