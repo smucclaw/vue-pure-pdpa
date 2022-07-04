@@ -45,7 +45,7 @@ import subprocess
 
 poolsize = 10
 
-if not os.environ["V8K_WORKDIR"]: print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr); sys.exit(1);
+if not "V8K_WORKDIR" in os.environ: print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr); sys.exit(1);
 workdir = os.environ["V8K_WORKDIR"]
 
 def getjson(pathin):
