@@ -120,6 +120,7 @@ def do_up(args):
       print("cp %s %s" % (args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")), file=sys.stderr)
       subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
       subprocess.run(["touch", "%s/%s" % (e['dir'], "v8k.json")])
+      print(":%s/%s" % (str(e['port']), e['base_url']))
     else:
       print("but the server isn't running any longer.", file=sys.stderr)
   if not needToRelaunch: return
@@ -159,6 +160,7 @@ def do_up(args):
 
   os.chdir(server_config['dir'])
   runvue = subprocess.run([server_config['cli']], shell=True)
+  print(":%s/%s" % (str(server_config['port']), server_config['base_url']))
   # deliberately not capturing STDOUT and STDERR so it goes to console and we can see errors
 
 def take_down(vuedict, slot):
