@@ -237,7 +237,12 @@ parser_down.add_argument('--sheetid', action='store',      required=True, help="
 parser_downdir.add_argument('slotname',  metavar='slot',   type=str, help="two-digit slot id of vue server")
 
 args = argparser.parse_args()
-args.func(args)
+if not hasattr(args,'func'):
+  print("v8k: list / find / up / down / downdir")
+  if "V8K_WORKDIR" in os.environ:
+    print("V8K_WORKDIR = %s" % (os.environ["V8K_WORKDIR"]))
+else:
+  args.func(args)
 
 
 
