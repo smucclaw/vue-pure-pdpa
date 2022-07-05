@@ -121,6 +121,7 @@ def do_up(args):
       print("server seems to be still running for port %s!" % (str(e['port'])), file=sys.stderr)
       needToRelaunch = False;
       print("refreshing the purs file", file=sys.stderr)
+      # [TODO] do this in a more atomic way with a tmp file and a rename, because the vue server may try to reread the file too soon, when the cp hasn't completed.
       print("cp %s %s" % (args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")), file=sys.stderr)
       subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
       subprocess.run(["touch", "%s/%s" % (e['dir'], "v8k.json")])
