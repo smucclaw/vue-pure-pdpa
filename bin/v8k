@@ -139,6 +139,8 @@ def do_up(args):
     take_down(vuedict, oldest['slot'])
     available_slots = [ oldest['slot'] ]
 
+  # [TODO] we get list index out of range when all the slots are allocated but not running
+    
   chosen_slot = available_slots[0]
   portnum = 8000 + int(chosen_slot)
   print("** chose %s out of available slots %s" % (chosen_slot, available_slots), file=sys.stderr)
@@ -154,6 +156,15 @@ def do_up(args):
     "cli": "npm run serve -- --port=" + str(portnum) + " &"
   }    
 
+  childpid = os.fork()
+  # if this leads to trouble we may need to double-fork with grandparent-wait
+  if childpid > 0: # in the parent
+    print ("v8k: fork(parent): returning port " + str(portnum), file=sys.stderr)
+    print(":%s%s" % (str(server_config['port']), server_config['base_url']))
+    return
+  else:         # in the child
+    print ("v8k: fork(child): continuing to run", file=sys.stderr);
+  
   rsyncCommand = "rsync -a %s/vue-small/ %s/" % (workdir, server_config['dir'])
   print(rsyncCommand, file=sys.stderr)
   subprocess.run([rsyncCommand], shell=True)
@@ -167,9 +178,11 @@ def do_up(args):
 
   os.chdir(server_config['dir'])
   runvue = subprocess.run([server_config['cli']], shell=True)
-  print(":%s%s" % (str(server_config['port']), server_config['base_url']))
   # deliberately not capturing STDOUT and STDERR so it goes to console and we can see errors
 
+  print ("v8k: fork(child): exiting", file=sys.stderr);
+  sys.exit(0);
+  
 def take_down(vuedict, slot):
   portnum = vuedict[slot]['port']
   if not portnum:
