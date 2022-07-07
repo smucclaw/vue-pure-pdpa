@@ -143,9 +143,10 @@ def do_up(args):
   
   if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= poolsize):
     oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
+    print("oldest = %s" % (oldest), file=sys.stderr);
     print("** pool size reached, will replace oldest server " + oldest['slot'], file=sys.stderr)
-    take_down(vuedict, oldest[0])
-    available_slots = [ oldest[0] ]
+    take_down(vuedict, oldest['slot'])
+    available_slots = [ oldest['slot'] ]
 
   chosen_slot = available_slots[0]
 
