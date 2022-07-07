@@ -163,7 +163,7 @@ def do_up(args):
     json.dump(server_config, write_file)
 
   os.environ["BASE_URL"] = server_config['base_url']
-  print("setting BASE_URL=%s" % (os.environ["BASE_URL"]), file=sys.stderr);
+  # print("setting BASE_URL=%s" % (os.environ["BASE_URL"]), file=sys.stderr);
 
   os.chdir(server_config['dir'])
   runvue = subprocess.run([server_config['cli']], shell=True)

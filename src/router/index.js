@@ -33,7 +33,7 @@ router.beforeEach(() => {
   const name = process.env.VUE_APP_BROWSER_NAME;
   const isEmpty = !name || name === '';
 
-  window.document.title = isEmpty ? 'Dolores' : name;
+  window.document.title = isEmpty ? 'Orwell' : name;
 });
 
 export default router;
