@@ -204,8 +204,8 @@ def take_down(vuedict, slot):
       subprocess.run(["kill",mymatch[0]])
   else:
     print("unable to find pid running vue server on port " + str(portnum), file=sys.stderr)
-  print("rm -rf %s" % (vuedict[slot]['dir']), file=sys.stderr)
-  subprocess.run(["rm","-rf",vuedict[slot]['dir']])
+  # print("rm -rf %s" % (vuedict[slot]['dir']), file=sys.stderr)
+  # subprocess.run(["rm","-rf",vuedict[slot]['dir']])
 
 
 
