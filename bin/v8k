@@ -136,7 +136,13 @@ def do_up(args):
   server_slots = [ "%02d" % n for n in range(1,poolsize + 1) ]
   available_slots = list(set(server_slots) - set(vuedict.keys()) | set(dead_slots))
 
-  if len(existing) == 0 and len(vuedict) >= poolsize:
+  print("server_slots    = %s" % (server_slots),    file=sys.stderr);
+  print("vuedict.keys()  = %s" % (vuedict.keys()),  file=sys.stderr);
+  print("dead_slots      = %s" % (dead_slots),      file=sys.stderr);
+  print("available_slots = %s" % (available_slots), file=sys.stderr);
+  
+  if len(available_slots) == 0 or
+    (len(existing) == 0 and len(vuedict) >= poolsize):
     oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
     print("** pool size reached, will replace oldest server " + oldest['slot'], file=sys.stderr)
     take_down(vuedict, oldest['slot'])
