@@ -113,6 +113,8 @@ def do_up(args):
   if not isfile(args.filename):
     print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
 
+  dead_slots = []
+    
   needToRelaunch = True
   for e in existing:
     print("** found allegedly existing server(s) on our uuid/ssid/sheetid: " + e['slot'], file=sys.stderr)
@@ -128,10 +130,11 @@ def do_up(args):
       print(":%s/%s" % (str(e['port']), e['base_url']))
     else:
       print("but the server isn't running any longer.", file=sys.stderr)
+      dead_slots.append(str(e['ppport']))
   if not needToRelaunch: return
 
   server_slots = [ "%02d" % n for n in range(1,poolsize + 1) ]
-  available_slots = list(set(server_slots) - set(vuedict.keys()))
+  available_slots = list(set(server_slots) - set(vuedict.keys()) - set(dead_slots))
 
   if len(existing) == 0 and len(vuedict) >= poolsize:
     oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
@@ -139,8 +142,6 @@ def do_up(args):
     take_down(vuedict, oldest['slot'])
     available_slots = [ oldest['slot'] ]
 
-  # [TODO] we get list index out of range when all the slots are allocated but not running
-    
   chosen_slot = available_slots[0]
   portnum = 8000 + int(chosen_slot)
   print("** chose %s out of available slots %s" % (chosen_slot, available_slots), file=sys.stderr)
