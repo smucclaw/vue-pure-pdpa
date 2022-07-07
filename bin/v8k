@@ -127,7 +127,7 @@ def do_up(args):
       print("cp %s %s" % (args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")), file=sys.stderr)
       subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
       subprocess.run(["touch", "%s/%s" % (e['dir'], "v8k.json")])
-      print(":%s/%s" % (str(e['port']), e['base_url']))
+      print(":%s%s" % (str(e['port']), e['base_url']))
     else:
       print("but the server isn't running any longer.", file=sys.stderr)
       dead_slots.append(str(e['port']))
@@ -141,16 +141,19 @@ def do_up(args):
   print("dead_slots      = %s" % (dead_slots),      file=sys.stderr);
   print("available_slots = %s" % (available_slots), file=sys.stderr);
   
-  if len(available_slots) == 0 or
-    (len(existing) == 0 and len(vuedict) >= poolsize):
+  if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= poolsize):
     oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
     print("** pool size reached, will replace oldest server " + oldest['slot'], file=sys.stderr)
-    take_down(vuedict, oldest['slot'])
-    available_slots = [ oldest['slot'] ]
+    take_down(vuedict, oldest[0])
+    available_slots = [ oldest[0] ]
 
   chosen_slot = available_slots[0]
+
+  print("available_slots = %s" % (available_slots), file=sys.stderr);
+  print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr);
+    
   portnum = 8000 + int(chosen_slot)
-  print("** chose %s out of available slots %s" % (chosen_slot, available_slots), file=sys.stderr)
+  print("** chose %s out of available slots %s, port=%s" % (chosen_slot, available_slots, str(portnum)), file=sys.stderr)
   
   server_config = {
     "ssid": args.ssid,
