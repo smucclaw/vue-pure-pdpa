@@ -130,7 +130,7 @@ def do_up(args):
       print(":%s/%s" % (str(e['port']), e['base_url']))
     else:
       print("but the server isn't running any longer.", file=sys.stderr)
-      dead_slots.append(str(e['ppport']))
+      dead_slots.append(str(e['port']))
   if not needToRelaunch: return
 
   server_slots = [ "%02d" % n for n in range(1,poolsize + 1) ]
