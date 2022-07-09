@@ -50,11 +50,11 @@ workdir = os.environ["V8K_WORKDIR"]
 
 def getjson(pathin):
   with open(pathin, "r") as read_file:
-    data = json.load(read_file)
+    data = json.loads(read_file)
     data['jsonfile'] = pathin
     data['modtime'] = getmtime(pathin)
   return data
-    
+
 def read_all():
   vuedirs = [ getjson(join(workdir,f,"v8k.json"))
               for f in os.listdir(workdir)
@@ -76,7 +76,7 @@ def server_on(portnum):
   else:
     print ("  port %s is no longer listened, as far as we can detect" % (portnum), file=sys.stderr)
   return mymatches
-  
+
 def do_list(args):
   vuedict = read_all()
   for js in sorted(vuedict.values(), key=lambda js: int(js['slot'])):
@@ -99,7 +99,7 @@ def do_find(args):
 
 
 
-    
+
 def do_up(args):
   vuedict = read_all()
 
@@ -114,7 +114,7 @@ def do_up(args):
     print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
 
   dead_slots = []
-    
+
   needToRelaunch = True
   for e in existing:
     print("** found allegedly existing server(s) on our uuid/ssid/sheetid: " + e['slot'], file=sys.stderr)
@@ -140,7 +140,7 @@ def do_up(args):
   print("vuedict.keys()  = %s" % (vuedict.keys()),  file=sys.stderr);
   print("dead_slots      = %s" % (dead_slots),      file=sys.stderr);
   print("available_slots = %s" % (available_slots), file=sys.stderr);
-  
+
   if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= poolsize):
     oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
     print("oldest = %s" % (oldest), file=sys.stderr);
@@ -152,10 +152,10 @@ def do_up(args):
 
   print("available_slots = %s" % (available_slots), file=sys.stderr);
   print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr);
-    
+
   portnum = 8000 + int(chosen_slot)
   print("** chose %s out of available slots %s, port=%s" % (chosen_slot, available_slots, str(portnum)), file=sys.stderr)
-  
+
   server_config = {
     "ssid": args.ssid,
     "sheetid": args.sheetid,
@@ -165,7 +165,7 @@ def do_up(args):
     "dir": join(workdir,"vue-" + chosen_slot),
     "base_url": "/" + join(args.uuid, args.ssid, args.sheetid),
     "cli": "npm run serve -- --port=" + str(portnum) + " &"
-  }    
+  }
 
   childpid = os.fork()
   # if this leads to trouble we may need to double-fork with grandparent-wait
@@ -175,12 +175,12 @@ def do_up(args):
     return
   else:         # in the child
     print ("v8k: fork(child): continuing to run", file=sys.stderr);
-  
+
   rsyncCommand = "rsync -a %s/vue-small/ %s/" % (workdir, server_config['dir'])
   print(rsyncCommand, file=sys.stderr)
   subprocess.run([rsyncCommand], shell=True)
   subprocess.run(["cp", args.filename, join(server_config['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
-  
+
   with open(join(server_config['dir'], "v8k.json"), "w") as write_file:
     json.dump(server_config, write_file)
 
@@ -193,7 +193,7 @@ def do_up(args):
 
   print ("v8k: fork(child): exiting", file=sys.stderr);
   sys.exit(0);
-  
+
 def take_down(vuedict, slot):
   portnum = vuedict[slot]['port']
   if not portnum:
@@ -271,5 +271,5 @@ else:
 
 
 
-    
-  
+
+
