@@ -1,3 +1,5 @@
+const fs = require ('fs');
+
 // vue.config.js
 const getPublicPath = () => {
   const baseUrl = process.env.BASE_URL;
@@ -8,6 +10,13 @@ const getPublicPath = () => {
 
 module.exports = {
   publicPath: getPublicPath(),
+  devServer: {
+    disableHostCheck: true,
+    https: {
+      key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem')
+    }
+  },
   chainWebpack: (config) => {
     // Purescript Loader
     config.module
