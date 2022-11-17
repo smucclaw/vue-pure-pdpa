@@ -43,8 +43,6 @@ import argparse
 import json
 import subprocess
 
-poolsize = 10
-
 if not "V8K_WORKDIR" in os.environ: print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr); sys.exit(1);
 workdir = os.environ["V8K_WORKDIR"]
 
@@ -114,7 +112,11 @@ def do_up(args):
     print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
 
   dead_slots = []
-    
+  startport = args.startport;
+  poolsize  = args.poolsize;
+  print("** startport = " + str(startport))
+  print("** poolsize = " + str(poolsize))
+
   needToRelaunch = True
   for e in existing:
     print("** found allegedly existing server(s) on our uuid/ssid/sheetid: " + e['slot'], file=sys.stderr)
@@ -153,7 +155,7 @@ def do_up(args):
   print("available_slots = %s" % (available_slots), file=sys.stderr);
   print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr);
     
-  portnum = 8000 + int(chosen_slot)
+  portnum = int(startport) + int(chosen_slot)
   print("** chose %s out of available slots %s, port=%s" % (chosen_slot, available_slots, str(portnum)), file=sys.stderr)
   
   server_config = {
@@ -219,6 +221,8 @@ def do_down(args):
               and js['uuid']    == args.uuid
               }
 
+  startport = args.startport;
+
   for (s,js) in existing.items():
     print("* found allocated server(s) on our uuid/ssid/sheetid: " + js['slot'], file=sys.stderr)
     mymatches = server_on(str(js['port']))
@@ -253,11 +257,14 @@ parser_find.add_argument('--sheetid', action='store',      required=True, help="
 parser_up.add_argument('--uuid',     action='store',       required=True, help="secret string, usually a UUID")
 parser_up.add_argument('--ssid',     action='store',       required=True, help="spreadsheet ID")
 parser_up.add_argument('--sheetid',  action='store',       required=True, help="sheet ID")
+parser_up.add_argument('--poolsize', action='store',       required=False, help="number of servers in the pool, default 10", default=10)
+parser_up.add_argument('--startport',action='store',       required=True, help="bottom port number of pool, default 8000", default=8000)
 parser_up.add_argument('filename',   metavar='file.purs',       type=str, help="Purescript file")
 
 parser_down.add_argument('--uuid',    action='store',      required=True, help="secret string, usually a UUID")
 parser_down.add_argument('--ssid',    action='store',      required=True, help="spreadsheet ID")
 parser_down.add_argument('--sheetid', action='store',      required=True, help="sheet ID")
+parser_down.add_argument('--startport',action='store',       required=True, help="bottom port number of pool, default 8000", default=8000)
 
 parser_downdir.add_argument('slotname',  metavar='slot',   type=str, help="two-digit slot id of vue server")
 
