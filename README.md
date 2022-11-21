@@ -14,7 +14,7 @@ Before proceeding with the steps below, copy the `.env.example` to `.env`. Insid
 ```
 BASE_URL=/
 VUE_APP_BROWSER_NAME=CCLAW
-VUE_APP_NAME=PDPA DBNO PoC - Draft
+VUE_APP_NAME="PDPA DBNO PoC - Draft"
 ```
 
 ### Installing Packages
