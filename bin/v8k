@@ -114,8 +114,8 @@ def do_up(args):
   dead_slots = []
   startport = args.startport;
   poolsize  = args.poolsize;
-  print("** startport = " + str(startport))
-  print("** poolsize = " + str(poolsize))
+  print("** startport = " + str(startport), file=sys.stderr)
+  print("** poolsize = " + str(poolsize)  , file=sys.stderr)
 
   needToRelaunch = True
   for e in existing:
