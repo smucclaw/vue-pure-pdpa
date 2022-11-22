@@ -43,8 +43,7 @@ import argparse
 import json
 import subprocess
 
-if not "V8K_WORKDIR" in os.environ: print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr); sys.exit(1);
-workdir = os.environ["V8K_WORKDIR"]
+workdir = ""
 
 def getjson(pathin):
   with open(pathin, "r") as read_file:
@@ -135,7 +134,7 @@ def do_up(args):
       dead_slots.append(str(e['slot']))
   if not needToRelaunch: return
 
-  server_slots = [ "%02d" % n for n in range(1,poolsize + 1) ]
+  server_slots = [ "%02d" % n for n in range(0,poolsize) ]
   available_slots = list(set(server_slots) - set(vuedict.keys()) | set(dead_slots))
 
   print("server_slots    = %s" % (server_slots),    file=sys.stderr);
@@ -221,8 +220,6 @@ def do_down(args):
               and js['uuid']    == args.uuid
               }
 
-  startport = args.startport;
-
   for (s,js) in existing.items():
     print("* found allocated server(s) on our uuid/ssid/sheetid: " + js['slot'], file=sys.stderr)
     mymatches = server_on(str(js['port']))
@@ -236,6 +233,7 @@ def do_downdir(args):
     print("slot does not exist! If the directory does exist you may need to rm -rf it by hand.", file=sys.stderr);
 
 argparser = argparse.ArgumentParser(description='Manage a herd of Vue dev servers')
+argparser.add_argument('--workdir', action='store', required=not hasattr(os.environ,'V8K_WORKDIR'), help="workdir for v8k workers")
 subparsers = argparser.add_subparsers(help="sub-command help")
 
 parser_list    = subparsers.add_parser('list',    help='list servers')
@@ -257,14 +255,13 @@ parser_find.add_argument('--sheetid', action='store',      required=True, help="
 parser_up.add_argument('--uuid',     action='store',       required=True, help="secret string, usually a UUID")
 parser_up.add_argument('--ssid',     action='store',       required=True, help="spreadsheet ID")
 parser_up.add_argument('--sheetid',  action='store',       required=True, help="sheet ID")
-parser_up.add_argument('--poolsize', action='store',       required=False, help="number of servers in the pool, default 10", default=10)
-parser_up.add_argument('--startport',action='store',       required=True, help="bottom port number of pool, default 8000", default=8000)
+parser_up.add_argument('--poolsize', action='store',       required=False, help="number of servers in the pool, default 9", default=9)
+parser_up.add_argument('--startport',action='store',       required=True, help="bottom port number of pool, default 8011", default=8011)
 parser_up.add_argument('filename',   metavar='file.purs',       type=str, help="Purescript file")
 
 parser_down.add_argument('--uuid',    action='store',      required=True, help="secret string, usually a UUID")
 parser_down.add_argument('--ssid',    action='store',      required=True, help="spreadsheet ID")
 parser_down.add_argument('--sheetid', action='store',      required=True, help="sheet ID")
-parser_down.add_argument('--startport',action='store',       required=True, help="bottom port number of pool, default 8000", default=8000)
 
 parser_downdir.add_argument('slotname',  metavar='slot',   type=str, help="two-digit slot id of vue server")
 
@@ -274,6 +271,12 @@ if not hasattr(args,'func'):
   if "V8K_WORKDIR" in os.environ:
     print("V8K_WORKDIR = %s" % (os.environ["V8K_WORKDIR"]))
 else:
+  if hasattr(args,'workdir'):
+    workdir = args.workdir
+  elif "V8K_WORKDIR" in os.environ:
+    workdir = os.environ["V8K_WORKDIR"]
+  else:
+    print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr); sys.exit(1);
   args.func(args)
 
 
