@@ -22,8 +22,10 @@ VUE_APP_NAME="PDPA DBNO PoC - Draft"
 Run the following set of install scripts:
 
 ```shell
-$ npm install
-$ npx spago install
+$ nvm use
+$ nvm install
+$ nvm exec
+$ npm run deps
 ```
 
 ### Running in Development
