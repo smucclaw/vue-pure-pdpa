@@ -6,18 +6,18 @@
       :key="index"
       :class="getColor(opt.color, opt.value, selectedValue)"
       :checked="opt.value === selectedValue"
-      >
+    >
       <input
         type="radio"
         v-model="selectedValue"
         :id="opt.value"
         :value="opt.value"
-        />
+      />
       <FontAwesomeIcon
         class="icon is-small m-0"
         :icon="opt.icon"
-        />
-     <span class="is-hidden-mobile ml-1">{{ opt.name }}</span>
+      />
+      <span class="is-hidden-mobile ml-1">{{ opt.name }}</span>
     </label>
   </div>
 </template>

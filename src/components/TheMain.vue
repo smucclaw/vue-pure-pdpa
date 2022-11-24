@@ -2,7 +2,7 @@
   <BaseNavigation
     navClasses="is-dark is-fixed-top"
     fluidWidth
-    >
+  >
     <template v-slot:brand>
       <div class="navbar-item">{{ appName }}</div>
     </template>
@@ -13,17 +13,17 @@
         v-for="menu in navigationLinks"
         :key="menu.name"
         :to="menu.path"
-        >
+      >
         <FontAwesomeIcon
           class="icon is-small mr-2"
           :icon="menu.meta.icon"
-          />
+        />
         <span>{{ menu.name }}</span>
       </router-link>
     </template>
   </BaseNavigation>
   <main class="container is-fluid mt-8">
-    <slot></slot>
+    <slot />
   </main>
   <BaseNavigation
     navClasses="is-dark is-fixed-bottom is-hidden-desktop">
@@ -34,7 +34,7 @@
         v-for="menu in navigationLinks"
         :key="menu.name"
         :to="menu.path"
-        >
+      >
         <FontAwesomeIcon :icon="menu.meta.icon" />
         <p class="is-size-7">{{ menu.name }}</p>
       </router-link>

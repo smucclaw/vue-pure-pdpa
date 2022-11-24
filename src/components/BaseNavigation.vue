@@ -2,7 +2,7 @@
   <nav class="navbar" :class="navClasses">
     <div class="container" :class="showFluidWidth">
       <div class="navbar-brand">
-        <slot name="brand"></slot>
+        <slot name="brand" />
         <a
           class="navbar-burger"
           v-if="hasExtendedMenu"
@@ -11,16 +11,16 @@
           aria-expanded="false"
           @click="toggleNav"
           :class="showNav"
-          >
-          <span v-for="_ in 3" :key="_" aria-hidden="true"></span>
+        >
+          <span v-for="_ in 3" :key="_" aria-hidden="true" />
         </a>
       </div>
       <div class="navbar-menu" :class="showNav">
         <div class="navbar-start" v-if="$slots.start">
-          <slot name="start"></slot>
+          <slot name="start" />
         </div>
         <div class="navbar-end" v-if="$slots.end">
-          <slot name="end"></slot>
+          <slot name="end" />
         </div>
       </div>
     </div>

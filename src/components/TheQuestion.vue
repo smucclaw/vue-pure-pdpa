@@ -4,7 +4,7 @@
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
     </Notification>
-    <slot :questions="questions"></slot>
+    <slot :questions="questions" />
   </section>
 </template>
 

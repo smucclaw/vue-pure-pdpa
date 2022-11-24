@@ -3,7 +3,7 @@
     <QuestionDiagram
       class="block"
       :question="slotProps.questions"
-      />
+    />
   </TheQuestion>
 </template>
 
