@@ -11,11 +11,11 @@ const getPublicPath = () => {
 module.exports = {
   publicPath: getPublicPath(),
   devServer: {
-    https: {
-      key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
-      cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem'),
-      allowedHosts: 'all',
+    server: {
+   //   key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
+   //   cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem'),
     },
+  },
   lintOnSave: false,
   chainWebpack: (config) => {
     // Purescript Loader
@@ -33,5 +33,4 @@ module.exports = {
       .use('jison-gho-loader')
       .loader('jison-gho-loader');
   },
-
-};
+}

@@ -25,6 +25,7 @@ Run the following set of install scripts:
 $ nvm use
 $ nvm install
 $ nvm exec
+$ npm install -g node-gyp@latest
 $ npm run deps
 ```
 
