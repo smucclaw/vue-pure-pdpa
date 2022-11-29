@@ -10,13 +10,13 @@ const getPublicPath = () => {
 
 module.exports = {
   publicPath: getPublicPath(),
-  devServer: {
-    disableHostCheck: true,
-    https: {
-      key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
-      cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem')
-    }
-  },
+  // devServer: {
+  //   disableHostCheck: true,
+  //   https: {
+  //     key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
+  //     cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem')
+  //   }
+  // },
   chainWebpack: (config) => {
     // Purescript Loader
     config.module
