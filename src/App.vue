@@ -31,16 +31,11 @@ export default {
   // display: flex;
   flex-direction: column;
   // gap: 1rem;
-<<<<<<< HEAD
-  padding-top: 50px;
-  padding-bottom: 50px;
-=======
   padding-left: 10px;
   padding-top: 50px;
   padding-bottom: 50px;
   border: 5px solid black;
   margin: 20px 0px;
->>>>>>> 60e95d6... implemented a test version of the multiple heads feature
 }
 // .vertical-container > * {
 //   display: block;
