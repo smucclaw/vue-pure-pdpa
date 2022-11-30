@@ -8,6 +8,7 @@ export default createStore({
     marking: AnyAll.emptyMarking,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
+    toplevelDecisions: PDPA.toplevelDecisions,
   },
   getters: {
     getField,
