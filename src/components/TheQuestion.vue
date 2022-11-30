@@ -7,8 +7,9 @@
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
         <Notification class="is-next-from-top">
-          <div v-for="heading in Object.keys(this.$store.state.toplevelDecisions)"
-            :key="heading" class="vertical-container">{{ heading }}</div>
+          <div v-for="heading in Object.keys(getTopLevelDecisions)"
+            :key="heading" class="vertical-container"
+            @click="changeQuestionPrompt(heading)">{{ heading }}</div>
           <!-- <div class="vertical-container">Assessment</div>
           <div class="vertical-container">Notify Individuals Notify PDPC</div>
           <div class="vertical-container">The Third Thing</div> -->
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 import Notification from '@/components/BaseNotification.vue';
 
 export default {
@@ -39,8 +40,19 @@ export default {
   components: {
     Notification,
   },
+  data() {
+    return {
+      whichPrompt: 0,
+    };
+  },
   computed: {
-    ...mapGetters(['questions', 'questionPrompt']),
+    questions() {
+      return this.$store.getters.questions;
+    },
+    questionPrompt() {
+      return this.$store.getters.questionPrompt[this.whichPrompt];
+    },
+    // ...mapGetters(['questions', 'questionPrompt']),
     responseMsg() {
       return ({
         true: 'Yes!',
@@ -54,6 +66,18 @@ export default {
         false: 'is-danger',
         undefined: 'is-info',
       })[this.questions.mark.value];
+    },
+    getTopLevelDecisions() {
+      return this.$store.state.toplevelDecisions;
+    },
+  },
+  methods: {
+    changeQuestionPrompt(heading) {
+      if (heading === 'Notify Individuals / Notify PDPC') {
+        this.whichPrompt = 0;
+      } else if (heading === 'Assessment') {
+        this.whichPrompt = 1;
+      }
     },
   },
 };

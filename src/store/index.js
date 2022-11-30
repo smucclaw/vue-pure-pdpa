@@ -16,7 +16,8 @@ export default createStore({
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.rulesPDPA);
     },
     questionPrompt() {
-      return 'Must you notify?';
+      return ['Must you notify?',
+        'Must you assess?'];
     },
     getMarkingField(state) {
       return getField(state.marking);

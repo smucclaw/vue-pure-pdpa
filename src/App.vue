@@ -31,10 +31,12 @@ export default {
   // display: flex;
   flex-direction: column;
   // gap: 1rem;
-  padding-left: 10px;
   padding-top: 50px;
+  padding-right: 10px;
   padding-bottom: 50px;
-  border: 5px solid black;
+  padding-left: 10px;
+  cursor: pointer;
+  // border: 5px solid black;
   margin: 20px 0px;
 }
 // .vertical-container > * {
