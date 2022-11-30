@@ -4,8 +4,30 @@
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
     </Notification>
-    <slot :questions="questions"></slot>
+    <div class="columns">
+      <div class="column is-one-fifth has-text-left is-size-4">
+        <Notification class="is-next-from-top">
+          <div v-for="heading in Object.keys(this.$store.state.toplevelDecisions)"
+            :key="heading" class="vertical-container">{{ heading }}</div>
+          <!-- <div class="vertical-container">Assessment</div>
+          <div class="vertical-container">Notify Individuals Notify PDPC</div>
+          <div class="vertical-container">The Third Thing</div> -->
+        </Notification>
+        <!-- <div class="vertical-container">Assessment</div>
+        <div class="vertical-container">Notify Individuals Notify PDPC</div>
+        <div class="vertical-container">The Third Thing</div> -->
+      </div>
+      <div class="column has-text-left is-size-6">
+        <slot :questions="questions"></slot>
+      </div>
+    </div>
+    <!-- <slot :questions="questions"></slot> -->
   </section>
+  <!-- <div class="vertical-container">
+    <p>aaa</p>
+    <p>bbb</p>
+    <p>ccc</p>
+  </div> -->
 </template>
 
 <script>
@@ -40,6 +62,11 @@ export default {
 <style>
 .is-always-on-top {
   top: 4rem !important;
+  position: sticky;
+  z-index: 900;
+}
+.is-next-from-top {
+  top: 15rem !important;
   position: sticky;
   z-index: 900;
 }

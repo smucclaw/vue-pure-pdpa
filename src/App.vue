@@ -2,6 +2,11 @@
   <TheMain>
     <router-view />
   </TheMain>
+  <!-- <div class="vertical-container">
+    <p>aaa</p>
+    <p>bbb</p>
+    <p>ccc</p>
+  </div> -->
 </template>
 
 <script>
@@ -21,4 +26,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+.vertical-container {
+  display: block;
+  // display: flex;
+  flex-direction: column;
+  // gap: 1rem;
+  padding-left: 10px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  border: 5px solid black;
+  margin: 20px 0px;
+}
+// .vertical-container > * {
+//   display: block;
+// }
 </style>
