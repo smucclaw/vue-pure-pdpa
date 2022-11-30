@@ -6,7 +6,7 @@
     </Notification>
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
-        <Notification class="is-next-from-top">
+        <Notification class="is-next-from-top clearEdges">
           <div v-for="heading in Object.keys(getTopLevelDecisions)"
             :key="heading" class="vertical-container"
             @click="changeQuestionPrompt(heading)">{{ heading }}</div>
@@ -93,5 +93,10 @@ export default {
   top: 15rem !important;
   position: sticky;
   z-index: 900;
+  border: 5px solid white;
+}
+.clearEdges {
+  padding: 0px;
+  margin: 0px;
 }
 </style>

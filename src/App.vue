@@ -27,19 +27,19 @@ export default {
   text-align: center;
 }
 .vertical-container {
-  display: block;
+  // display: block;
   // display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   // gap: 1rem;
   padding-top: 50px;
-  padding-right: 10px;
+  padding-right: 20px;
   padding-bottom: 50px;
-  padding-left: 10px;
+  padding-left: 20px;
   cursor: pointer;
   // border: 5px solid black;
-  margin: 20px 0px;
+  // margin: 20px 0px;
 }
-// .vertical-container > * {
-//   display: block;
-// }
+.vertical-container:hover {
+  background-color: lightgray;
+}
 </style>
