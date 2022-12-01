@@ -36,6 +36,7 @@ export default {
   padding-bottom: 50px;
   padding-left: 20px;
   cursor: pointer;
+  border: 5px solid white;
   // border: 5px solid black;
   // margin: 20px 0px;
 }

@@ -93,7 +93,7 @@ export default {
   top: 15rem !important;
   position: sticky;
   z-index: 900;
-  border: 5px solid white;
+  /* border: 5px solid white; */
 }
 .clearEdges {
   padding: 0px;
