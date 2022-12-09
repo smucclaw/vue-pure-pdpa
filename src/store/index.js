@@ -8,12 +8,16 @@ export default createStore({
     marking: AnyAll.emptyMarking,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
-    toplevelDecisions: PDPA.toplevelDecisions,
+    topLD: PDPA.toplevelDecisions,
+    whichPrompt: 1,
   },
   getters: {
     getField,
     questions(state) {
-      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.rulesPDPA);
+      // for (const heading in state.topLD) alert(heading);
+      const topLDBody = Object.values(state.topLD)[state.whichPrompt];
+      // alert(topLDBody);
+      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);
     },
     questionPrompt() {
       return ['Must you notify?',

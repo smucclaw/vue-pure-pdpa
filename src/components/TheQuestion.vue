@@ -7,9 +7,9 @@
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
         <Notification class="is-next-from-top clearEdges">
-          <div v-for="heading in Object.keys(getTopLevelDecisions)"
+          <div v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
             :key="heading" class="vertical-container"
-            @click="changeQuestionPrompt(heading)">{{ heading }}</div>
+            @click="changeQuestionPrompt(index)">{{ heading }}</div>
           <!-- <div class="vertical-container">Assessment</div>
           <div class="vertical-container">Notify Individuals Notify PDPC</div>
           <div class="vertical-container">The Third Thing</div> -->
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       whichPrompt: 0,
+      whichHeading: '',
     };
   },
   computed: {
@@ -68,16 +69,21 @@ export default {
       })[this.questions.mark.value];
     },
     getTopLevelDecisions() {
-      return this.$store.state.toplevelDecisions;
+      return this.$store.state.topLD;
     },
   },
   methods: {
-    changeQuestionPrompt(heading) {
-      if (heading === 'Notify Individuals / Notify PDPC') {
-        this.whichPrompt = 0;
-      } else if (heading === 'Assessment') {
-        this.whichPrompt = 1;
-      }
+    changeQuestionPrompt(index) {
+      this.whichPrompt = index;
+      this.$store.getters.whichPrompt = index;
+      alert(index);
+      const allQuestions = this.$store.getters.questions;
+      console.log(allQuestions);
+      // if (heading === 'Notify Individuals / Notify PDPC') {
+      //   this.whichPrompt = 0;
+      // } else if (heading === 'Assessment') {
+      //   this.whichPrompt = 1;
+      // }
     },
   },
 };
