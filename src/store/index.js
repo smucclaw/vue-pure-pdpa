@@ -9,15 +9,20 @@ export default createStore({
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
     topLD: PDPA.toplevelDecisions,
+    topLDBody: '',
     whichPrompt: 1,
   },
   getters: {
     getField,
     questions(state) {
       // for (const heading in state.topLD) alert(heading);
-      const topLDBody = Object.values(state.topLD)[state.whichPrompt];
+      // const topLDBody = Object.values(state.topLD)[state.whichPrompt];
       // alert(topLDBody);
-      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);
+      if (!state.topLDBody) {
+        const topLDBody = Object.values(state.topLD)[state.whichPrompt];
+        return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);
+      }
+      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.topLDBody);
     },
     questionPrompt() {
       return ['Must you notify?',
@@ -31,6 +36,9 @@ export default createStore({
     updateField,
     updateMarkingField(state, payload) {
       state.marking[payload.question] = payload.answer;
+    },
+    updateTopLDBody(state, payload) {
+      state.topLDBody = Object.values(state.topLD)[payload];
     },
   },
   actions: {

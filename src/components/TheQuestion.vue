@@ -75,10 +75,9 @@ export default {
   methods: {
     changeQuestionPrompt(index) {
       this.whichPrompt = index;
-      this.$store.getters.whichPrompt = index;
-      alert(index);
-      const allQuestions = this.$store.getters.questions;
-      console.log(allQuestions);
+      this.$store.state.whichPrompt = index;
+      console.log(this.whichPrompt);
+      this.$store.commit('updateTopLDBody', this.whichPrompt);
       // if (heading === 'Notify Individuals / Notify PDPC') {
       //   this.whichPrompt = 0;
       // } else if (heading === 'Assessment') {
