@@ -99,45 +99,45 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221229/packages.dhall
-        sha256:a6af1091425f806ec0da34934bb6c0ab0ac1598620bbcbb60a7d463354e7d87c
+      https://github.com/purescript/package-sets/releases/download/psc-0.14.7-20220418/packages.dhall
+        sha256:2523a5659d0f3b198ffa2f800da147e0120578842e492a7148e4b44f357848b3
 
 in  upstream
   with foreign-generic =
-      { dependencies =
-          [ "effect",
-            "foreign",
-            "foreign-object",
-            "ordered-collections",
-            "exceptions",
-            "record",
-            "identity"
-          ]
-      , repo = "https://github.com/paf31/purescript-foreign-generic.git"
-      , version =
-          "v11.0.0"
-      }
+    { dependencies =
+      [ "effect"
+      , "foreign"
+      , "foreign-object"
+      , "ordered-collections"
+      , "exceptions"
+      , "record"
+      , "identity"
+      ]
+    , repo =
+        "https://github.com/working-group-purescript-es/purescript-foreign-generic.git"
+    , version = "v11.0.0"
+    }
   with option =
-      { dependencies =
-          [ "argonaut-codecs",
-            "argonaut-core",
-            "codec",
-            "codec-argonaut",
-            "either",
-            "foreign"      ,
-            "foreign-object",
-            "lists"        ,
-            "maybe"        ,
-            "profunctor"   ,
-            "prelude"      ,
-            "record"       ,
-            "simple-json",
-            "transformers",
-            "tuples"       ,
-            "type-equality",
-            "unsafe-coerce"
-          ]
-      , repo = "https://github.com/joneshf/purescript-option.git"
-      , version =
-          "8506cbf1fd5d5465a9dc990dfe6f2960ae51c1ab"
-      }
+    { dependencies =
+      [ "argonaut-codecs"
+      , "argonaut-core"
+      , "codec"
+      , "codec-argonaut"
+      , "either"
+      , "foreign"
+      , "foreign-object"
+      , "lists"
+      , "maybe"
+      , "profunctor"
+      , "prelude"
+      , "record"
+      , "simple-json"
+      , "transformers"
+      , "tuples"
+      , "type-equality"
+      , "typelevel-prelude"
+      , "unsafe-coerce"
+      ]
+    , repo = "https://github.com/joneshf/purescript-option.git"
+    , version = "8506cbf1fd5d5465a9dc990dfe6f2960ae51c1ab"
+    }
