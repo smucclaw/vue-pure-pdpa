@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^9.7.0",
     "jison-gho-loader": "^1.0.2",
-    "purescript": "^0.14.9",
+    "purescript": "^0.15.7",
     "purs-loader": "^3.7.2",
     "purty": "^7.0.0",
     "sass": "^1.56.1",

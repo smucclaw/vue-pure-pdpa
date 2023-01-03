@@ -99,6 +99,45 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.3-20210825/packages.dhall sha256:eee0765aa98e0da8fc414768870ad588e7cada060f9f7c23c37385c169f74d9f
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.4-20221229/packages.dhall
+        sha256:a6af1091425f806ec0da34934bb6c0ab0ac1598620bbcbb60a7d463354e7d87c
 
 in  upstream
+  with foreign-generic =
+      { dependencies =
+          [ "effect",
+            "foreign",
+            "foreign-object",
+            "ordered-collections",
+            "exceptions",
+            "record",
+            "identity"
+          ]
+      , repo = "https://github.com/paf31/purescript-foreign-generic.git"
+      , version =
+          "v11.0.0"
+      }
+  with option =
+      { dependencies =
+          [ "argonaut-codecs",
+            "argonaut-core",
+            "codec",
+            "codec-argonaut",
+            "either",
+            "foreign"      ,
+            "foreign-object",
+            "lists"        ,
+            "maybe"        ,
+            "profunctor"   ,
+            "prelude"      ,
+            "record"       ,
+            "simple-json",
+            "transformers",
+            "tuples"       ,
+            "type-equality",
+            "unsafe-coerce"
+          ]
+      , repo = "https://github.com/joneshf/purescript-option.git"
+      , version =
+          "8506cbf1fd5d5465a9dc990dfe6f2960ae51c1ab"
+      }
