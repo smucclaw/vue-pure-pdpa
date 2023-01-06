@@ -15,9 +15,6 @@ export default createStore({
   getters: {
     getField,
     questions(state) {
-      // for (const heading in state.topLD) alert(heading);
-      // const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-      // alert(topLDBody);
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
         return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);

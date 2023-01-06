@@ -10,29 +10,16 @@
           <div v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
             :key="heading" class="vertical-container"
             @click="changeQuestionPrompt(index)">{{ heading }}</div>
-          <!-- <div class="vertical-container">Assessment</div>
-          <div class="vertical-container">Notify Individuals Notify PDPC</div>
-          <div class="vertical-container">The Third Thing</div> -->
         </Notification>
-        <!-- <div class="vertical-container">Assessment</div>
-        <div class="vertical-container">Notify Individuals Notify PDPC</div>
-        <div class="vertical-container">The Third Thing</div> -->
       </div>
       <div class="column has-text-left is-size-6">
         <slot :questions="questions"></slot>
       </div>
     </div>
-    <!-- <slot :questions="questions"></slot> -->
   </section>
-  <!-- <div class="vertical-container">
-    <p>aaa</p>
-    <p>bbb</p>
-    <p>ccc</p>
-  </div> -->
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
 import Notification from '@/components/BaseNotification.vue';
 
 export default {
@@ -53,7 +40,6 @@ export default {
     questionPrompt() {
       return this.$store.getters.questionPrompt[this.whichPrompt];
     },
-    // ...mapGetters(['questions', 'questionPrompt']),
     responseMsg() {
       return ({
         true: 'Yes!',
@@ -78,11 +64,6 @@ export default {
       this.$store.state.whichPrompt = index;
       console.log(this.whichPrompt);
       this.$store.commit('updateTopLDBody', this.whichPrompt);
-      // if (heading === 'Notify Individuals / Notify PDPC') {
-      //   this.whichPrompt = 0;
-      // } else if (heading === 'Assessment') {
-      //   this.whichPrompt = 1;
-      // }
     },
   },
 };
@@ -98,7 +79,6 @@ export default {
   top: 15rem !important;
   position: sticky;
   z-index: 900;
-  /* border: 5px solid white; */
 }
 .clearEdges {
   padding: 0px;
