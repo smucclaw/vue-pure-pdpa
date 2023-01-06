@@ -2,8 +2,7 @@
   <div class="card">
     <svg class="tree" id="tree">
       <!-- preserveAspectRatio="xMinYMin meet"> -->
-      <clippath id="clip">
-      </clippath>
+      <clippath id="clip" />
     </svg>
   </div>
 </template>
