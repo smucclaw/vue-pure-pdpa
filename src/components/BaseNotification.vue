@@ -1,6 +1,6 @@
 <template>
   <div class="notification" :class="themeColor">
-    <button class="delete" :class="isCloseButtonVisible"></button>
+    <button class="delete" :class="isCloseButtonVisible" />
     <slot>Content</slot>
   </div>
 </template>

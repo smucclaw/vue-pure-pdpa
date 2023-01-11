@@ -17,13 +17,20 @@ VUE_APP_BROWSER_NAME=CCLAW
 VUE_APP_NAME="PDPA DBNO PoC - Draft"
 ```
 
+### Installing NVM
+
+NVM is a version manager for node. Follow the instructions on the [nvm github](https://github.com/nvm-sh/nvm).
+
 ### Installing Packages
 
 Run the following set of install scripts:
 
 ```shell
-$ npm install
-$ npx spago install
+$ nvm use
+$ nvm install
+$ nvm exec
+$ npm install -g node-gyp@latest
+$ npm run deps
 ```
 
 ### Running in Development

@@ -64,7 +64,7 @@ def read_all():
   return vuedict
 
 def server_on(portnum):
-  completed = subprocess.run(["ps wwaux | grep port=" + portnum + " | grep -v grep"], shell=True,
+  completed = subprocess.run(["ps wwaux | grep port=" + portnum + " | grep -v grep | grep -v startport="], shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   mymatches = re.findall(r'^\S+\s+(\d+).*port=(\d+)', completed.stdout.decode('utf-8'), re.MULTILINE)
   if mymatches:
