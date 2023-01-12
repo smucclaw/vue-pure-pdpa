@@ -156,8 +156,8 @@ schedule1_part1_nl =
     [ ]
 
 
-toplevelDecisions :: Object.Object (Item String)
-toplevelDecisions = Object.fromFoldable [ Tuple "Notify Individuals / Notify PDPC"
+toplevelDecisions :: Map.Map (Item String)
+toplevelDecisions = Map.fromFoldable [ Tuple "Notify Individuals / Notify PDPC"
     ( All
         ( Pre "all of:" )
         [ All
