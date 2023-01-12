@@ -4,12 +4,22 @@
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
     </Notification>
-    <slot :questions="questions" />
+    <div class="columns">
+      <div class="column is-one-fifth has-text-left is-size-4">
+        <Notification class="is-next-from-top clearEdges">
+          <div v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
+            :key="heading" class="vertical-container"
+            @click="changeQuestionPrompt(index)">{{ heading }}</div>
+        </Notification>
+      </div>
+      <div class="column has-text-left is-size-6">
+        <slot :questions="questions"></slot>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Notification from '@/components/BaseNotification.vue';
 
 export default {
@@ -17,8 +27,19 @@ export default {
   components: {
     Notification,
   },
+  data() {
+    return {
+      whichPrompt: 0,
+      whichHeading: '',
+    };
+  },
   computed: {
-    ...mapGetters(['questions', 'questionPrompt']),
+    questions() {
+      return this.$store.getters.questions;
+    },
+    questionPrompt() {
+      return this.$store.getters.questionPrompt[this.whichPrompt];
+    },
     responseMsg() {
       return ({
         true: 'Yes!',
@@ -33,6 +54,17 @@ export default {
         undefined: 'is-info',
       })[this.questions.mark.value];
     },
+    getTopLevelDecisions() {
+      return this.$store.state.topLD;
+    },
+  },
+  methods: {
+    changeQuestionPrompt(index) {
+      this.whichPrompt = index;
+      this.$store.state.whichPrompt = index;
+      console.log(this.whichPrompt);
+      this.$store.commit('updateTopLDBody', this.whichPrompt);
+    },
   },
 };
 </script>
@@ -42,5 +74,14 @@ export default {
   top: 4rem !important;
   position: sticky;
   z-index: 900;
+}
+.is-next-from-top {
+  top: 15rem !important;
+  position: sticky;
+  z-index: 900;
+}
+.clearEdges {
+  padding: 0px;
+  margin: 0px;
 }
 </style>
