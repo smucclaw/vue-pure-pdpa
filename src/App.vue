@@ -21,6 +21,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+// Max: added vertical-container
 .vertical-container {
   padding-top: 50px;
   padding-right: 20px;
