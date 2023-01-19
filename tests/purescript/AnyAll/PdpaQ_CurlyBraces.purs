@@ -1,4 +1,13 @@
-( Q 
+module AnyAll.PdpaQ where
+
+import AnyAll.Types
+import Data.Map as Map
+import Data.Maybe (Maybe(..))
+import Data.Tuple (Tuple(..))
+import Data.Either (Either(..))
+
+pdpaQ2 :: Q
+pdpaQ2 = ( Q 
     { andOr: And, children: [(Q 
         { andOr: Or, children: [(Q 
             { andOr: Or, children: [(Q 
