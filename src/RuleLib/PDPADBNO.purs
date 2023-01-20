@@ -155,7 +155,7 @@ schedule1_part1_nl =
   Map.fromFoldable
     [ ]
 
-
+-- Max: changed Map to Object.  
 toplevelDecisions :: Object.Object (Item String)
 toplevelDecisions = Object.fromFoldable [ Tuple "Notify Individuals / Notify PDPC"
     ( All
