@@ -3,6 +3,7 @@
     <Notification class="is-always-on-top" :theme-color='responseTheme'>
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
+      {{statements}}
     </Notification>
     <slot :questions="questions" />
   </section>
@@ -18,7 +19,7 @@ export default {
     Notification,
   },
   computed: {
-    ...mapGetters(['questions', 'questionPrompt']),
+    ...mapGetters(['questions', 'questionPrompt', 'statements']),
     responseMsg() {
       return ({
         true: 'Yes!',

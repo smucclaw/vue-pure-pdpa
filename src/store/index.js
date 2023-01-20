@@ -8,11 +8,16 @@ export default createStore({
     marking: AnyAll.emptyMarking,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
+    tldPDPA: PDPA.toplevelDecisions,
   },
   getters: {
     getField,
     questions(state) {
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.rulesPDPA);
+    },
+    statements(state) {
+      const vals = AnyAll.statement(state.tldPDPA);
+      return (vals);
     },
     questionPrompt() {
       return 'Must you notify?';
