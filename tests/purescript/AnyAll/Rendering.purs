@@ -20,7 +20,7 @@ import Control.Monad.Except (runExcept)
 
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
-import AnyAll.PdpaQCurlyBraces (pdpaQ2)
+import AnyAll.PdpaQ (pdpaQ2)
 
 example1 :: Item String
 example1 =
