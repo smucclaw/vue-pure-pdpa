@@ -16,8 +16,12 @@ export default createStore({
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.rulesPDPA);
     },
     statements(state) {
-      const vals = AnyAll.statement(state.tldPDPA);
-      return (vals);
+      const statements = AnyAll.statements(state.tldPDPA);
+      const heads = AnyAll.heads(state.tldPDPA);
+      console.log(statements);
+      console.log(state.rulesPDPA);
+      console.log(heads);
+      return (statements);
     },
     questionPrompt() {
       return 'Must you notify?';

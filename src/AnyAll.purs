@@ -1,31 +1,33 @@
 module AnyAll
-  ( fromNode1
+  ( anyallform1
+  , decodeItemString
+  , decodeMarking
+  , emptyMarking
+  , example1
+  , example1_encoded
+  , example1_nl
+  , exampleAny
+  , fromNode1
   , fromNode2
   , fromNode3
-  , emptyMarking
-  , example1_nl
-  , example1
-  , exampleAny
-  , example1_encoded
-  , marking1
-  , marking1_encoded
-  , marking1_decoded
-  , marking1_recoded
-  , anyallform1
-  , decodeMarking
-  , pdpa_dbno_s1p1
-  , pdpa_dbno_s1p1_nl
-  , pdpaQ
-  , paint
-  , paintQ
-  , hard
-  , soft
-  , howDoWeEven
   , getItemByName
   , getNLByName
-  , decodeItemString
-  , statement
-  ) where
+  , hard
+  , howDoWeEven
+  , marking1
+  , marking1_decoded
+  , marking1_encoded
+  , marking1_recoded
+  , paint
+  , paintQ
+  , pdpaQ
+  , pdpa_dbno_s1p1
+  , pdpa_dbno_s1p1_nl
+  , soft
+  , statements
+  , heads
+  )
+  where
 
 import Prelude
 import Effect (Effect)
@@ -41,6 +43,7 @@ import Data.Either (Either(..), fromRight, either)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
 import Data.List (concatMap, head)
+import Data.Foldable (foldMap)
 import Foreign.Generic
 import Control.Monad.Except
 import Foreign
@@ -166,11 +169,11 @@ howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
 
-statement x = (vals x)
+-- instance showMap :: Show (Map key val) where
+--   show = Map.showTree
 
-vals x =
-  case head (Map.values x) of
-    Nothing -> unsafeCrashWith $ "error"
-    (Just val) -> val
+statements x = head $ Map.values x
 
-keys x = Map.keys x
+heads x = values $ Map.keys x
+
+values = foldMap (\v -> [v])
