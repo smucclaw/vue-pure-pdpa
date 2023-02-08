@@ -55,6 +55,8 @@ A `dist/` directory should be produced. Deploy the contents in the `dist/` direc
 
 An example can be found at <https://smucclaw.github.io/vue-pure-pdpa/> or <https://smucclaw.github.io/mengwong/pdpa/>.
 
+Basically, mv the relevant files from `dist/` into the `smucclaw/smucclaw.github.io` repository.
+
 ### Using Docker
 
 Alternatively, you may run this application on a Docker container by running:
