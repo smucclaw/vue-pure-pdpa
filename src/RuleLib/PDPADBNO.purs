@@ -62,8 +62,8 @@ schedule1_part1_nl =
     [ ]
     
 
-toplevelDecisions :: Map.Map (String) (Item String)
-toplevelDecisions = Map.fromFoldable [ Tuple "Not Covered If …"
+toplevelDecisions :: Object.Object (Item String)
+toplevelDecisions = Object.fromFoldable [ Tuple "Not Covered If …"
     ( All
         ( Pre "all of:" )
         [ Any
