@@ -24,8 +24,6 @@ module AnyAll
   , getItemByName
   , getNLByName
   , decodeItemString
-  , statements
-  , heads
   ) where
 
 import Prelude
@@ -167,9 +165,3 @@ howDoWeEven :: String -> Int -> String
 howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
-
-statements x = head $ Map.values x
-
-heads x = values $ Map.keys x
-
-values = foldMap (\v -> [v])

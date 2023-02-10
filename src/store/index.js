@@ -18,13 +18,15 @@ export default createStore({
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
+        console.log(topLDBody);
         return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);
       }
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.topLDBody);
     },
     questionPrompt(state) {
-      const heads = AnyAll.heads(state.tldPDPA);
+      const heads = Object.keys(state.tldPDPA);
       console.log(heads);
+      // return heads;
       return heads;
     },
     getMarkingField(state) {
