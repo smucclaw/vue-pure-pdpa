@@ -24,6 +24,8 @@ module AnyAll
   , getItemByName
   , getNLByName
   , decodeItemString
+  , statements
+  , heads
   ) where
 
 import Prelude
@@ -39,7 +41,8 @@ import Data.Map as Map
 import Data.Either (Either(..), fromRight, either)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
-import Data.List (concatMap)
+import Data.List (concatMap, head)
+import Data.Foldable (foldMap)
 import Foreign.Generic
 import Control.Monad.Except
 import Foreign
@@ -165,3 +168,8 @@ howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
 
+statements x = head $ Map.values x
+
+heads x = values $ Map.keys x
+
+values = foldMap (\v -> [v])
