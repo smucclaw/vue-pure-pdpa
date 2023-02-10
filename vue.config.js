@@ -12,9 +12,10 @@ module.exports = {
   publicPath: getPublicPath(),
   devServer: {
     server: {
-   //   key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
-   //   cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem'),
+      key:  fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem'),
     },
+    disableHostCheck: true,
   },
   lintOnSave: false,
   chainWebpack: (config) => {
