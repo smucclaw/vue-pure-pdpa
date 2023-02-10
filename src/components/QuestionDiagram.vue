@@ -147,7 +147,7 @@ export default {
         .attr('fill', (d) => chooseColors(d.source, ['All', 'Any'], ['red', 'blue']))
         .style('text-anchor', 'middle')
         .attr('href', (d, i) => (`#path${i + 1}`))
-        .text((d) => d.source.data.andOr.nl.en);
+        .text((d) => d.source.data.andOr.tag);
 
       // adds each node as a group
       const node = g.append('g')
@@ -165,12 +165,20 @@ export default {
         .attr('fill-opacity', 0.5)
         .attr('r', 10);
 
+      // check text
+      function text(t) {
+        if (['All', 'Any'].includes(t.data.andOr.tag)) {
+          return t.data.andOr.tag;
+        }
+        return t.data.andOr.contents;
+      }
+
       // adds the text to the node
       node.append('text')
-        .attr('dy', '.35em')
+        .attr('dy', '0.35em')
         .attr('y', (d) => (d.children ? -20 : 20))
         .style('text-anchor', 'middle')
-        .text((d) => d.data.andOr.nl.en);
+        .text((d) => (text(d)));
     },
   },
   computed: {
