@@ -37,6 +37,7 @@ export default {
   },
   computed: {
     questions() {
+      console.log(this.$store.getters.questions);
       return this.$store.getters.questions;
     },
     questionPrompt() {

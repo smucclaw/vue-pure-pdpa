@@ -39,7 +39,8 @@ import Data.Map as Map
 import Data.Either (Either(..), fromRight, either)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
-import Data.List (concatMap)
+import Data.List (concatMap, head)
+import Data.Foldable (foldMap)
 import Foreign.Generic
 import Control.Monad.Except
 import Foreign
@@ -164,4 +165,3 @@ howDoWeEven :: String -> Int -> String
 howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
-
