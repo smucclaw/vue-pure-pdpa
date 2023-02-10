@@ -1,8 +1,6 @@
 <template>
   <TheQuestion v-slot="slotProps">
-    <div class="block has-text-left is-size-6">
-      <QuestionBase :question="slotProps.questions" />
-    </div>
+    <QuestionBase :question="slotProps.questions" />
   </TheQuestion>
 </template>
 

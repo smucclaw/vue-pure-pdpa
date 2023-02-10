@@ -21,4 +21,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+// Max: added vertical-container
+.vertical-container {
+  padding-top: 50px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  padding-left: 20px;
+  cursor: pointer;
+  border: 5px solid white;
+}
+.vertical-container:hover {
+  background-color: lightgray;
+}
 </style>

@@ -11,6 +11,7 @@ import Data.Either
 import Data.Maybe
 import Data.Tuple
 import Data.Map as Map
+import Foreign.Object as Object
 
 import AnyAll.Types
 
@@ -59,7 +60,6 @@ schedule1_part1_nl :: NLDict
 schedule1_part1_nl =
   Map.fromFoldable
     [ ]
-    
 
 toplevelDecisions :: Map.Map (String) (Item String)
 toplevelDecisions = Map.fromFoldable [ Tuple "Not Covered If …"

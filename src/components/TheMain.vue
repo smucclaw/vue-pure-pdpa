@@ -62,7 +62,7 @@ export default {
       const name = process.env.VUE_APP_NAME;
       const isEmpty = !name || name === '';
 
-      return isEmpty ? 'Orwell' : name;
+      return isEmpty ? 'Dolora the Law Explorer' : name;
     },
   },
   beforeMount() {
