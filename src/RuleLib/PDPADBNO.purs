@@ -18,42 +18,46 @@ import AnyAll.Types
 schedule1_part1 :: Item String
 schedule1_part1 =
 
-  All
-    ( Pre "all of:" )
-    [ Any
-        ( Pre "Loss or Damage caused by" )
-        [ Leaf "rodents"
-        , Leaf "insects"
-        , Leaf "vermin"
-        , Leaf "birds"
-        ]
-    , Not
-        ( Any
-            ( Pre "any of:" )
-            [ All
-                ( Pre "all of:" )
-                [ Leaf "Loss or Damage IS to Contents"
-                , Leaf "Loss or Damage IS caused by birds"
-                ]
-            , All
-                ( Pre "all of:" )
-                [ Leaf "Loss or Damage IS ensuing covered loss"
-                , Not
-                    ( Any
-                        ( Pre "any of:" )
-                        [ Leaf "any other exclusion applies"
-                        , Any
-                            ( Pre "an animal caused water to escape from" )
-                            [ Leaf "a household appliance"
-                            , Leaf "a swimming pool"
-                            , Leaf "a plumbing, heating, or air conditioning system"
-                            ]
-                        ]
-                    )
-                ]
+   Any
+    ( Pre "any of:" )
+    [ All
+        ( Pre "all of:" )
+        [ Any
+            ( Pre "Is the Loss or Damage caused by" )
+            [ Leaf "rodents ?"
+            , Leaf "insects ?"
+            , Leaf "vermin ?"
+            , Leaf "birds ?"
             ]
-        )
+        , Not
+            ( Any
+                ( Pre "any of:" )
+                [ All
+                    ( Pre "all of:" )
+                    [ Leaf "is Loss or Damage to contents ?"
+                    , Leaf "is Loss or Damage caused by birds ?"
+                    ]
+                , All
+                    ( Pre "all of:" )
+                    [ Leaf "is Loss or Damage ensuing covered loss ?"
+                    , Not
+                        ( Any
+                            ( Pre "any of:" )
+                            [ Leaf "does any other exclusion apply ?"
+                            , Any
+                                ( Pre "did an animal cause water to escape from" )
+                                [ Leaf "a household appliance ?"
+                                , Leaf "a swimming pool ?"
+                                , Leaf "a plumbing, heating, or air conditioning system ?"
+                                ]
+                            ]
+                        )
+                    ]
+                ]
+            )
+        ]
     ]
+
 
 
 schedule1_part1_nl :: NLDict
@@ -66,79 +70,84 @@ toplevelDecisions :: Object.Object (Item String)
 toplevelDecisions = Object.fromFoldable [ Tuple "Not Covered If …"
     ( All
         ( Pre "all of:" )
-        [ Any
-            ( Pre "Loss or Damage caused by" )
-            [ Leaf "rodents"
-            , Leaf "insects"
-            , Leaf "vermin"
-            , Leaf "birds"
-            ]
-        , All
-            ( Pre "all of:" )
-            [ Any
-                ( Pre "any of:" )
-                [ Not
-                    ( Leaf "Loss or Damage IS to Contents" )
-                , Not
-                    ( Leaf "Loss or Damage IS caused by birds" )
-                ]
-            , Any
-                ( Pre "any of:" )
-                [ Not
-                    ( Leaf "Loss or Damage IS ensuing covered loss" )
-                , Any
-                    ( Pre "any of:" )
-                    [ Leaf "any other exclusion applies"
-                    , Any
-                        ( Pre "an animal caused water to escape from" )
-                        [ Leaf "a household appliance"
-                        , Leaf "a swimming pool"
-                        , Leaf "a plumbing, heating, or air conditioning system"
-                        ]
+        [ Not
+            ( All
+                ( Pre "all of:" )
+                [ Any
+                    ( Pre "Is the Loss or Damage caused by" )
+                    [ Leaf "rodents ?"
+                    , Leaf "insects ?"
+                    , Leaf "vermin ?"
+                    , Leaf "birds ?"
                     ]
+                , Not
+                    ( Any
+                        ( Pre "any of:" )
+                        [ All
+                            ( Pre "all of:" )
+                            [ Leaf "is Loss or Damage to contents ?"
+                            , Leaf "is Loss or Damage caused by birds ?"
+                            ]
+                        , All
+                            ( Pre "all of:" )
+                            [ Leaf "is Loss or Damage ensuing covered loss ?"
+                            , Not
+                                ( Any
+                                    ( Pre "any of:" )
+                                    [ Leaf "does any other exclusion apply ?"
+                                    , Any
+                                        ( Pre "did an animal cause water to escape from" )
+                                        [ Leaf "a household appliance ?"
+                                        , Leaf "a swimming pool ?"
+                                        , Leaf "a plumbing, heating, or air conditioning system ?"
+                                        ]
+                                    ]
+                                )
+                            ]
+                        ]
+                    )
                 ]
-            ]
+            )
         ]
     )
 , Tuple "Covered If …"
     ( Any
         ( Pre "any of:" )
         [ All
-            ( Pre "Loss or Damage caused by" )
-            [ Not
-                ( Leaf "rodents" )
-            , Not
-                ( Leaf "insects" )
-            , Not
-                ( Leaf "vermin" )
-            , Not
-                ( Leaf "birds" )
-            ]
-        , Any
-            ( Pre "any of:" )
-            [ All
-                ( Pre "all of:" )
-                [ Leaf "Loss or Damage IS to Contents"
-                , Leaf "Loss or Damage IS caused by birds"
+            ( Pre "all of:" )
+            [ Any
+                ( Pre "Is the Loss or Damage caused by" )
+                [ Leaf "rodents ?"
+                , Leaf "insects ?"
+                , Leaf "vermin ?"
+                , Leaf "birds ?"
                 ]
-            , All
-                ( Pre "all of:" )
-                [ Leaf "Loss or Damage IS ensuing covered loss"
-                , All
-                    ( Pre "all of:" )
-                    [ Not
-                        ( Leaf "any other exclusion applies" )
+            , Not
+                ( Any
+                    ( Pre "any of:" )
+                    [ All
+                        ( Pre "all of:" )
+                        [ Leaf "is Loss or Damage to contents ?"
+                        , Leaf "is Loss or Damage caused by birds ?"
+                        ]
                     , All
-                        ( Pre "an animal caused water to escape from" )
-                        [ Not
-                            ( Leaf "a household appliance" )
+                        ( Pre "all of:" )
+                        [ Leaf "is Loss or Damage ensuing covered loss ?"
                         , Not
-                            ( Leaf "a swimming pool" )
-                        , Not
-                            ( Leaf "a plumbing, heating, or air conditioning system" )
+                            ( Any
+                                ( Pre "any of:" )
+                                [ Leaf "does any other exclusion apply ?"
+                                , Any
+                                    ( Pre "did an animal cause water to escape from" )
+                                    [ Leaf "a household appliance ?"
+                                    , Leaf "a swimming pool ?"
+                                    , Leaf "a plumbing, heating, or air conditioning system ?"
+                                    ]
+                                ]
+                            )
                         ]
                     ]
-                ]
+                )
             ]
         ]
     )

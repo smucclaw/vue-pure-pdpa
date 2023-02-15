@@ -14,8 +14,8 @@ module.exports = {
     server: {
       type: 'https',
       options: {
-	  key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
-	  cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
+      key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
+      cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
       },
     },
     allowedHosts: "all",

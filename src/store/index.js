@@ -8,7 +8,6 @@ export default createStore({
     marking: AnyAll.emptyMarking,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
-    tldPDPA: PDPA.toplevelDecisions,
     topLD: PDPA.toplevelDecisions,
     topLDBody: '',
     whichPrompt: 1,
@@ -18,14 +17,12 @@ export default createStore({
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        console.log(topLDBody);
         return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(topLDBody);
       }
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.topLDBody);
     },
     questionPrompt(state) {
-      const heads = Object.keys(state.tldPDPA);
-      console.log(heads);
+      const heads = Object.keys(state.topLD);
       // return heads;
       return heads;
     },
