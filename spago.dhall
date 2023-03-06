@@ -27,7 +27,7 @@ to generate this file without the comments in this block.
   , "ordered-collections"
   , "partial"
   , "prelude"
-  , "psci-support"
+  , "record"
   , "simple-json"
   , "spec"
   , "strings"

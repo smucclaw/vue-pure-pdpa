@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Notification class="is-always-on-top" :theme-color='responseTheme'>
+    <Notification class="is-always-on-top" :theme-color="responseTheme">
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
     </Notification>
@@ -8,9 +8,14 @@
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
         <Notification class="is-next-from-top clearEdges">
-          <div v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
-            :key="heading" class="vertical-container"
-            @click="changeQuestionPrompt(index)">{{ heading }}</div>
+          <div
+            v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
+            :key="heading"
+            class="vertical-container"
+            @click="changeQuestionPrompt(index)"
+          >
+            {{ heading }}
+          </div>
         </Notification>
       </div>
       <div class="column has-text-left is-size-6">
@@ -21,41 +26,45 @@
 </template>
 
 <script>
-import Notification from '@/components/BaseNotification.vue';
+import Notification from "@/components/BaseNotification.vue";
 
 // Max: added whichPrompt, whichHeading
 export default {
-  name: 'TheQuestion',
+  name: "TheQuestion",
   components: {
     Notification,
   },
   data() {
     return {
       whichPrompt: 0,
-      whichHeading: '',
+      whichHeading: "",
     };
   },
   computed: {
     questions() {
-      console.log(this.$store.getters.questions);
+      console.log("questions", this.$store.getters.questions);
       return this.$store.getters.questions;
+    },
+    statements() {
+      console.log("statements", this.$store.getters.statements);
+      return this.$store.getters.statements;
     },
     questionPrompt() {
       return this.$store.getters.questionPrompt[this.whichPrompt];
     },
     responseMsg() {
-      return ({
-        true: 'Yes!',
-        false: 'No!',
-        undefined: 'It depends...',
-      })[this.questions.mark.value];
+      return {
+        true: "Yes!",
+        false: "No!",
+        undefined: "It depends...",
+      }[this.questions.mark.value];
     },
     responseTheme() {
-      return ({
-        true: 'is-success',
-        false: 'is-danger',
-        undefined: 'is-info',
-      })[this.questions.mark.value];
+      return {
+        true: "is-success",
+        false: "is-danger",
+        undefined: "is-info",
+      }[this.questions.mark.value];
     },
     getTopLevelDecisions() {
       return this.$store.state.topLD;
@@ -65,8 +74,7 @@ export default {
     changeQuestionPrompt(index) {
       this.whichPrompt = index;
       this.$store.state.whichPrompt = index;
-      console.log(this.whichPrompt);
-      this.$store.commit('updateTopLDBody', this.whichPrompt);
+      this.$store.commit("updateTopLDBody", this.whichPrompt);
     },
   },
 };
