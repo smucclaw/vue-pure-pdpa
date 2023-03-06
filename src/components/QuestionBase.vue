@@ -2,7 +2,9 @@
   <div class="question-block" v-if="!question.andOr.contents">
     <div class="question-content" v-if="question.prePost.pre" :class="theme">
       <div class="is-single-question" :style="indentParent">
-        <strong><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong>
+        <strong
+          ><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong
+        >
       </div>
     </div>
     <template v-if="question.andOr.children">
@@ -33,10 +35,10 @@
 </template>
 
 <script>
-import QuestionRadio from '@/components/QuestionRadio.vue';
+import QuestionRadio from "@/components/QuestionRadio.vue";
 
 export default {
-  name: 'QuestionBase',
+  name: "QuestionBase",
   props: {
     question: Object,
     parentTag: String,
@@ -51,17 +53,17 @@ export default {
   },
   computed: {
     isHidden() {
-      const isHideMode = this.question.shouldView === 'Hide';
-      const isViewMode = this.question.shouldView === 'View';
-      const isParentViewHide = this.parentView === 'Hide';
-      const isTagLeaf = this.question.andOr.tag === 'Leaf';
+      const isHideMode = this.question.shouldView === "Hide";
+      const isViewMode = this.question.shouldView === "View";
+      const isParentViewHide = this.parentView === "Hide";
+      const isTagLeaf = this.question.andOr.tag === "Leaf";
 
       return isHideMode || (isTagLeaf && isViewMode && isParentViewHide);
     },
     theme() {
       return this.isHidden
-        ? 'has-background-grey-lighter has-text-grey-light'
-        : 'has-background-light';
+        ? "has-background-grey-lighter has-text-grey-light"
+        : "has-background-light";
     },
     newDepth() {
       return this.depth + 1;
@@ -71,14 +73,13 @@ export default {
     },
     leaf: {
       get() {
-        return this.question.mark.source === 'user'
-          ? this.question.mark.value : 'none';
+        return this.question.mark.source === "user" ? this.question.mark.value : "none";
       },
       set(value) {
-        this.$store.commit('updateMarkingField', {
+        this.$store.commit("updateMarkingField", {
           question: this.question.andOr.contents,
           answer: {
-            source: 'user',
+            source: "user",
             value,
           },
         });
@@ -96,25 +97,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.question-block{
-  .question-content{
+.question-block {
+  .question-content {
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
     padding: 0.5rem 0;
     border-radius: 4px;
-    &:last-child{
+    &:last-child {
       margin-bottom: 0;
     }
-    .is-single-question{
+    .is-single-question {
       margin-right: 0.5rem;
       margin-top: 0;
       margin-bottom: 0;
       gap: 0.5rem;
     }
-    .is-asking{
+    .is-asking {
       flex-grow: 1;
     }
-    .is-answering{
+    .is-answering {
       flex-shrink: 0;
       text-align: right;
     }

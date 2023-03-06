@@ -47,10 +47,10 @@ export default {
   },
   computed: {
     showNav() {
-      return this.isActive ? 'is-active' : '';
+      return this.isActive ? "is-active" : "";
     },
     showFluidWidth() {
-      return this.fluidWidth ? 'is-fluid' : '';
+      return this.fluidWidth ? "is-fluid" : "";
     },
   },
   methods: {

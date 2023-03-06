@@ -1,30 +1,31 @@
 module AnyAll
-  ( fromNode1
+  ( anyallform1
+  , decodeItemString
+  , decodeMarking
+  , emptyMarking
+  , example1
+  , example1_encoded
+  , example1_nl
+  , exampleAny
+  , fromNode1
   , fromNode2
   , fromNode3
-  , emptyMarking
-  , example1_nl
-  , example1
-  , exampleAny
-  , example1_encoded
-  , marking1
-  , marking1_encoded
-  , marking1_decoded
-  , marking1_recoded
-  , anyallform1
-  , decodeMarking
-  , pdpa_dbno_s1p1
-  , pdpa_dbno_s1p1_nl
-  , pdpaQ
-  , paint
-  , paintQ
-  , hard
-  , soft
-  , howDoWeEven
   , getItemByName
   , getNLByName
-  , decodeItemString
-  ) where
+  , hard
+  , howDoWeEven
+  , marking1
+  , marking1_decoded
+  , marking1_encoded
+  , marking1_recoded
+  , paint
+  , paintQ
+  , pdpaQ
+  , pdpa_dbno_s1p1
+  , pdpa_dbno_s1p1_nl
+  , soft
+  )
+  where
 
 import Prelude
 import Effect (Effect)
@@ -44,6 +45,7 @@ import Data.Foldable (foldMap)
 import Foreign.Generic
 import Control.Monad.Except
 import Foreign
+import Record (merge)
 
 main = log "AnyAll main"
 

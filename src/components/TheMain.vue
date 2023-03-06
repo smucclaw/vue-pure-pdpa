@@ -1,8 +1,5 @@
 <template>
-  <BaseNavigation
-    navClasses="is-dark is-fixed-top"
-    fluidWidth
-  >
+  <BaseNavigation navClasses="is-dark is-fixed-top" fluidWidth>
     <template v-slot:brand>
       <div class="navbar-item">{{ appName }}</div>
     </template>
@@ -14,19 +11,20 @@
         :key="menu.name"
         :to="menu.path"
       >
-        <FontAwesomeIcon
-          class="icon is-small mr-2"
-          :icon="menu.meta.icon"
-        />
+        <FontAwesomeIcon class="icon is-small mr-2" :icon="menu.meta.icon" />
         <span>{{ menu.name }}</span>
       </router-link>
+      <span class="navbar-item" active-class="is-active">
+        <button v-for="(lang, index) in langs" :key="index" @click="showLang(lang)">
+          {{ lang }}
+        </button>
+      </span>
     </template>
   </BaseNavigation>
   <main class="container is-fluid mt-8">
     <slot />
   </main>
-  <BaseNavigation
-    navClasses="is-dark is-fixed-bottom is-hidden-desktop">
+  <BaseNavigation navClasses="is-dark is-fixed-bottom is-hidden-desktop">
     <template v-slot:brand>
       <router-link
         class="navbar-item is-expanded is-block has-text-centered"
@@ -43,11 +41,11 @@
 </template>
 
 <script>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import BaseNavigation from '@/components/BaseNavigation.vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import BaseNavigation from "@/components/BaseNavigation.vue";
 
 export default {
-  name: 'TheMain',
+  name: "TheMain",
   components: {
     FontAwesomeIcon,
     BaseNavigation,
@@ -55,14 +53,22 @@ export default {
   data() {
     return {
       navigationLinks: [],
+      langs: this.$store.getters.langs,
+      chosenLang: "",
     };
   },
   computed: {
     appName() {
       const name = process.env.VUE_APP_NAME;
-      const isEmpty = !name || name === '';
+      const isEmpty = !name || name === "";
 
-      return isEmpty ? 'Dolora the Law Explorer' : name;
+      return isEmpty ? "Dolora the Law Explorer" : name;
+    },
+  },
+  methods: {
+    showLang(l) {
+      this.chosenLang = l;
+      this.$store.commit("updateLang", this.chosenLang);
     },
   },
   beforeMount() {

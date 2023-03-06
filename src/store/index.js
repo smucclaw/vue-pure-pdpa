@@ -3,17 +3,31 @@ import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
 
+function getLins(PDPA) {
+  const allLins = {}
+  for (const e of PDPA.allLang) {
+    allLins[e] = (PDPA[e])
+  }
+  return allLins
+}
+
 export default createStore({
   state: {
     marking: AnyAll.emptyMarking,
     rulesPDPA: PDPA.schedule1_part1,
     rulesPDPA_nl: PDPA.schedule1_part1_nl,
-    topLD: PDPA.toplevelDecisions,
+    topLD: PDPA.nl4eng,
     topLDBody: '',
+    // topS: PDPA.toplevelStatements,
     whichPrompt: 1,
+    objects: getLins(PDPA),
+    allLangs: PDPA.allLang
   },
   getters: {
     getField,
+    langs(state) {
+      return state.allLangs;
+    },
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
@@ -23,9 +37,12 @@ export default createStore({
     },
     questionPrompt(state) {
       const heads = Object.keys(state.topLD);
-      // return heads;
       return heads;
     },
+    // statements(state) {
+    //   const s = AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(Object.values(state.topS)[state.whichPrompt]);
+    //   return s;
+    // },
     getMarkingField(state) {
       return getField(state.marking);
     },
@@ -37,6 +54,13 @@ export default createStore({
     },
     updateTopLDBody(state, payload) {
       state.topLDBody = Object.values(state.topLD)[payload];
+    },
+    updateStatements(state, payload) {
+      console.log(payload.question);
+    },
+    updateLang(state, payload) {
+      console.log("hi",state.objects[payload]);
+      state.topLD = state.objects[payload];
     },
   },
   actions: {
