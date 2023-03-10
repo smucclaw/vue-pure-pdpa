@@ -30,7 +30,6 @@
     "sass-loader": "^13.2.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vue-select": "^4.0.0-beta.6",
     "vue3-jest": "^27.0.0-alpha.1",
     "vuex": "^4.1.0",
     "vuex-map-fields": "^1.4.1"

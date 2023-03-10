@@ -263,16 +263,16 @@ nl4may = Object.fromFoldable [ Tuple "Not Covered If …"
                         ( Pre "any of:" )
                         [ All
                             ( Pre "all of:" )
-                            [ Leaf "adakah Kerugian atau Kerosakan ke kandungan-kandungan ?"
-                            , Leaf "adakah Kerugian atau Kerosakan disebabkan ?"
+                            [ Leaf "adakah Kerugian atau Kerosakan kepada kandungan-kandungan ?"
+                            , Leaf "adakah Kerugian atau Kerosakan disebabkan burung-burung ?"
                             ]
                         , All
                             ( Pre "all of:" )
-                            [ Leaf "adakah Kerugian atau Kerosakan seterusnya ?"
+                            [ Leaf "adakah Kerugian atau Kerosakan berlaku akibat kerugian yang dilindungi ?"
                             , Not
                                 ( Any
                                     ( Pre "any of:" )
-                                    [ Leaf "adakah sebarang pengecualian lain bermemohon ?"
+                                    [ Leaf "adakah sebarang pengecualian lain yang berkaitan ?"
                                     , Any
                                         ( Pre "" )
                                         [ Leaf "perkakas rumah ?"
@@ -305,16 +305,16 @@ nl4may = Object.fromFoldable [ Tuple "Not Covered If …"
                     ( Pre "any of:" )
                     [ All
                         ( Pre "all of:" )
-                        [ Leaf "adakah Kerugian atau Kerosakan ke kandungan-kandungan ?"
-                        , Leaf "adakah Kerugian atau Kerosakan disebabkan ?"
+                        [ Leaf "adakah Kerugian atau Kerosakan kepada kandungan-kandungan ?"
+                        , Leaf "adakah Kerugian atau Kerosakan disebabkan burung-burung ?"
                         ]
                     , All
                         ( Pre "all of:" )
-                        [ Leaf "adakah Kerugian atau Kerosakan seterusnya ?"
+                        [ Leaf "adakah Kerugian atau Kerosakan berlaku akibat kerugian yang dilindungi ?"
                         , Not
                             ( Any
                                 ( Pre "any of:" )
-                                [ Leaf "adakah sebarang pengecualian lain bermemohon ?"
+                                [ Leaf "adakah sebarang pengecualian lain yang berkaitan ?"
                                 , Any
                                     ( Pre "" )
                                     [ Leaf "perkakas rumah ?"
