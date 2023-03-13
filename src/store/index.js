@@ -19,7 +19,7 @@ export default createStore({
     topLD: PDPA.nl4eng,
     topLDBody: '',
     // topS: PDPA.toplevelStatements,
-    whichPrompt: 1,
+    whichPrompt: 0,
     objects: getLins(PDPA),
     allLangs: PDPA.allLang
   },
