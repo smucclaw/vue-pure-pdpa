@@ -11,14 +11,14 @@ const getPublicPath = () => {
 module.exports = {
   publicPath: getPublicPath(),
   devServer: {
-    server: {
-     type: 'https',
-     options: {
-     key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
-     cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
-     },
-    },
-    allowedHosts: "all",
+    // server: {
+    //  type: 'https',
+    //  options: {
+    //  key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
+    //  cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
+    //  },
+    // },
+    // allowedHosts: "all",
     // historyApiFallback: true,
   },
   lintOnSave: false,
