@@ -42,44 +42,44 @@ from os.path import isfile, join, getmtime
 import argparse
 import json
 import subprocess
+from pathlib import Path
+from typing import Dict, Any
 
-def getjson(pathin):
+
+def getjson(pathin: Path):
     with open(pathin, "r") as read_file:
         data = json.load(read_file)
         data['jsonfile'] = pathin
         data['modtime'] = getmtime(pathin)
-    return data
+        return data
 
 
-def read_all(workdir: str):
-    vuedirs = [getjson(join(workdir, f, "v8k.json"))
-               for f in os.listdir(workdir)
-               if not isfile(join(workdir, f))
-               and isfile(join(workdir, f, "v8k.json"))
-               ]
-    # print ("found vuedirs:"); print (vuedirs)
-    vuedict = {js['slot']: js for js in vuedirs}
-    # print ("returning vuedict:"); print (vuedict)
-    return vuedict
+def read_all(workdir: str) -> Dict[str, Dict[str, Any]]:
+    workdir_path = Path(workdir)
+
+    vue_descriptors = [getjson(f) for f in workdir_path.glob('*/v8k.json')]
+
+    descriptor_map = {descriptor['slot']: descriptor for descriptor in vue_descriptors}
+    return descriptor_map
 
 
-def server_on(portnum):
-    completed = subprocess.run(["ps wwaux | grep port=" + portnum + " | grep -v grep | grep -v startport="], shell=True,
+def print_server_info(portnum: int):
+    completed = subprocess.run([f"ps wwaux | grep port={portnum} | grep -v grep | grep -v startport="], shell=True,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     mymatches = re.findall(r'^\S+\s+(\d+).*port=(\d+)', completed.stdout.decode('utf-8'), re.MULTILINE)
     if mymatches:
         for mymatch in mymatches:
-            print("  pid %s is listening on port %s" % (mymatch[0], mymatch[1]), file=sys.stderr);
+            print(f"\tpid {mymatch[0]} is listening on port {mymatch[1]}", file=sys.stderr)
     else:
-        print("  port %s is no longer listened, as far as we can detect" % (portnum), file=sys.stderr)
+        print(f"\tport {portnum} is no longer listened, as far as we can detect", file=sys.stderr)
     return mymatches
 
 
 def do_list(args: argparse.Namespace, workdir: str):
-    vuedict = read_all(workdir)
-    for js in sorted(vuedict.values(), key=lambda js: int(js['slot'])):
-        print("* %s" % (js['dir']), file=sys.stderr)
-        mymatches = server_on(str(js['port']))
+    descriptors = read_all(workdir)
+    for descriptor in sorted(descriptors.values(), key=lambda js: int(js['slot'])):
+        print(f"* {descriptor['dir']}", file=sys.stderr)
+        print_server_info(descriptor['port'])
 
 
 def do_find(args: argparse.Namespace, workdir: str):
@@ -91,23 +91,23 @@ def do_find(args: argparse.Namespace, workdir: str):
                 and js['uuid'] == args.uuid
                 }
     for (s, js) in existing.items():
-        print("* found allocated server on our uuid/ssid/sheetid: " + js['slot'], file=sys.stderr)
-        mymatches = server_on(str(js['port']))
+        print(f"* found allocated server on our uuid/ssid/sheetid: {js['slot']}", file=sys.stderr)
+        mymatches = print_server_info(js['port'])
         if mymatches:
-            print(":%s/%s" % (str(js['port']), js['base_url']))
+            print(f":{js['port']}/{js['base_url']}", file=sys.stderr)
 
 
 def do_up(args: argparse.Namespace, workdir: str):
     vuedict = read_all(workdir)
 
     if not isfile(args.filename):
-        print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
+        print(f"have you got the right filename? I can't see {args.filename} from here", file=sys.stderr)
 
     dead_slots = []
     start_port = args.startport
     pool_size = args.poolsize
-    print("** startport = " + str(start_port), file=sys.stderr)
-    print("** poolsize = " + str(pool_size), file=sys.stderr)
+    print(f"** startport = {start_port}", file=sys.stderr)
+    print(f"** poolsize = {pool_size}", file=sys.stderr)
 
     # is there already a server running on the desired uuid-ssid-sheetid?
     existing = [js for js in vuedict.values()
@@ -118,18 +118,19 @@ def do_up(args: argparse.Namespace, workdir: str):
 
     need_to_relaunch = True
     for e in existing:
-        print("** found allegedly existing server(s) on our uuid/ssid/sheetid: " + e['slot'], file=sys.stderr)
-        mymatches = server_on(str(e['port']))
+        print(f"** found allegedly existing server(s) on our uuid/ssid/sheetid: {e['slot']}", file=sys.stderr)
+        mymatches = print_server_info(e['port'])
         if mymatches:
-            print("server seems to be still running for port %s!" % (str(e['port'])), file=sys.stderr)
+            print(f"server seems to be still running for port {e['port']}!", file=sys.stderr)
             need_to_relaunch = False
             print("refreshing the purs file", file=sys.stderr)
             # [TODO] do this in a more atomic way with a tmp file and a rename, because the vue server may try to
             #  reread the file too soon, when the cp hasn't completed.
-            print("cp %s %s" % (args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")), file=sys.stderr)
-            subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")])
-            subprocess.run(["touch", "%s/%s" % (e['dir'], "v8k.json")])
-            print(":%s%s" % (str(e['port']), e['base_url']))
+            purs_file = join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")
+            print(f"cp {args.filename} {purs_file}", file=sys.stderr)
+            subprocess.run(["cp", args.filename, purs_file])
+            subprocess.run(["touch", join(e['dir'], "v8k.json")])
+            print(f":{e['port']}{e['base_url']}", file=sys.stderr)
         else:
             print("but the server isn't running any longer.", file=sys.stderr)
             dead_slots.append(str(e['slot']))
@@ -137,29 +138,28 @@ def do_up(args: argparse.Namespace, workdir: str):
     if not need_to_relaunch:
         return
 
-    server_slots = ["%02d" % n for n in range(0, pool_size)]
+    server_slots = [f"{n:02}" for n in range(0, pool_size)]
     available_slots = list(set(server_slots) - set(vuedict.keys()) | set(dead_slots))
 
     print(f"server_slots    = {server_slots}", file=sys.stderr)
-    print(f"vuedict.keys()  = {vuedict.keys()}" % (), file=sys.stderr)
+    print(f"vuedict.keys()  = {vuedict.keys()}", file=sys.stderr)
     print(f"dead_slots      = {dead_slots}", file=sys.stderr)
     print(f"available_slots = {available_slots}", file=sys.stderr)
 
     if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= pool_size):
         oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
-        print("oldest = %s" % (oldest), file=sys.stderr)
-        print("** pool size reached, will replace oldest server " + oldest['slot'], file=sys.stderr)
+        print(f"oldest = {oldest}", file=sys.stderr)
+        print(f"** pool size reached, will replace oldest server {oldest['slot']}", file=sys.stderr)
         take_down(vuedict, oldest['slot'])
         available_slots = [oldest['slot']]
 
     chosen_slot = available_slots[0]
 
-    print("available_slots = %s" % (available_slots), file=sys.stderr)
-    print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr)
+    print(f"available_slots = {available_slots}", file=sys.stderr)
+    print(f"chosen_slot     = {chosen_slot}", file=sys.stderr)
 
     portnum = int(start_port) + int(chosen_slot)
-    print("** chose %s out of available slots %s, port=%s" % (chosen_slot, available_slots, str(portnum)),
-          file=sys.stderr)
+    print(f"** chose {chosen_slot} out of available slots {available_slots}, port={portnum}", file=sys.stderr)
 
     server_config = {
         "ssid": args.ssid,
@@ -167,30 +167,29 @@ def do_up(args: argparse.Namespace, workdir: str):
         "uuid": args.uuid,
         "port": portnum,
         "slot": chosen_slot,
-        "dir": join(workdir, "vue-" + chosen_slot),
+        "dir": join(workdir, f"vue-{chosen_slot}"),
         "base_url": "/" + join(args.uuid, args.ssid, args.sheetid),
-        "cli": "npm run serve -- --port=" + str(portnum) + " &"
+        "cli": f"npm run serve -- --port={portnum} &"
     }
 
-    childpid = os.fork()
+    child_pid = os.fork()
     # if this leads to trouble we may need to double-fork with grandparent-wait
-    if childpid > 0:  # in the parent
-        print("v8k: fork(parent): returning port " + str(portnum), file=sys.stderr)
-        print(":%s%s" % (str(server_config['port']), server_config['base_url']))
+    if child_pid > 0:  # in the parent
+        print(f"v8k: fork(parent): returning port {portnum}", file=sys.stderr)
+        print(f":{server_config['port']}{server_config['base_url']}", file=sys.stderr)
         return
     else:  # in the child
         print("v8k: fork(child): continuing to run", file=sys.stderr)
 
-    rsyncCommand = "rsync -a %s/vue-small/ %s/" % (workdir, server_config['dir'])
-    print(rsyncCommand, file=sys.stderr)
-    subprocess.run([rsyncCommand], shell=True)
+    rsync_command = f"rsync -a {workdir}/vue-small/ {server_config['dir']}/"
+    print(rsync_command, file=sys.stderr)
+    subprocess.run([rsync_command], shell=True)
     subprocess.run(["cp", args.filename, join(server_config['dir'], "src", "RuleLib", "PDPADBNO.purs")])
 
     with open(join(server_config['dir'], "v8k.json"), "w") as write_file:
         json.dump(server_config, write_file)
 
     os.environ["BASE_URL"] = server_config['base_url']
-    # print("setting BASE_URL=%s" % (os.environ["BASE_URL"]), file=sys.stderr);
 
     os.chdir(server_config['dir'])
     runvue = subprocess.run([server_config['cli']], shell=True)
@@ -205,15 +204,13 @@ def take_down(vuedict, slot):
     if not portnum:
         print("unable to resolve portnum for slot " + slot + "; exiting", file=sys.stderr)
         sys.exit(2)
-    mymatches = server_on(str(portnum))
+    mymatches = print_server_info(portnum)
     if mymatches:
         for mymatch in mymatches:
             print("killing pid " + mymatch[0] + " running vue server on port " + mymatch[1], file=sys.stderr)
             subprocess.run(["kill", mymatch[0]])
     else:
-        print("unable to find pid running vue server on port " + str(portnum), file=sys.stderr)
-    # print("rm -rf %s" % (vuedict[slot]['dir']), file=sys.stderr)
-    # subprocess.run(["rm","-rf",vuedict[slot]['dir']])
+        print(f"unable to find pid running vue server on port {portnum}", file=sys.stderr)
 
 
 def do_down(args: argparse.Namespace, workdir: str):
@@ -226,8 +223,8 @@ def do_down(args: argparse.Namespace, workdir: str):
                 }
 
     for (s, js) in existing.items():
-        print("* found allocated server(s) on our uuid/ssid/sheetid: " + js['slot'], file=sys.stderr)
-        mymatches = server_on(str(js['port']))
+        print(f"* found allocated server(s) on our uuid/ssid/sheetid: {js['slot']}", file=sys.stderr)
+        print_server_info(js['port'])
         take_down(vuedict, s)
 
 
@@ -288,7 +285,7 @@ def main():
     if not hasattr(args, 'func'):
         print("v8k: list / find / up / down / downdir")
         if "V8K_WORKDIR" in os.environ:
-            print("V8K_WORKDIR = %s" % (os.environ["V8K_WORKDIR"]))
+            print(f"V8K_WORKDIR = {os.environ['V8K_WORKDIR']}")
     else:
         if args.workdir is not None:
             workdir = args.workdir
