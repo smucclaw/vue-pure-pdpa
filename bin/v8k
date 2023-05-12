@@ -43,9 +43,6 @@ import argparse
 import json
 import subprocess
 
-workdir = ""
-
-
 def getjson(pathin):
     with open(pathin, "r") as read_file:
         data = json.load(read_file)
@@ -54,7 +51,7 @@ def getjson(pathin):
     return data
 
 
-def read_all():
+def read_all(workdir: str):
     vuedirs = [getjson(join(workdir, f, "v8k.json"))
                for f in os.listdir(workdir)
                if not isfile(join(workdir, f))
@@ -78,15 +75,15 @@ def server_on(portnum):
     return mymatches
 
 
-def do_list(args):
-    vuedict = read_all()
+def do_list(args: argparse.Namespace, workdir: str):
+    vuedict = read_all(workdir)
     for js in sorted(vuedict.values(), key=lambda js: int(js['slot'])):
         print("* %s" % (js['dir']), file=sys.stderr)
         mymatches = server_on(str(js['port']))
 
 
-def do_find(args):
-    vuedict = read_all()
+def do_find(args: argparse.Namespace, workdir: str):
+    vuedict = read_all(workdir)
     # is there already a server running on the desired uuid-ssid-sheetid?
     existing = {s: js for (s, js) in vuedict.items()
                 if js['ssid'] == args.ssid
@@ -100,8 +97,17 @@ def do_find(args):
             print(":%s/%s" % (str(js['port']), js['base_url']))
 
 
-def do_up(args):
-    vuedict = read_all()
+def do_up(args: argparse.Namespace, workdir: str):
+    vuedict = read_all(workdir)
+
+    if not isfile(args.filename):
+        print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
+
+    dead_slots = []
+    start_port = args.startport
+    pool_size = args.poolsize
+    print("** startport = " + str(start_port), file=sys.stderr)
+    print("** poolsize = " + str(pool_size), file=sys.stderr)
 
     # is there already a server running on the desired uuid-ssid-sheetid?
     existing = [js for js in vuedict.values()
@@ -110,54 +116,48 @@ def do_up(args):
                 and js['uuid'] == args.uuid
                 ]
 
-    if not isfile(args.filename):
-        print("have you got the right filename? I can't see %s from here" % (args.filename), file=sys.stderr)
-
-    dead_slots = []
-    startport = args.startport;
-    poolsize = args.poolsize;
-    print("** startport = " + str(startport), file=sys.stderr)
-    print("** poolsize = " + str(poolsize), file=sys.stderr)
-
-    needToRelaunch = True
+    need_to_relaunch = True
     for e in existing:
         print("** found allegedly existing server(s) on our uuid/ssid/sheetid: " + e['slot'], file=sys.stderr)
         mymatches = server_on(str(e['port']))
         if mymatches:
             print("server seems to be still running for port %s!" % (str(e['port'])), file=sys.stderr)
-            needToRelaunch = False;
+            need_to_relaunch = False
             print("refreshing the purs file", file=sys.stderr)
-            # [TODO] do this in a more atomic way with a tmp file and a rename, because the vue server may try to reread the file too soon, when the cp hasn't completed.
+            # [TODO] do this in a more atomic way with a tmp file and a rename, because the vue server may try to
+            #  reread the file too soon, when the cp hasn't completed.
             print("cp %s %s" % (args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")), file=sys.stderr)
-            subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
+            subprocess.run(["cp", args.filename, join(e['dir'], "src", "RuleLib", "PDPADBNO.purs")])
             subprocess.run(["touch", "%s/%s" % (e['dir'], "v8k.json")])
             print(":%s%s" % (str(e['port']), e['base_url']))
         else:
             print("but the server isn't running any longer.", file=sys.stderr)
             dead_slots.append(str(e['slot']))
-    if not needToRelaunch: return
 
-    server_slots = ["%02d" % n for n in range(0, poolsize)]
+    if not need_to_relaunch:
+        return
+
+    server_slots = ["%02d" % n for n in range(0, pool_size)]
     available_slots = list(set(server_slots) - set(vuedict.keys()) | set(dead_slots))
 
-    print("server_slots    = %s" % (server_slots), file=sys.stderr);
-    print("vuedict.keys()  = %s" % (vuedict.keys()), file=sys.stderr);
-    print("dead_slots      = %s" % (dead_slots), file=sys.stderr);
-    print("available_slots = %s" % (available_slots), file=sys.stderr);
+    print(f"server_slots    = {server_slots}", file=sys.stderr)
+    print(f"vuedict.keys()  = {vuedict.keys()}" % (), file=sys.stderr)
+    print(f"dead_slots      = {dead_slots}", file=sys.stderr)
+    print(f"available_slots = {available_slots}", file=sys.stderr)
 
-    if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= poolsize):
+    if len(available_slots) == 0 or (len(existing) == 0 and len(vuedict) >= pool_size):
         oldest = sorted(vuedict.values(), key=lambda js: js['modtime'])[0]
-        print("oldest = %s" % (oldest), file=sys.stderr);
+        print("oldest = %s" % (oldest), file=sys.stderr)
         print("** pool size reached, will replace oldest server " + oldest['slot'], file=sys.stderr)
         take_down(vuedict, oldest['slot'])
         available_slots = [oldest['slot']]
 
     chosen_slot = available_slots[0]
 
-    print("available_slots = %s" % (available_slots), file=sys.stderr);
-    print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr);
+    print("available_slots = %s" % (available_slots), file=sys.stderr)
+    print("chosen_slot     = %s" % (chosen_slot), file=sys.stderr)
 
-    portnum = int(startport) + int(chosen_slot)
+    portnum = int(start_port) + int(chosen_slot)
     print("** chose %s out of available slots %s, port=%s" % (chosen_slot, available_slots, str(portnum)),
           file=sys.stderr)
 
@@ -179,12 +179,12 @@ def do_up(args):
         print(":%s%s" % (str(server_config['port']), server_config['base_url']))
         return
     else:  # in the child
-        print("v8k: fork(child): continuing to run", file=sys.stderr);
+        print("v8k: fork(child): continuing to run", file=sys.stderr)
 
     rsyncCommand = "rsync -a %s/vue-small/ %s/" % (workdir, server_config['dir'])
     print(rsyncCommand, file=sys.stderr)
     subprocess.run([rsyncCommand], shell=True)
-    subprocess.run(["cp", args.filename, join(server_config['dir'], "src", "RuleLib", "PDPADBNO.purs")]);
+    subprocess.run(["cp", args.filename, join(server_config['dir'], "src", "RuleLib", "PDPADBNO.purs")])
 
     with open(join(server_config['dir'], "v8k.json"), "w") as write_file:
         json.dump(server_config, write_file)
@@ -196,19 +196,19 @@ def do_up(args):
     runvue = subprocess.run([server_config['cli']], shell=True)
     # deliberately not capturing STDOUT and STDERR so it goes to console and we can see errors
 
-    print("v8k: fork(child): exiting", file=sys.stderr);
-    sys.exit(0);
+    print("v8k: fork(child): exiting", file=sys.stderr)
+    sys.exit(0)
 
 
 def take_down(vuedict, slot):
     portnum = vuedict[slot]['port']
     if not portnum:
-        print("unable to resolve portnum for slot " + slot + "; exiting", file=sys.stderr);
-        sys.exit(2);
+        print("unable to resolve portnum for slot " + slot + "; exiting", file=sys.stderr)
+        sys.exit(2)
     mymatches = server_on(str(portnum))
     if mymatches:
         for mymatch in mymatches:
-            print("killing pid " + mymatch[0] + " running vue server on port " + mymatch[1], file=sys.stderr);
+            print("killing pid " + mymatch[0] + " running vue server on port " + mymatch[1], file=sys.stderr)
             subprocess.run(["kill", mymatch[0]])
     else:
         print("unable to find pid running vue server on port " + str(portnum), file=sys.stderr)
@@ -216,8 +216,8 @@ def take_down(vuedict, slot):
     # subprocess.run(["rm","-rf",vuedict[slot]['dir']])
 
 
-def do_down(args):
-    vuedict = read_all()
+def do_down(args: argparse.Namespace, workdir: str):
+    vuedict = read_all(workdir)
     # is there already a server running on the desired uuid-ssid-sheetid?
     existing = {s: js for (s, js) in vuedict.items()
                 if js['ssid'] == args.ssid
@@ -231,61 +231,73 @@ def do_down(args):
         take_down(vuedict, s)
 
 
-def do_downdir(args):
-    vuedict = read_all()
+def do_downdir(args: argparse.Namespace, workdir: str):
+    vuedict = read_all(workdir)
     if args.slotname in vuedict:
         take_down(vuedict, args.slotname)
     else:
-        print("slot does not exist! If the directory does exist you may need to rm -rf it by hand.", file=sys.stderr);
+        print("slot does not exist! If the directory does exist you may need to rm -rf it by hand.", file=sys.stderr)
 
 
-argparser = argparse.ArgumentParser(description='Manage a herd of Vue dev servers')
-argparser.add_argument('--workdir', action='store', required=not hasattr(os.environ, 'V8K_WORKDIR'),
-                       help="workdir for v8k workers")
-subparsers = argparser.add_subparsers(help="sub-command help")
+def setup_argparser() -> argparse.ArgumentParser:
+    argparser = argparse.ArgumentParser(description='Manage a herd of Vue dev servers')
+    argparser.add_argument('--workdir', action='store', required=("V8K_WORKDIR" not in os.environ),
+                           help="workdir for v8k workers")
 
-parser_list = subparsers.add_parser('list', help='list servers')
-parser_find = subparsers.add_parser('find', help='find server running a certain uuid ssid sid combo')
-parser_up = subparsers.add_parser('up', help='create, replace, or update a server')
-parser_down = subparsers.add_parser('down', help='bring down a server')
-parser_downdir = subparsers.add_parser('downdir', help='bring down a server by explicit slot name')
+    subparsers = argparser.add_subparsers(help="sub-command help")
 
-parser_list.set_defaults(func=do_list)
-parser_find.set_defaults(func=do_find)
-parser_up.set_defaults(func=do_up)
-parser_down.set_defaults(func=do_down)
-parser_downdir.set_defaults(func=do_downdir)
+    parser_list = subparsers.add_parser('list', help='list servers')
+    parser_list.set_defaults(func=do_list)
 
-parser_find.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
-parser_find.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
-parser_find.add_argument('--sheetid', action='store', required=True, help="sheet ID")
+    parser_find = subparsers.add_parser('find', help='find server running a certain uuid ssid sid combo')
+    parser_find.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
+    parser_find.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
+    parser_find.add_argument('--sheetid', action='store', required=True, help="sheet ID")
+    parser_find.set_defaults(func=do_find)
 
-parser_up.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
-parser_up.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
-parser_up.add_argument('--sheetid', action='store', required=True, help="sheet ID")
-parser_up.add_argument('--poolsize', action='store', required=False, help="number of servers in the pool, default 9",
-                       default=9)
-parser_up.add_argument('--startport', action='store', required=True, help="bottom port number of pool, default 8011",
-                       default=8011)
-parser_up.add_argument('filename', metavar='file.purs', type=str, help="Purescript file")
+    parser_up = subparsers.add_parser('up', help='create, replace, or update a server')
+    parser_up.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
+    parser_up.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
+    parser_up.add_argument('--sheetid', action='store', required=True, help="sheet ID")
+    parser_up.add_argument('--poolsize', action='store', required=False,
+                           help="number of servers in the pool",
+                           default=9)
+    parser_up.add_argument('--startport', action='store', required=True,
+                           help="bottom port number of pool",
+                           default=8011)
+    parser_up.add_argument('filename', metavar='file.purs', type=str, help="Purescript file")
+    parser_up.set_defaults(func=do_up)
 
-parser_down.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
-parser_down.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
-parser_down.add_argument('--sheetid', action='store', required=True, help="sheet ID")
+    parser_down = subparsers.add_parser('down', help='bring down a server')
+    parser_down.set_defaults(func=do_down)
+    parser_down.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
+    parser_down.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
+    parser_down.add_argument('--sheetid', action='store', required=True, help="sheet ID")
 
-parser_downdir.add_argument('slotname', metavar='slot', type=str, help="two-digit slot id of vue server")
+    parser_downdir = subparsers.add_parser('downdir', help='bring down a server by explicit slot name')
+    parser_downdir.set_defaults(func=do_downdir)
+    parser_downdir.add_argument('slotname', metavar='slot', type=str, help="two-digit slot id of vue server")
 
-args = argparser.parse_args()
-if not hasattr(args, 'func'):
-    print("v8k: list / find / up / down / downdir")
-    if "V8K_WORKDIR" in os.environ:
-        print("V8K_WORKDIR = %s" % (os.environ["V8K_WORKDIR"]))
-else:
-    if hasattr(args, 'workdir'):
-        workdir = args.workdir
-    elif "V8K_WORKDIR" in os.environ:
-        workdir = os.environ["V8K_WORKDIR"]
+    return argparser
+
+
+def main():
+    parser = setup_argparser()
+    args = parser.parse_args()
+
+    if not hasattr(args, 'func'):
+        print("v8k: list / find / up / down / downdir")
+        if "V8K_WORKDIR" in os.environ:
+            print("V8K_WORKDIR = %s" % (os.environ["V8K_WORKDIR"]))
     else:
-        print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr);
-        sys.exit(1);
-    args.func(args)
+        if args.workdir is not None:
+            workdir = args.workdir
+        elif "V8K_WORKDIR" in os.environ:
+            workdir = os.environ["V8K_WORKDIR"]
+        else:
+            print("v8k: you need to export V8K_WORKDIR=\"/home/something/multivue\"", file=sys.stderr)
+            sys.exit(1)
+        args.func(args, workdir)
+
+
+main()
