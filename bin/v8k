@@ -256,12 +256,10 @@ def setup_argparser() -> argparse.ArgumentParser:
     parser_up.add_argument('--uuid', action='store', required=True, help="secret string, usually a UUID")
     parser_up.add_argument('--ssid', action='store', required=True, help="spreadsheet ID")
     parser_up.add_argument('--sheetid', action='store', required=True, help="sheet ID")
-    parser_up.add_argument('--poolsize', action='store', required=False,
-                           help="number of servers in the pool",
-                           default=9)
+    parser_up.add_argument('--poolsize', action='store', required=False, type=int,
+                           help="number of servers in the pool", default=9)
     parser_up.add_argument('--startport', action='store', required=True,
-                           help="bottom port number of pool",
-                           default=8011)
+                           help="bottom port number of pool", default=8011)
     parser_up.add_argument('filename', metavar='file.purs', type=str, help="Purescript file")
     parser_up.set_defaults(func=do_up)
 
