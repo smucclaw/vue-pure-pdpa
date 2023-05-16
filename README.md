@@ -76,9 +76,9 @@ Once you're able to run `npm run serve` you can think about spawning new servers
 You only have to do this once:
 
 ```
-mkdir ~/v8kworkdir
-cd ~/v8kworkdir
-export V8K_WORKDIR=~/v8kworkdir
+mkdir ~/home2/v8kworkdir
+cd ~/home2/v8kworkdir
+export V8K_WORKDIR=~/home2/v8kworkdir
 rsync -va ~/src/smucclaw/vue-pure-pdpa/ vue-big/
 rsync -va --exclude={.spago,.git,node_modules} vue-big/ vue-small/
 cd vue-small
@@ -86,6 +86,22 @@ ln -s ../vue-big/.git .
 ln -s ../vue-big/node_modules .
 ln -s ../vue-big/.spago .
 ```
+
+This sets you up with `vue-small`, which is a copy of `vue-big`, which is a copy of the `vue-pure-pdpa` repo.
+
+`vue-small` takes up a bit less space, by taking advantage of symlinks to reuse existing files that don't change across copies.
+
+This becomes valuable because `v8k` later rsyncs `vue-small` to `vue-01`, `vue-02`, and so on, at runtime. This rsync happens when we're trying to hurry: the end-user could click on the "vue web app" link at any time, so we want to bring up the vue web app as fast as possible.
+
+If the `vue-YY` directory doesn't already exist, then the rsync is liable to be slow, so we want to minimize the size of the `vue-small`.
+
+We could pre-rsync the `vue-YY` directories at this point, too, with something like
+
+```
+for yy in 01 02 03 04 05 06 07 08 09; do rsync -va vue-small/ vue-$yy/; done
+```
+
+What's this directory `~/home2`? That's a symlink that takes you to a faster filesystem running on SSD.
 
 #### Spawning a new server
 

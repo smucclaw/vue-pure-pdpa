@@ -189,6 +189,7 @@ def do_up(args):
   # print("setting BASE_URL=%s" % (os.environ["BASE_URL"]), file=sys.stderr);
 
   os.chdir(server_config['dir'])
+  print("v8k: running    %s" % (server_config['cli']), file=sys.stderr);
   runvue = subprocess.run([server_config['cli']], shell=True)
   # deliberately not capturing STDOUT and STDERR so it goes to console and we can see errors
 
