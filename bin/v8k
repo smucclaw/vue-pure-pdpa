@@ -94,7 +94,7 @@ def do_find(args: argparse.Namespace, workdir: str):
         print(f"* found allocated server on our uuid/ssid/sheetid: {js['slot']}", file=sys.stderr)
         mymatches = print_server_info(js['port'])
         if mymatches:
-            print(f":{js['port']}/{js['base_url']}", file=sys.stderr)
+            print(f":{js['port']}/{js['base_url']}", file=sys.stdout)
 
 
 def do_up(args: argparse.Namespace, workdir: str):
@@ -130,7 +130,7 @@ def do_up(args: argparse.Namespace, workdir: str):
             print(f"cp {args.filename} {purs_file}", file=sys.stderr)
             subprocess.run(["cp", args.filename, purs_file])
             subprocess.run(["touch", join(e['dir'], "v8k.json")])
-            print(f":{e['port']}{e['base_url']}")
+            print(f":{e['port']}{e['base_url']}", file=sys.stdout) # stdout, not stderr, please
         else:
             print("but the server isn't running any longer.", file=sys.stderr)
             dead_slots.append(str(e['slot']))
@@ -176,7 +176,7 @@ def do_up(args: argparse.Namespace, workdir: str):
     # if this leads to trouble we may need to double-fork with grandparent-wait
     if child_pid > 0:  # in the parent
         print(f"v8k: fork(parent): returning port {portnum}", file=sys.stderr)
-        print(f":{server_config['port']}{server_config['base_url']}", file=sys.stderr)
+        print(f":{server_config['port']}{server_config['base_url']}", file=sys.stdout)
         return
     else:  # in the child
         print("v8k: fork(child): continuing to run", file=sys.stderr)
