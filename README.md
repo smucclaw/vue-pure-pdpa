@@ -28,7 +28,7 @@ First, install nvm from https://nvm.sh/
 Then run the following set of install scripts:
 
 ```shell
-$ echo node > .nvmrc
+$ echo 18.16.0 > .nvmrc
 $ nvm use
 $ nvm install
 $ nvm exec
