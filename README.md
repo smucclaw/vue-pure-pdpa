@@ -23,7 +23,9 @@ NVM is a version manager for node. Follow the instructions on the [nvm github](h
 
 ### Installing Packages
 
-Run the following set of install scripts:
+First, install nvm from https://nvm.sh/
+
+Then run the following set of install scripts:
 
 ```shell
 $ nvm use
