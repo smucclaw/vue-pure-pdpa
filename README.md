@@ -33,6 +33,7 @@ $ nvm use
 $ nvm install
 $ nvm exec
 $ npm install -g node-gyp@latest
+$ npm install
 $ npm run deps
 ```
 
@@ -44,7 +45,15 @@ Start the application in development mode by running:
 $ npm run serve
 ```
 
-The application can be accessed at `localhost:8080`.
+By default, that brings up the application at `localhost:8080`.
+
+If you've been assigned a different port 8xxx, use
+
+```shell
+$ npm run serve -- --port=8xxx
+```
+
+If you have a working web app at the interface, you should be able to proceed to use this repo as part of the L4 backend.
 
 ### Building for Production
 
