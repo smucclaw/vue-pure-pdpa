@@ -209,6 +209,14 @@ derive instance genericQoutJS :: Generic QoutJS _
 instance showQoutJS :: Show QoutJS where
   show eta = genericShow eta
 
+-- this is a bit of a hack, but it's a way to get the pre and post strings out of the Label type
+-- and into a record that can be encoded.
+-- q: how does this work?  
+-- a: it's a typeclass, so it's a way to get the pre and post strings out of the Label type
+-- q: what is the typeclass?
+-- a: it's a typeclass that has a single method, which is a function that takes a Label and returns a record
+-- q: explain `qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children })`
+-- a: it's a pattern match on the Q type, which is a record, and it's a way to get the fields out of the record
 qoutjs :: Q -> QoutJS
 qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
   QoutJS $ Option.fromRecord
