@@ -39,6 +39,18 @@ data Item a
   | Any (Label a) (Array (Item a))
   | Not (Item a)
 
+
+
+-- | nnf based on the nnf found in dsl/lib/haskell/anyall/src/AnyAll/BoolStruct.hs
+nnf :: forall a. Item a -> Item a
+nnf (Not (Not p)) = nnf p
+nnf (Not (All l ps)) = Any l $ nnf <$> Not <$> ps
+nnf (Not (Any l ps)) = All l $ nnf <$> Not <$> ps
+nnf (All l ps) = All l (nnf <$> ps)
+nnf (Any l ps) = Any l (nnf <$> ps)
+nnf x = x
+
+
 -- boilerplate for class derivations
 derive instance eqItem :: (Eq a) => Eq (Item a)
 derive instance genericItem :: Generic (Item a) _
