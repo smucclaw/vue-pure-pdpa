@@ -25,12 +25,11 @@ NVM is a version manager for node. Follow the instructions on the [nvm github](h
 
 First, install nvm from https://nvm.sh/
 
-Then run the following set of install scripts:
+Then run the following set of install scripts, from inside the vue-pure-pdpa directory:
 
 ```shell
-$ echo 18.16.0 > .nvmrc
-$ nvm use
 $ nvm install
+$ nvm use
 $ nvm exec
 $ npm install -g node-gyp@latest
 $ npm install
