@@ -18,43 +18,16 @@ import AnyAll.Types
 schedule1_part1 :: Item String
 schedule1_part1 =
 
-   Any
-    ( Pre "any of:" )
+   All
+    ( Pre "all of:" )
     [ All
         ( Pre "all of:" )
-        [ Any
-            ( Pre "Is the Loss or Damage caused by" )
-            [ Leaf "rodents?"
-            , Leaf "insects?"
-            , Leaf "vermin?"
-            , Leaf "birds?"
+        [ Leaf "does the person walk?"
+        , Any
+            ( Pre "any of:" )
+            [ Leaf "does the person eat?"
+            , Leaf "does the person drink?"
             ]
-        , Not
-            ( Any
-                ( Pre "any of:" )
-                [ All
-                    ( Pre "all of:" )
-                    [ Leaf "is Loss or Damage to contents?"
-                    , Leaf "is Loss or Damage caused by birds?"
-                    ]
-                , All
-                    ( Pre "all of:" )
-                    [ Leaf "is Loss or Damage ensuing covered loss?"
-                    , Not
-                        ( Any
-                            ( Pre "any of:" )
-                            [ Leaf "does any other exclusion apply?"
-                            , Any
-                                ( Pre "did an animal cause water to escape from" )
-                                [ Leaf "a household appliance?"
-                                , Leaf "a swimming pool?"
-                                , Leaf "a plumbing, heating, or air conditioning system?"
-                                ]
-                            ]
-                        )
-                    ]
-                ]
-            )
         ]
     ]
 
@@ -67,87 +40,17 @@ schedule1_part1_nl =
     
 
 nl4chi :: Object.Object (Item String)
-nl4chi = Object.fromFoldable [ Tuple "Not Covered If …"
+nl4chi = Object.fromFoldable [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ Not
-            ( All
-                ( Pre "all of:" )
-                [ Any
-                    ( Pre "那 个 损 失 或 损 害 的 原 因" )
-                    [ Leaf "些 啮 齿？"
-                    , Leaf "些 昆 虫？"
-                    , Leaf "蠹 虫？"
-                    , Leaf "些 鸟？"
-                    ]
-                , Not
-                    ( Any
-                        ( Pre "any of:" )
-                        [ All
-                            ( Pre "all of:" )
-                            [ Leaf "损 失 或 损 害 在 往 些 内 件 吗？"
-                            , Leaf "损 失 或 损 害 是 被 些 鸟 的 原 因 的 吗？"
-                            ]
-                        , All
-                            ( Pre "all of:" )
-                            [ Leaf "损 失 或 损 害 是 保 户 亏 损 接 着 的 吗？"
-                            , Not
-                                ( Any
-                                    ( Pre "any of:" )
-                                    [ Leaf "任 何 其 他 排 除 申 请 吗？"
-                                    , Any
-                                        ( Pre "一 只 动 物 导 致 了 从 水 漏" )
-                                        [ Leaf "一 个 家 用 电 器？"
-                                        , Leaf "一 个 游 泳 池？"
-                                        , Leaf "管 路 系 统 或 暖 通 空 调？"
-                                        ]
-                                    ]
-                                )
-                            ]
-                        ]
-                    )
-                ]
-            )
-        ]
-    )
-, Tuple "Covered If …"
-    ( Any
-        ( Pre "any of:" )
         [ All
             ( Pre "all of:" )
-            [ Any
-                ( Pre "那 个 损 失 或 损 害 的 原 因" )
-                [ Leaf "些 啮 齿？"
-                , Leaf "些 昆 虫？"
-                , Leaf "蠹 虫？"
-                , Leaf "些 鸟？"
+            [ Leaf "人 走 吗？"
+            , Any
+                ( Pre "any of:" )
+                [ Leaf "人 吃 吗？"
+                , Leaf "人 喝 吗？"
                 ]
-            , Not
-                ( Any
-                    ( Pre "any of:" )
-                    [ All
-                        ( Pre "all of:" )
-                        [ Leaf "损 失 或 损 害 在 往 些 内 件 吗？"
-                        , Leaf "损 失 或 损 害 是 被 些 鸟 的 原 因 的 吗？"
-                        ]
-                    , All
-                        ( Pre "all of:" )
-                        [ Leaf "损 失 或 损 害 是 保 户 亏 损 接 着 的 吗？"
-                        , Not
-                            ( Any
-                                ( Pre "any of:" )
-                                [ Leaf "任 何 其 他 排 除 申 请 吗？"
-                                , Any
-                                    ( Pre "一 只 动 物 导 致 了 从 水 漏" )
-                                    [ Leaf "一 个 家 用 电 器？"
-                                    , Leaf "一 个 游 泳 池？"
-                                    , Leaf "管 路 系 统 或 暖 通 空 调？"
-                                    ]
-                                ]
-                            )
-                        ]
-                    ]
-                )
             ]
         ]
     )
@@ -156,87 +59,17 @@ nl4chiMarking :: Marking
 nl4chiMarking = Marking $ Map.fromFoldable []
 
 nl4eng :: Object.Object (Item String)
-nl4eng = Object.fromFoldable [ Tuple "Not Covered If …"
+nl4eng = Object.fromFoldable [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ Not
-            ( All
-                ( Pre "all of:" )
-                [ Any
-                    ( Pre "Is the Loss or Damage caused by" )
-                    [ Leaf "rodents?"
-                    , Leaf "insects?"
-                    , Leaf "vermin?"
-                    , Leaf "birds?"
-                    ]
-                , Not
-                    ( Any
-                        ( Pre "any of:" )
-                        [ All
-                            ( Pre "all of:" )
-                            [ Leaf "is Loss or Damage to contents?"
-                            , Leaf "is Loss or Damage caused by birds?"
-                            ]
-                        , All
-                            ( Pre "all of:" )
-                            [ Leaf "is Loss or Damage ensuing covered loss?"
-                            , Not
-                                ( Any
-                                    ( Pre "any of:" )
-                                    [ Leaf "does any other exclusion apply?"
-                                    , Any
-                                        ( Pre "did an animal cause water to escape from" )
-                                        [ Leaf "a household appliance?"
-                                        , Leaf "a swimming pool?"
-                                        , Leaf "a plumbing, heating, or air conditioning system?"
-                                        ]
-                                    ]
-                                )
-                            ]
-                        ]
-                    )
-                ]
-            )
-        ]
-    )
-, Tuple "Covered If …"
-    ( Any
-        ( Pre "any of:" )
         [ All
             ( Pre "all of:" )
-            [ Any
-                ( Pre "Is the Loss or Damage caused by" )
-                [ Leaf "rodents?"
-                , Leaf "insects?"
-                , Leaf "vermin?"
-                , Leaf "birds?"
+            [ Leaf "does the person walk?"
+            , Any
+                ( Pre "any of:" )
+                [ Leaf "does the person eat?"
+                , Leaf "does the person drink?"
                 ]
-            , Not
-                ( Any
-                    ( Pre "any of:" )
-                    [ All
-                        ( Pre "all of:" )
-                        [ Leaf "is Loss or Damage to contents?"
-                        , Leaf "is Loss or Damage caused by birds?"
-                        ]
-                    , All
-                        ( Pre "all of:" )
-                        [ Leaf "is Loss or Damage ensuing covered loss?"
-                        , Not
-                            ( Any
-                                ( Pre "any of:" )
-                                [ Leaf "does any other exclusion apply?"
-                                , Any
-                                    ( Pre "did an animal cause water to escape from" )
-                                    [ Leaf "a household appliance?"
-                                    , Leaf "a swimming pool?"
-                                    , Leaf "a plumbing, heating, or air conditioning system?"
-                                    ]
-                                ]
-                            )
-                        ]
-                    ]
-                )
             ]
         ]
     )
@@ -245,87 +78,17 @@ nl4engMarking :: Marking
 nl4engMarking = Marking $ Map.fromFoldable []
 
 nl4may :: Object.Object (Item String)
-nl4may = Object.fromFoldable [ Tuple "Not Covered If …"
+nl4may = Object.fromFoldable [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ Not
-            ( All
-                ( Pre "all of:" )
-                [ Any
-                    ( Pre "Adakah Kerugian atau Kerosakan disebabkan oleh" )
-                    [ Leaf "rodensia-rodensia?"
-                    , Leaf "serangga-serangga?"
-                    , Leaf "binatang perosak?"
-                    , Leaf "burung-burung?"
-                    ]
-                , Not
-                    ( Any
-                        ( Pre "any of:" )
-                        [ All
-                            ( Pre "all of:" )
-                            [ Leaf "adakah Kerugian atau Kerosakan kepada kandungan-kandungan?"
-                            , Leaf "adakah Kerugian atau Kerosakan disebabkan?"
-                            ]
-                        , All
-                            ( Pre "all of:" )
-                            [ Leaf "adakah Kerugian atau Kerosakan berlaku akibat?"
-                            , Not
-                                ( Any
-                                    ( Pre "any of:" )
-                                    [ Leaf "adakah sebarang pengecualian lain yang berkaitan?"
-                                    , Any
-                                        ( Pre "" )
-                                        [ Leaf "perkakas rumah?"
-                                        , Leaf "kolam renang?"
-                                        , Leaf "sistem paip atau HVAC?"
-                                        ]
-                                    ]
-                                )
-                            ]
-                        ]
-                    )
-                ]
-            )
-        ]
-    )
-, Tuple "Covered If …"
-    ( Any
-        ( Pre "any of:" )
         [ All
             ( Pre "all of:" )
-            [ Any
-                ( Pre "Adakah Kerugian atau Kerosakan disebabkan oleh" )
-                [ Leaf "rodensia-rodensia?"
-                , Leaf "serangga-serangga?"
-                , Leaf "binatang perosak?"
-                , Leaf "burung-burung?"
+            [ Leaf "adakah seseorang berjalan?"
+            , Any
+                ( Pre "any of:" )
+                [ Leaf "adakah seseorang makan?"
+                , Leaf "adakah seseorang minum?"
                 ]
-            , Not
-                ( Any
-                    ( Pre "any of:" )
-                    [ All
-                        ( Pre "all of:" )
-                        [ Leaf "adakah Kerugian atau Kerosakan kepada kandungan-kandungan?"
-                        , Leaf "adakah Kerugian atau Kerosakan disebabkan?"
-                        ]
-                    , All
-                        ( Pre "all of:" )
-                        [ Leaf "adakah Kerugian atau Kerosakan berlaku akibat?"
-                        , Not
-                            ( Any
-                                ( Pre "any of:" )
-                                [ Leaf "adakah sebarang pengecualian lain yang berkaitan?"
-                                , Any
-                                    ( Pre "" )
-                                    [ Leaf "perkakas rumah?"
-                                    , Leaf "kolam renang?"
-                                    , Leaf "sistem paip atau HVAC?"
-                                    ]
-                                ]
-                            )
-                        ]
-                    ]
-                )
             ]
         ]
     )

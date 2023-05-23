@@ -13,6 +13,7 @@ module AnyAll
   , getItemByName
   , getNLByName
   , hard
+  , heads
   , howDoWeEven
   , marking1
   , marking1_decoded
@@ -46,6 +47,7 @@ import Foreign.Generic
 import Control.Monad.Except
 import Foreign
 import Record (merge)
+import Foreign.Object as Object
 
 main = log "AnyAll main"
 
@@ -167,3 +169,6 @@ howDoWeEven :: String -> Int -> String
 howDoWeEven arg1 arg2 = "arg 1 = " <> arg1 <> "; arg 2 = " <> show arg2
 
 decodeItemString = decodeIt
+
+heads x = Object.keys(x)
+

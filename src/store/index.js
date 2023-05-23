@@ -36,7 +36,7 @@ export default createStore({
       return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesPDPA_nl)(state.topLDBody);
     },
     questionPrompt(state) {
-      const heads = Object.keys(state.topLD);
+      const heads = AnyAll.heads(state.topLD);
       return heads;
     },
     // statements(state) {
@@ -56,10 +56,8 @@ export default createStore({
       state.topLDBody = Object.values(state.topLD)[payload];
     },
     updateStatements(state, payload) {
-      console.log(payload.question);
     },
     updateLang(state, payload) {
-      console.log("hi",state.objects[payload]);
       state.topLD = state.objects[payload];
     },
   },
