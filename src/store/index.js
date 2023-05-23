@@ -2,6 +2,8 @@ import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
+import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
+
 
 function getLins(PDPA) {
   const allLins = {}
