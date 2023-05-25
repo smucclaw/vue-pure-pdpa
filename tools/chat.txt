@@ -1,0 +1,142 @@
+qoutjs :: Q -> QoutJS
+qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
+  QoutJS $ Option.fromRecord
+    { shouldView: show shouldView
+    , andOr: case andOr of
+        And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: miniNL }
+        Or -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: miniNL }
+        (Simply x) -> Option.fromRecord
+          { tag: "Leaf"
+          , contents: Just x
+          , nl: miniNL
+          }
+    , prePost: dumpPrePost prePost
+    , mark: dumpDefault mark
+    }
+  where
+  miniNL =
+    FO.fromFoldable (Map.toUnfoldable tagNL :: Array (Tuple String String))
+
+
+This code defines a function called 
+qoutjs
+ that takes a 
+Q
+ value as input and returns a 
+QoutJS
+ value. The 
+Q
+ value represents a query object that contains information about the query, such as whether it should be displayed, whether it is an "AND" or "OR" query, and any child queries.
+
+The 
+qoutjs
+ function first extracts some fields from the 
+Q
+ value and converts them to 
+Option
+ values using the an array of tuples of strings using the 
+Map.toUnfoldable
+ function and the 
+Array.fromFoldable
+ function. This array is then stored in the 
+nl
+ field of the 
+QoutJS
+ value.
+
+
+This code defines a function called 
+qoutjs
+ that takes a 
+Q
+ value as input and returns a 
+QoutJS
+ value. The 
+Q
+ value represents a query object that contains information about the query, such as whether it should be displayed, whether it is an "AND" or "OR" query, and any child queries.
+
+The 
+qoutjs
+ function first extracts some fields from the 
+Q
+ value and converts them to 
+Option
+ values using the 
+Option.fromRecord
+ function. It then creates a new 
+QoutJS
+ value by using the 
+Option.fromRecord
+ function again, but with different field names.
+
+The 
+shouldView
+ field is converted to a string using the 
+show
+ function and stored in the 
+shouldView
+ field of the 
+QoutJS
+ value. The 
+andOr
+ field is converted to a string based on its type (
+And
+, 
+Or
+, or 
+Simply
+) and stored in the 
+andOr
+ field of the 
+QoutJS
+ value. If it is an 
+And
+ or 
+Or
+ query, the child queries are converted to 
+QoutJS
+ values using the 
+qoutjs
+ function and stored in the 
+children
+ field of the 
+QoutJS
+ value. If it is a 
+Simply
+ query, the query value is stored in the 
+contents
+ field of the 
+QoutJS
+ value.
+
+The 
+prePost
+ field is converted to a string using the 
+dumpPrePost
+ function and stored in the 
+prePost
+ field of the 
+QoutJS
+ value. The 
+mark
+ field is converted to a string using the 
+dumpDefault
+ function and stored in the 
+mark
+ field of the 
+QoutJS
+ value.
+
+Finally, the 
+tagNL
+ field is converted to an array of tuples of strings using the 
+Map.toUnfoldable
+ function and the 
+Array.fromFoldable
+ function. This array is then stored in the 
+nl
+ field of the 
+QoutJS
+ value.
+-----------------------------
+-----------------------------

@@ -1,5 +1,6 @@
 module AnyAll
-  ( anyallform1
+  (
+    anyallform1
   , decodeItemString
   , decodeMarking
   , emptyMarking
@@ -128,7 +129,7 @@ marking1_recoded x = decodeMarking $ encode x
 output1 :: QoutJS
 output1 = qoutjs $ output1q
 
-output1q :: QoutJS
+
 output1q = paintQ marking1 example1_nl example1
 
 pdpaQ :: QoutJS
