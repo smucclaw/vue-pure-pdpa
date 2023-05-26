@@ -128,13 +128,10 @@ marking1_recoded x = decodeMarking $ encode x
 output1 :: QoutJS
 output1 = qoutjs $ output1q
 
-output1q :: Qout
 output1q = paintQ marking1 example1_nl example1
 
-pdpaQ :: QoutJS
 pdpaQ = paintQ emptyMarking pdpa_dbno_s1p1_nl pdpa_dbno_s1p1
 
-paintQ :: Marking -> NLDict -> Item String -> QoutJS
 paintQ m nl i = relevant Hard DPNormal m Nothing nl i
 
 anyallform1 = output1
