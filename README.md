@@ -99,6 +99,20 @@ ln -s ../vue-big/node_modules .
 ln -s ../vue-big/.spago .
 ```
 
+This sets you up with `vue-small`, which is a copy of `vue-big`, which is a copy of the `vue-pure-pdpa` repo.
+
+`vue-small` takes up a bit less space, by taking advantage of symlinks to reuse existing files that don't change across copies.
+
+This becomes valuable because `v8k` later rsyncs `vue-small` to `vue-01`, `vue-02`, and so on, at runtime. This rsync happens when we're trying to hurry: the end-user could click on the "vue web app" link at any time, so we want to bring up the vue web app as fast as possible.
+
+If the `vue-YY` directory doesn't already exist, then the rsync is liable to be slow, so we want to minimize the size of the `vue-small`.
+
+We could pre-rsync the `vue-YY` directories at this point, too, with something like
+
+```
+for yy in 01 02 03 04 05 06 07 08 09; do rsync -va vue-small/ vue-$yy/; done
+```
+
 #### Spawning a new server
 
 Every time the Python Flask subsystem runs natural4-exe to refresh the `workdir` output, it will want to tell Vue "here is a new .purs file that contains a Rule Library".
