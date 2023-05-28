@@ -21,11 +21,21 @@ module.exports = {
       .options({
         spago: true,
       });
+
     config.module
       .rule('jison')
       .test(/\.jison$/)
-      .use('jison-gho-loader')
-      .loader('jison-gho-loader');
+          .use('jison-gho-loader')
+          .loader('jison-gho-loader');
+
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options => {
+        options['compilerOptions'] = { isCustomElement: (e) => ["clippath"].includes(e) }
+        return options
+      })
+
   },
 }
 
