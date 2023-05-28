@@ -1,9 +1,8 @@
 <template>
-<div id="ladderTest1" style="font-size:1.5em;" ref="ladderHere"></div>
+<div id="ladderDiagram" style="font-size:1.5em;" ref="ladderHere"></div>
 <div id="debuggery">
   <h2>debug: AnyAll source</h2>
   <pre>{{ JSON.stringify(asCircuit,null,2) }}</pre>
-  <pre>{{ JSON.stringify(sampleData,null,2) }}</pre>
 </div>
 </template>
 
@@ -17,10 +16,11 @@ const props = defineProps({question: Object})
 const store = useStore()
 
 const asCircuit = computed(() => {
-  console.log(`LadderDiagram: computing asCircuit`)
+  // console.log(`LadderDiagram: computing asCircuit`)
   return q2circuit(store.getters.questions)
 })
 
+// recursively transform a QoutJS object from the store.questions into a Circuit object from LadderDiagram.
 function q2circuit(q) {
   if (q.andOr.tag == "Leaf") {
     let utf = (q.mark.value == "undefined" ? 'U' :
@@ -30,7 +30,7 @@ function q2circuit(q) {
     return new BoolVar(q.andOr.contents, // [TODO] nl.en || contents
                        false, // [TODO] this should depend on SimplyNot
                        q.mark.source == "default" ? utf : null,
-                       q.mark.source == "default" ? null : utf,
+                       q.mark.source == "user"    ? utf : null,
                       )
   }
 
@@ -40,6 +40,24 @@ function q2circuit(q) {
 }
 
 
+// mount the ladder diagram image into the template, using the ref to ladderHere
+const ld = computed(() => new LadderDiagram( 1.5, asCircuit.value, "Sides" ) )
+const ladderHere = ref()
+onMounted(() => { // console.log(`LadderDiagram: onMounted: appending LD element`);
+                  ladderHere.value.appendChild(ld.value.dom_diagram) })
+// update the ladder diagram every time the store updates
+onUpdated(() => { // console.log(`LadderDiagram: onUpdated: resetting LD element`);
+                  ladderHere.value.removeChild(ladderHere.value.firstElementChild);
+                  ladderHere.value.appendChild(ld.value.dom_diagram) })
+
+</script>
+
+<style>
+@import '~ladder-diagram/css/ladder.css';
+</style>
+
+<!--
+  
 // [TODO] this will come from the store
 const sampleData = ref(
   new AllQuantifier([
@@ -66,23 +84,5 @@ const sampleData = ref(
   ])
 )
 
-// mount the ladder diagram image into the template, using the ref to ladderHere
-
-const ld = computed(() => new LadderDiagram( 1.5,
-                                             asCircuit.value,
-                                             "Sides" )
-                   )
-
-const ladderHere = ref()
-
-onMounted(() => { console.log(`LadderDiagram: onMounted: appending LD element`);
-                  ladderHere.value.appendChild(ld.value.dom_diagram) })
-onUpdated(() => { console.log(`LadderDiagram: onUpdated: resetting LD element`);
-                  ladderHere.value.removeChild(ladderHere.value.firstElementChild);
-                  ladderHere.value.appendChild(ld.value.dom_diagram) })
-
-</script>
-
-<style>
-@import '~ladder-diagram/css/ladder.css';
-</style>
+-->
+  

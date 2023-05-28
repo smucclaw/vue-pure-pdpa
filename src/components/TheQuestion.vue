@@ -42,11 +42,11 @@ export default {
   },
   computed: {
     questions() {
-      console.log("questions", this.$store.getters.questions);
+// console.log("questions", this.$store.getters.questions);
       return this.$store.getters.questions;
     },
     statements() {
-      console.log("statements", this.$store.getters.statements);
+// console.log("statements", this.$store.getters.statements);
       return this.$store.getters.statements;
     },
     questionPrompt() {
