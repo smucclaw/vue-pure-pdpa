@@ -3,6 +3,7 @@ import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
 import * as PDPA from '../RuleLib/PDPADBNO.purs';
 
+import { BoolVar, AllQuantifier, AnyQuantifier } from "ladder-diagram"
 
 
 function getLins(PDPA) {
@@ -48,6 +49,15 @@ export default createStore({
     getMarkingField(state) {
       return getField(state.marking);
     },
+
+
+    asCircuit(state, getters) {
+      console.log(`asCircuit: building Circuits from input`)
+      let qs = getters.questions
+      console.log(JSON.stringify(qs,null,2))
+    }
+
+
   },
   mutations: {
     updateField,

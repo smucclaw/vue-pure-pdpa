@@ -2,15 +2,42 @@
 <div id="ladderTest1" style="font-size:1.5em;" ref="ladderHere"></div>
 <div id="debuggery">
   <h2>debug: AnyAll source</h2>
+  <pre>{{ JSON.stringify(asCircuit,null,2) }}</pre>
   <pre>{{ JSON.stringify(sampleData,null,2) }}</pre>
 </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
+  import { useStore } from 'vuex'
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
 
 const props = defineProps({question: Object})
+
+const store = useStore()
+
+const asCircuit = computed(() => {
+  return q2circuit(store.getters.questions)
+})
+
+function q2circuit(q) {
+  if (q.andOr.tag == "Leaf") {
+    let utf = (q.mark.value == "undefined" ? 'U' :
+               q.mark.value == "true"      ? 'T' :
+               q.mark.value == "false"     ? 'F' :
+               null)
+    return new BoolVar(q.andOr.contents, // [TODO] nl.en || contents
+                       false, // [TODO] this should depend on SimplyNot
+                       q.mark.source == "default" ? utf : null,
+                       q.mark.source == "default" ? null : utf,
+                      )
+  }
+
+  return (new
+          (q.andOr.tag == "All" ? AllQuantifier : AnyQuantifier)
+          (q.andOr.children.map((c) => q2circuit(c))))
+}
+
 
 // [TODO] this will come from the store
 const sampleData = ref(
@@ -38,15 +65,17 @@ const sampleData = ref(
   ])
 )
 
+// mount the ladder diagram image into the template, using the ref to ladderHere
+
 const ld = ref(new LadderDiagram( 1.5,
-                                  sampleData.value,
+                                  asCircuit.value,
                                   "Sides" )
                )
 
 const ladderHere = ref()
 
 onMounted(() => {
-  ladderHere.value.appendChild(ld.value.dom_diagram)
+  ladderHere.value.appendChild(ld.value.dom_diagram);
 })
 
 </script>
