@@ -51,13 +51,6 @@ export default createStore({
     },
 
 
-    asCircuit(state, getters) {
-      console.log(`asCircuit: building Circuits from input`)
-      let qs = getters.questions
-      console.log(JSON.stringify(qs,null,2))
-    }
-
-
   },
   mutations: {
     updateField,
