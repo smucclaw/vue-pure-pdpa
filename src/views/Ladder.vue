@@ -15,7 +15,7 @@ export default {
   name: 'Ladder',
   components: {
     TheQuestion,
-    QuestionDiagram,
+    LadderDiagram,
   },
 };
 </script>

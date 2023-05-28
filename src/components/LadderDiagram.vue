@@ -1,5 +1,5 @@
 <template>
-  <div id="ladderTest1" style="font-size:1.5em;">Future home of the Ladder diagrame</div>
+  <div id="ladderTest1" style="font-size:1.5em;">Future home of the Ladder diagram</div>
 </template>
 
 <script setup>
