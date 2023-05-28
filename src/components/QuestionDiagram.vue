@@ -1,10 +1,4 @@
-<template>
-  <div id="ladderTest1" style="font-size: 1.5em"></div>
-</template>
-
 <script>
-import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from "ladder-diagram";
-
 export default {
   name: "QuestionDiagram",
   props: {
@@ -37,7 +31,3 @@ export default {
   },
 };
 </script>
-
-<style module>
-@import "~ladder-diagram/css/ladder-sides.css";
-</style>
