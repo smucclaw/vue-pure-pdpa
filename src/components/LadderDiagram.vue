@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, onMounted } from 'vue'
+  import { ref, computed, onMounted, onUpdated } from 'vue'
   import { useStore } from 'vuex'
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
 
@@ -17,6 +17,7 @@ const props = defineProps({question: Object})
 const store = useStore()
 
 const asCircuit = computed(() => {
+  console.log(`LadderDiagram: computing asCircuit`)
   return q2circuit(store.getters.questions)
 })
 
@@ -67,16 +68,18 @@ const sampleData = ref(
 
 // mount the ladder diagram image into the template, using the ref to ladderHere
 
-const ld = ref(new LadderDiagram( 1.5,
-                                  asCircuit.value,
-                                  "Sides" )
-               )
+const ld = computed(() => new LadderDiagram( 1.5,
+                                             asCircuit.value,
+                                             "Sides" )
+                   )
 
 const ladderHere = ref()
 
-onMounted(() => {
-  ladderHere.value.appendChild(ld.value.dom_diagram);
-})
+onMounted(() => { console.log(`LadderDiagram: onMounted: appending LD element`);
+                  ladderHere.value.appendChild(ld.value.dom_diagram) })
+onUpdated(() => { console.log(`LadderDiagram: onUpdated: resetting LD element`);
+                  ladderHere.value.removeChild(ladderHere.value.firstElementChild);
+                  ladderHere.value.appendChild(ld.value.dom_diagram) })
 
 </script>
 
