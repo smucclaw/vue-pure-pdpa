@@ -22,6 +22,14 @@ const routes = [
       icon: faProjectDiagram,
     },
   },
+  {
+    path: '/ladder',
+    name: 'Ladder Diagram',
+    component: () => import('@/views/Ladder.vue'),
+    meta: {
+      icon: faProjectDiagram,
+    },
+  },
 ];
 
 const router = createRouter({
