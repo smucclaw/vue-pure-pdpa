@@ -44,7 +44,7 @@ module.exports = {
 // However, on our local servers, when we are doing dev on our laptops
 // or whatever, we don't have SSL certs for our localhosts, so we turn
 // off the HTTPS bits and expect to hit http://localhost:8888 or
-// whatever.
+// whatever. If you're on your laptop, do not set this environment variable.
 
 if (process.env.CCLAW_HTTPS) {
   module.exports.devServer = {
