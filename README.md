@@ -28,6 +28,7 @@ First, install nvm from https://nvm.sh/
 Then run the following set of install scripts, from inside the vue-pure-pdpa directory:
 
 ```shell
+$ nvm use
 $ nvm install
 $ nvm use
 $ nvm exec
@@ -54,9 +55,13 @@ $ npm run serve -- --port=8xxx
 
 If you have a working web app at the interface, you should be able to proceed to use this repo as part of the L4 backend.
 
+Note that "development" for an L4 coder is "production" for us, because our back-end has to be up, for them to dev.
+
+
+
 ### Building for Production
 
-To build the application for production, run:
+To build the application for production, like, a snapshot that a customer might potentially want to just run for a while:
 
 ```shell
 $ npm run build
@@ -111,6 +116,8 @@ We could pre-rsync the `vue-YY` directories at this point, too, with something l
 ```
 for yy in 01 02 03 04 05 06 07 08 09; do rsync -va vue-small/ vue-$yy/; done
 ```
+
+But we haven't quite gone that far yet.
 
 #### Spawning a new server
 
