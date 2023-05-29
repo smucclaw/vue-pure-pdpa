@@ -31,15 +31,27 @@ module.exports = {
 
 if (process.env.CCLAW_HTTPS) {
   module.exports.devServer = {
-    server: {
-     type: 'https',
-     options: {
-     key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
-     cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
-     },
+    https: {
+      key: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem'),
+      cert: fs.readFileSync('/etc/letsencrypt/live/cclaw.legalese.com/cert.pem'),
     },
     allowedHosts: "all",
     historyApiFallback: true,
   }
 }
+
+// previous version
+// if (process.env.CCLAW_HTTPS) {
+//   module.exports.devServer = {
+//     server: {
+//      type: 'https',
+//      options: {
+//      key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
+//      cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
+//      },
+//     },
+//     allowedHosts: "all",
+//     historyApiFallback: true,
+//   }
+// }
 
