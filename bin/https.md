@@ -142,14 +142,12 @@ This creates one further complication that when vue is started in http mode it c
 and it's unsecured one. So by default vue client in browser will try to talk to vue server on ws://host:18401 which is not served.
 This can be explicitely configured in `vue.config.js`
 
-```json
-{
+```javascript
     devServer: {
         client: {
-        webSocketURL: 'wss://cclaw.legalese.com:8408/ws'
+            webSocketURL: 'wss://cclaw.legalese.com:8408/ws'
         }
     }
-}
 ```
 But it needs to know port on the proxy. This can be still done by templating `vue.config` during generation of vue-0xx workdir as
 external port is known at the time of vue-0xx generation. But it further complicates setup and adds some more "magic".
