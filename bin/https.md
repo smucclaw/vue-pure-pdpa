@@ -49,10 +49,6 @@ flowchart LR
     nginx---id4
     linkStyle 0 stroke:red;
     linkStyle 1 stroke:red;
-    linkStyle 2 stroke:red;
-    linkStyle 3 stroke:red;
-    linkStyle 8 stroke:blue;
-    linkStyle 9 stroke:blue;
     linkStyle 4 stroke:blue;
     linkStyle 5 stroke:blue;
 ```
@@ -67,9 +63,9 @@ by adding 1 to the port number so https:8400 is forwarded to http:18400
 flowchart LR
     subgraph network
         direction LR
-        id1(( )) -- HTTPS --- network_port_8400(172:8400)
-        id2(( )) -- HTTPS --- network_port_8401(172:8401)
-        id5(( )) -- HTTP --- network_port_18401(172:18401)
+        https_172_8400(( )) -- HTTPS --- network_port_8400(172:8400)
+        https_172_8401(( )) -- HTTPS --- network_port_8401(172:8401)
+        https_172_18401(( )) -- HTTP --- network_port_18401(172:18401)
     end
     nginx[[nginx]]
     network_port_8400 --- nginx
@@ -77,22 +73,19 @@ flowchart LR
 
     subgraph localhost
         direction LR
-        id3(( )) -- http --- loop_port_18400(127:18400)
-        id4(( ))-- http --- loop_port_18401(127:18401)
+        http_127_8400(( )) -- http --- loop_port_18400(127:18400)
+        http_127_8401(( ))-- http --- loop_port_18401(127:18401)
     end
     gunicorn[[ gunicorn ]]
     loop_port_18400---gunicorn
     vue[[ vue ]]
     loop_port_18401---vue
-    nginx---id3
-    nginx---id4
+    nginx---http_127_8400
+    nginx---http_127_8401
     network_port_18401---vue
     linkStyle 0 stroke:red;
     linkStyle 1 stroke:red;
-    linkStyle 3 stroke:red;
-    linkStyle 4 stroke:red;
-    linkStyle 9 stroke:blue;
-    linkStyle 10 stroke:blue;
+    linkStyle 2 stroke:blue;
     linkStyle 5 stroke:blue;
     linkStyle 6 stroke:blue;
 ```
@@ -114,9 +107,9 @@ flowchart LR
         direction LR
         https_172_8400(( )) -- HTTPS --- network_port_8400(172:8400)
         https_172_8401(( )) -- HTTPS --- network_port_8401(172:8401)
+        wss_172_8401(( )) -- WSS --- network_port_8401(172:18401)
         http_172_8401(( )) -- HTTP --- network_port_18401(172:18401)
         ws_172_18401(( )) -- WS --- network_port_18401(172:18401)
-        wss_172_8401(( )) -- WSS --- network_port_8401(172:18401)
     end
     nginx[[nginx]]
     network_port_8400 --- nginx
@@ -136,6 +129,14 @@ flowchart LR
     nginx---http_127_8401
     nginx---ws_127_8401
     network_port_18401---vue
+    linkStyle 0 stroke:red;
+    linkStyle 1 stroke:red;
+    linkStyle 2 stroke:red;
+    linkStyle 3 stroke:blue;
+    linkStyle 4 stroke:blue;
+    linkStyle 7 stroke:blue;
+    linkStyle 8 stroke:blue;
+    linkStyle 9 stroke:blue;
 ```
 
 This creates one further complication that when vue is started in http mode it creates a WebSocket backlink dinamically
@@ -143,11 +144,11 @@ and it's unsecured one. So by default vue client in browser will try to talk to 
 This can be explicitely configured in `vue.config.js`
 
 ```javascript
-    devServer: {
-        client: {
-            webSocketURL: 'wss://cclaw.legalese.com:8408/ws'
-        }
+devServer: {
+    client: {
+        webSocketURL: 'wss://cclaw.legalese.com:8408/ws'
     }
+}
 ```
 But it needs to know port on the proxy. This can be still done by templating `vue.config` during generation of vue-0xx workdir as
 external port is known at the time of vue-0xx generation. But it further complicates setup and adds some more "magic".
