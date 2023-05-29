@@ -1,6 +1,6 @@
 ## Initial state.
-In initial state both gunicorn and vue expose https on both loopback(127.0.0.1)  and 
-network(172.x.x.x) interfaces and manage their own https config.
+In the initial state, both Gunicorn and Vue expose HTTPS on both the loopback (127.0.0.1) 
+and network (172.x.x.x) interfaces and manage their own HTTPS configuration.
 
 ```mermaid
 flowchart RL
@@ -18,12 +18,12 @@ flowchart RL
     vue---loop_port_8401
 ```
 
-This creates a drag during local development as https either needs to be disabled or configured.
-Disabling https while easy creates a spurious diffs in github.
-And configuration of https for local dev is unnecessary work.
+This creates a hassle during local development as HTTPS either needs to be disabled or configured.
+Disabling HTTPS, while easy, creates unnecessary differences in GitHub.
+Configuring HTTPS for local development is unnecessary work.
 
 ## Terminate https
-I thought it might be beneficial to terminate https on nginx and make gunicorn and vue always use plain http
+I thought it might be beneficial to terminate HTTPS on Nginx and have Gunicorn and Vue always use plain HTTP.
 
 ```mermaid
 flowchart LR
@@ -53,11 +53,11 @@ flowchart LR
     linkStyle 5 stroke:blue;
 ```
 
-## Complication #1: Vue doesn't give up network port.
+## Complication #1: Vue doesn't give up the network port.
 
-Unfortunately vue doesn't give up network port.
-So after some troubles I had to set up a less straightforward scheme where nginx proxies ports
-by adding 1 to the port number so https:8400 is forwarded to http:18400
+Unfortunately, Vue doesn't give up the network port. So, after encountering some troubles,
+I had to set up a less straightforward scheme where Nginx proxies the ports by adding 1 to the port number. 
+So HTTPS:8400 is forwarded to HTTP:18400.
 
 ```mermaid
 flowchart LR
@@ -96,10 +96,9 @@ proxy_pass http://127.0.0.1:1$server_port;
 ```
 Might confuse people as this is an unusual redirect setup.
 
-## Complication #2: Vue needs to proxy websocket too.
-
-Vue relies on WebSocket for communication between client(web browser) and server in dev mode.
-So it needs to be proxied too.
+## Complication #2: Vue needs to proxy WebSockets too.
+Vue relies on WebSockets for communication between the client (web browser) and the server in development mode. 
+Therefore, WebSockets need to be proxied as well.
 
 ```mermaid
 flowchart LR
@@ -139,9 +138,10 @@ flowchart LR
     linkStyle 9 stroke:blue;
 ```
 
-This creates one further complication that when vue is started in http mode it creates a WebSocket backlink dinamically
-and it's unsecured one. So by default vue client in browser will try to talk to vue server on ws://host:18401 which is not served.
-This can be explicitely configured in `vue.config.js`
+This creates a further complication that when Vue is started in HTTP mode, 
+it creates a dynamically unsecured WebSocket backlink. By default, the Vue client in the 
+browser will try to communicate with the Vue server on `ws://host:18401`, which is not served. 
+This can be explicitly configured in `vue.config.js`:
 
 ```javascript
 devServer: {
@@ -150,8 +150,9 @@ devServer: {
     }
 }
 ```
-But it needs to know port on the proxy. This can be still done by templating `vue.config` during generation of vue-0xx workdir as
-external port is known at the time of vue-0xx generation. But it further complicates setup and adds some more "magic".
+However, it needs to know the port on the proxy. This can still be done by templating `vue.config`
+during the generation of the `vue-0xx` work directory, as the external port is known at the time of 
+`vue-0xx` generation. But it further complicates the setup and adds some more "magic".
 
-Basically what was expected to be a simple proxy setup which simplifies config turned out to be a rather complex setup relying on non-standard
-configs and runtime template generation.
+Basically, what was expected to be a simple proxy setup that simplifies the configuration turned 
+out to be a rather complex setup relying on non-standard configurations and runtime template generation.
