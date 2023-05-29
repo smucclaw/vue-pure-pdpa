@@ -1,5 +1,5 @@
 ## Initial state.
-
+In initial state both gunicorn and vue expose https interface and manage their own https config.
 ```mermaid
 flowchart RL
     subgraph network
@@ -15,3 +15,7 @@ flowchart RL
     vue[[ vue ]]---network_port_8401
     vue---loop_port_8401
 ```
+
+This creates a drag during local development as https either needs to be disabled or configured.
+Disabling https while easy creates a spurious diffs in github.
+And configuration of https for local dev is unnecessary work.
