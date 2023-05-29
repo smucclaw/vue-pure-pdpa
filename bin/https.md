@@ -108,7 +108,7 @@ Might confuse people as this is an unusual redirect setup.
 Vue relies on WebSocket for communication between client(web browser) and server in dev mode.
 So it needs to be proxied too.
 
-```
+```mermaid
 flowchart LR
     subgraph network
         direction LR
@@ -143,9 +143,11 @@ and it's unsecured one. So by default vue client in browser will try to talk to 
 This can be explicitely configured in `vue.config.js`
 
 ```json
-devServer: {
-    client: {
-      webSocketURL: 'wss://cclaw.legalese.com:8408/ws',
+{
+    devServer: {
+        client: {
+        webSocketURL: 'wss://cclaw.legalese.com:8408/ws'
+        }
     }
 }
 ```
