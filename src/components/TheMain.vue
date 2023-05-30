@@ -11,7 +11,7 @@
         :key="menu.name"
         :to="menu.path"
       >
-        <FontAwesomeIcon class="icon is-small mr-2" :icon="menu.meta.icon" />
+        <!-- <FontAwesomeIcon class="icon is-small mr-2" :icon="menu.meta.icon" /> -->
         <span>{{ menu.name }}</span>
       </router-link>
       <span class="navbar-item" active-class="is-active">
@@ -33,7 +33,7 @@
         :key="menu.name"
         :to="menu.path"
       >
-        <FontAwesomeIcon :icon="menu.meta.icon" />
+        <!-- <FontAwesomeIcon :icon="menu.meta.icon" /> -->
         <p class="is-size-7">{{ menu.name }}</p>
       </router-link>
     </template>
@@ -69,6 +69,8 @@ export default {
     showLang(l) {
       this.chosenLang = l;
       this.$store.commit("updateLang", this.chosenLang);
+      console.log(this.chosenLang);
+      this.$router.push({ name: "LangQuestions", params: { lang: l } });
     },
   },
   beforeMount() {

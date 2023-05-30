@@ -9,13 +9,19 @@ const routes = [
     path: '/',
     name: 'Questions',
     component: () => import('@/views/Questions.vue'),
-    alias: '/questions',
     meta: {
       icon: faQuestionCircle,
     },
+    children: [
+      {
+        path: ':lang/question',
+        name: 'LangQuestions',
+        component: () => import('@/views/Questions.vue'),
+      },
+    ],
   },
   {
-    path: '/diagram',
+    path: '/:lang/diagram',
     name: 'Diagram',
     component: () => import('@/views/Diagram.vue'),
     meta: {
