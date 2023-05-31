@@ -13,7 +13,7 @@ import Data.String
 import Data.String as DString
 import Data.Symbol
 import Data.Map as Map
-import Option as Option
+import Option
 import Simple.JSON as JSON
 
 import Partial.Unsafe

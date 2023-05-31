@@ -99,8 +99,8 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.7-20220418/packages.dhall
-        sha256:2523a5659d0f3b198ffa2f800da147e0120578842e492a7148e4b44f357848b3
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.7-20230408/packages.dhall
+        sha256:eafb4e5bcbc2de6172e9457f321764567b33bc7279bd6952468d0d422aa33948
 
 in  upstream
   with foreign-generic =
@@ -117,27 +117,28 @@ in  upstream
         "https://github.com/working-group-purescript-es/purescript-foreign-generic.git"
     , version = "v11.0.0"
     }
-  with option =
+    with option =
     { dependencies =
-      [ "argonaut-codecs"
-      , "argonaut-core"
-      , "codec"
-      , "codec-argonaut"
-      , "either"
-      , "foreign"
-      , "foreign-object"
-      , "lists"
-      , "maybe"
-      , "profunctor"
-      , "prelude"
-      , "record"
-      , "simple-json"
-      , "transformers"
-      , "tuples"
-      , "type-equality"
-      , "typelevel-prelude"
-      , "unsafe-coerce"
-      ]
-    , repo = "https://github.com/joneshf/purescript-option.git"
-    , version = "8506cbf1fd5d5465a9dc990dfe6f2960ae51c1ab"
+    [ "argonaut-codecs"
+    , "argonaut-core"
+    , "codec"
+    , "codec-argonaut"
+    , "either"
+    , "foreign"
+    , "foreign-object"
+    , "lists"
+    , "maybe"
+    , "profunctor"
+    , "prelude"
+    , "record"
+    , "simple-json"
+    , "transformers"
+    , "tuples"
+    , "type-equality"
+    , "typelevel-prelude"
+    , "unsafe-coerce"
+    ]
+    , repo = "https://github.com/jmatsushita/purescript-option.git"
+    , version = "df2f7135acdeede30466a919de80384ba239cea1"
     }
+    

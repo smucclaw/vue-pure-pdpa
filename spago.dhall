@@ -23,7 +23,7 @@ to generate this file without the comments in this block.
   , "foreign-object"
   , "lists"
   , "maybe"
-  , "option"
+  , "options"
   , "ordered-collections"
   , "partial"
   , "prelude"
