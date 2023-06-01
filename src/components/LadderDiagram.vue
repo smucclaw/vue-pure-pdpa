@@ -41,14 +41,16 @@ function q2circuit(q) {
 
 
 // mount the ladder diagram image into the template, using the ref to ladderHere
-const ld = computed(() => new LadderDiagram( 1.5, asCircuit.value, "Sides" ) )
+const ld = computed(() => (dom) => new LadderDiagram( dom, asCircuit.value ) )
 const ladderHere = ref()
-onMounted(() => { // console.log(`LadderDiagram: onMounted: appending LD element`);
-                  ladderHere.value.appendChild(ld.value.dom_diagram) })
+onMounted(() => { console.log(`LadderDiagram: onMounted: appending LD element`);
+                  ld.value(ladderHere.value);
+                 })
 // update the ladder diagram every time the store updates
-onUpdated(() => { // console.log(`LadderDiagram: onUpdated: resetting LD element`);
+onUpdated(() => { console.log(`LadderDiagram: onUpdated: resetting LD element`);
                   ladderHere.value.removeChild(ladderHere.value.firstElementChild);
-                  ladderHere.value.appendChild(ld.value.dom_diagram) })
+                  ld.value(ladderHere.value);
+                 })
 
 </script>
 
