@@ -15,8 +15,13 @@
         <span>{{ menu.name }}</span>
       </router-link>
       <span class="navbar-item" active-class="is-active">
-        <button v-for="(lang, index) in langs" :key="index" @click="showLang(lang)">
+        <button v-for="(lang, index) in langs" :key="index" @click="toggleVizOptions(index)">
           {{ lang }}
+          <span class="viz-options" v-show="selectedIndex === index">
+            <button @click="showLang(lang, 'LangQuestions')">questions</button>
+            <button @click="showLang(lang, 'Diagram')">diagram</button>
+            <button @click="showLang(lang, 'Ladder')">ladder</button>
+          </span>
         </button>
       </span>
     </template>
@@ -55,6 +60,8 @@ export default {
       navigationLinks: [],
       langs: this.$store.getters.langs,
       chosenLang: "",
+      showOptions: new Array(this.$store.getters.langs.length).fill(false),
+      selectedIndex: null,
     };
   },
   computed: {
@@ -66,11 +73,14 @@ export default {
     },
   },
   methods: {
-    showLang(l) {
+    showLang(l, viz) {
       this.chosenLang = l;
       this.$store.commit("updateLang", this.chosenLang);
       console.log(this.chosenLang);
-      this.$router.push({ name: "LangQuestions", params: { lang: l } });
+      this.$router.push({ name: viz, params: { lang: this.chosenLang } });
+    },
+    toggleVizOptions(index) {
+      this.selectedIndex = index;
     },
   },
   beforeMount() {

@@ -3,38 +3,40 @@ import {
   faQuestionCircle,
   faProjectDiagram,
 } from '@fortawesome/free-solid-svg-icons';
+import store from '@/store/index.js';
 
 const routes = [
   {
     path: '/',
-    name: 'Questions',
-    component: () => import('@/views/Questions.vue'),
+    redirect: '/eng/questions',
+  },
+  {
+    path: '/:lang',
     meta: {
       icon: faQuestionCircle,
     },
     children: [
       {
-        path: ':lang/question',
+        path: '',
         name: 'LangQuestions',
         component: () => import('@/views/Questions.vue'),
       },
+      {
+        path: 'questions',
+        name: 'LangQuestions',
+        component: () => import('@/views/Questions.vue'),
+      },
+      {
+        path: 'diagram',
+        name: 'Diagram',
+        component: () => import('@/views/Diagram.vue'),
+      },
+      {
+        path: 'ladder',
+        name: 'Ladder',
+        component: () => import('@/views/Ladder.vue'),
+      },
     ],
-  },
-  {
-    path: '/:lang/diagram',
-    name: 'Diagram',
-    component: () => import('@/views/Diagram.vue'),
-    meta: {
-      icon: faProjectDiagram,
-    },
-  },
-  {
-    path: '/ladder',
-    name: 'Ladder Diagram',
-    component: () => import('@/views/Ladder.vue'),
-    meta: {
-      icon: faProjectDiagram,
-    },
   },
 ];
 
