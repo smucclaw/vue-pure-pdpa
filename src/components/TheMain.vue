@@ -16,7 +16,7 @@
       </router-link>
       <span class="navbar-item" active-class="is-active">
         <button v-for="(lang, index) in langs" :key="index" @click="toggleVizOptions(index)">
-          {{ lang }}
+          {{ langNames(lang) }}
           <span class="viz-options" v-show="selectedIndex === index">
             <button @click="showLang(lang, 'LangQuestions')">questions</button>
             <button @click="showLang(lang, 'Diagram')">diagram</button>
@@ -73,6 +73,14 @@ export default {
     },
   },
   methods: {
+    langNames(l) {
+      const fulllangs = {
+        nl4chi: "Chinese",
+        nl4eng: "English",
+        nl4may: "Malay",
+      };
+      return fulllangs[l];
+    },
     showLang(l, viz) {
       this.chosenLang = l;
       this.$store.commit("updateLang", this.chosenLang);
