@@ -1,9 +1,9 @@
 <template>
   <section>
-    <!-- <Notification class="is-always-on-top" :theme-color="responseTheme">
+    <Notification class="is-always-on-top" :theme-color="responseTheme">
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle">{{ responseMsg }}</p>
-    </Notification> -->
+    </Notification>
     <!-- Max: added columns, getTopLevelDecisions, changeQuestionPrompt, vertical-container -->
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
