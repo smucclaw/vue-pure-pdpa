@@ -84,18 +84,21 @@ function q2circuit(q) {
 const ladderHere = ref()
 const ld = computed(() => {
   // console.log(`in computed(ld): ladderHere.value = ${ladderHere.value}`);
-  return (new LadderDiagram( ladderHere.value, asCircuit.value));
+  return (new LadderDiagram( asCircuit.value));
 })
 onMounted(() => {
   // console.log(`ladderHere.value = ${ladderHere.value}`)
   // console.log(`LadderDiagram: onMounted: appending LD element`);
-  ladderHere.value.appendChild(ld.value.dom_diagram);
+  // ladderHere.value.appendChild(ld.value.dom_diagram);
+  ld.value.attach(ladderHere.value);
 })
 // update the ladder diagram every time the store updates
 onUpdated(() => {
   // console.log(`LadderDiagram: onUpdated: resetting LD element`);
   ladderHere.value.removeChild(ladderHere.value.firstElementChild);
-  ladderHere.value.appendChild(ld.value.dom_diagram);
+  // ladderHere.value.appendChild(ld.value.dom_diagram);
+  // ld.value.detach();
+  ld.value.attach(ladderHere.value);
 })
 
 </script>
