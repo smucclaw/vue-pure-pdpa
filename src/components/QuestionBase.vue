@@ -27,8 +27,9 @@
         </strong>
         <strong v-else>{{ question.andOr.contents }}</strong>
       </div>
-      <div class="is-answering" v-if="!isHidden">
-        <QuestionRadio v-model="leaf" />
+      <!-- Max: removed v-if="!isHidden" and added :disabled="isHidden" -->
+      <div class="is-answering">
+        <QuestionRadio v-model="leaf" :disabled="isHidden" />
       </div>
     </div>
   </div>
