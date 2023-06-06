@@ -89,7 +89,7 @@ You only have to do this once:
 ```
 mkdir ~/v8kworkdir
 cd ~/v8kworkdir
-export V8K_WORKDIR=~/v8kworkdir
+export V8K_WORKDIR=$HOME/v8kworkdir
 git clone git://github.com/smucclaw/vue-pure-pdpa
 rsync -va vue-pure-pdpa/ vue-big/
 (cd vue-big; npm i; npm run deps)
@@ -99,6 +99,8 @@ ln -s ../vue-big/.git .
 ln -s ../vue-big/node_modules .
 ln -s ../vue-big/.spago .
 ```
+
+Remember to update your gunicorn conf file to set V8K_WORKDIR to the path as above.
 
 This sets you up with `vue-small`, which is a copy of `vue-big`, which is a copy of the `vue-pure-pdpa` repo.
 
