@@ -90,7 +90,9 @@ You only have to do this once:
 mkdir ~/v8kworkdir
 cd ~/v8kworkdir
 export V8K_WORKDIR=~/v8kworkdir
-rsync -va ~/src/smucclaw/vue-pure-pdpa/ vue-big/
+git clone git://github.com/smucclaw/vue-pure-pdpa
+rsync -va vue-pure-pdpa/ vue-big/
+(cd vue-big; npm i; npm run deps)
 rsync -va --exclude={.spago,.git,node_modules} vue-big/ vue-small/
 cd vue-small
 ln -s ../vue-big/.git .
