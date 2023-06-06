@@ -8,7 +8,8 @@ import store from '@/store/index.js';
 const routes = [
   {
     path: '/',
-    redirect: '/eng/questions',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/eng/questions',
   },
   {
     path: '/:lang',

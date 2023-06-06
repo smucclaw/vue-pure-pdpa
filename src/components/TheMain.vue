@@ -4,16 +4,6 @@
       <div class="navbar-item">{{ appName }}</div>
     </template>
     <template v-slot:end>
-      <router-link
-        class="navbar-item"
-        active-class="is-active"
-        v-for="menu in navigationLinks"
-        :key="menu.name"
-        :to="menu.path"
-      >
-        <!-- <FontAwesomeIcon class="icon is-small mr-2" :icon="menu.meta.icon" /> -->
-        <span>{{ menu.name }}</span>
-      </router-link>
       <span class="navbar-item" active-class="is-active">
         <button v-for="(lang, index) in langs" :key="index" @click="toggleVizOptions(index)">
           {{ langNames(lang) }}
