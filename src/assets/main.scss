@@ -16,6 +16,12 @@
     appearance: none;
   }
 }
+.is-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: transparent;
+  opacity: 0.6;
+}
 
 $card-border-width: 1px !default;
 $card-border-color: rgba(#000, .125) !default;
