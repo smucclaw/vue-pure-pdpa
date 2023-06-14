@@ -1,0 +1,3 @@
+Please see the documentation for the Haskell version of this library for a concept guide.
+
+https://github.com/smucclaw/dsl/blob/main/lib/haskell/anyall/README.org#introduction-to-concepts-and-the-relevance-calculus
