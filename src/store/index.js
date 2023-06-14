@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
-import * as PDPA from '../RuleLib/Interview.purs';
+import * as PDPA from '../RuleLib/PDPADBNO.purs';
 
 import { BoolVar, AllQuantifier, AnyQuantifier } from "ladder-diagram"
 
