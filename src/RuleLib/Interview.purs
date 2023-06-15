@@ -15,8 +15,8 @@ import Foreign.Object as Object
 
 import AnyAll.Types
 
-schedule1_part1 :: Item String
-schedule1_part1 =
+interviewRules :: Item String
+interviewRules =
 
    All
     ( Pre "all of:" )
@@ -33,8 +33,8 @@ schedule1_part1 =
 
 
 
-schedule1_part1_nl :: NLDict
-schedule1_part1_nl =
+interviewRules_nl :: NLDict
+interviewRules_nl =
   Map.fromFoldable
     [ ]
     

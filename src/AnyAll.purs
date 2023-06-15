@@ -96,8 +96,8 @@ example1_nl =
 
 example1_encoded = encode example1
 
-pdpa_dbno_s1p1 = RuleLib.Interview.schedule1_part1
-pdpa_dbno_s1p1_nl = RuleLib.Interview.schedule1_part1_nl
+pdpa_dbno_s1p1 = RuleLib.Interview.interviewRules
+pdpa_dbno_s1p1_nl = RuleLib.Interview.interviewRules_nl
 
 emptyMarking = markup Map.empty
 
