@@ -10,7 +10,7 @@ import AnyAll.Relevance (relevant)
 import RuleLib.Interview as RuleLib.Interview
 
 import Partial.Unsafe (unsafeCrashWith)
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.Either (Either(..), either)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))

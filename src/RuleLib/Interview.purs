@@ -10,7 +10,7 @@ import Prelude
 import Data.Either
 import Data.Maybe
 import Data.Tuple
-import Data.Map as Map
+import Data.HashMap as Map
 import Foreign.Object as Object
 
 import AnyAll.Types
@@ -95,5 +95,6 @@ nl4may = Object.fromFoldable [ Tuple "Person"
 ]
 nl4mayMarking :: Marking
 nl4mayMarking = Marking $ Map.fromFoldable []
+
 
 allLang = ["nl4chi", "nl4eng", "nl4may"]

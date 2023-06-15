@@ -3,9 +3,8 @@ module AnyAll.Relevance where
 import AnyAll.Types
 import Prelude
 
-import Data.Set as Set
 import Data.Tuple
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.List (any, all, elem, List(..))
 import Data.Foldable (class Foldable)
 
@@ -38,7 +37,7 @@ relevant sh dp marking parentValue nl self =
   -- to a dictionary of { langID: longtext }
   nlMap word nldict =
     let
-      langs = Set.toUnfoldable $ Map.keys nldict :: Array String
+      langs = Map.keys nldict
     in
       Map.fromFoldable $ do
         lg <- langs

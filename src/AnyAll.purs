@@ -37,7 +37,7 @@ import AnyAll.Relevance (relevant)
 import RuleLib.Interview as RuleLib.Interview
 
 import Partial.Unsafe
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.Either (Either(..), fromRight, either)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
