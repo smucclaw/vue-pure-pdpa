@@ -12,7 +12,6 @@ import Data.Maybe
 import Data.String
 import Data.String as DString
 import Data.Symbol
-import Data.Hashable
 import Data.HashMap as Map
 import Option as Option
 import Simple.JSON as JSON
