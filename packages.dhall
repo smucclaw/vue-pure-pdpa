@@ -108,7 +108,6 @@ in  upstream
       [ "effect"
       , "foreign"
       , "foreign-object"
-      , "unordered-collections"
       , "exceptions"
       , "record"
       , "identity"
