@@ -12,7 +12,7 @@ import Data.Maybe
 import Data.String
 import Data.String as DString
 import Data.Symbol
-import Data.HashMap as Map
+import Data.Map as Map
 import Option as Option
 import Simple.JSON as JSON
 
@@ -94,19 +94,19 @@ label2pre (PrePost x y) = x
 label2post (PrePost x y) = y
 label2post (Pre x) = "" -- maybe throw an error?
 
-type NLDict = Map.HashMap String (Map.HashMap String String)
+type NLDict = Map.Map String (Map.Map String String)
 
 -- an Item tree represents the logic. The logic is immutable, at least within the short-term lifetime of a user session.
 -- By contrast, a Marking contains the current state of which elements have received user input;
 -- if no user input was received, the Marking gives default values. This gets updated every time the user clicks something.
 
-newtype Marking = Marking (Map.HashMap String (Default Bool))
+newtype Marking = Marking (Map.Map String (Default Bool))
 
 derive instance eqMarking :: Eq (Marking)
 derive instance genericMarking :: Generic Marking _
 derive newtype instance showMarking :: Show (Marking)
 instance encodeMarking :: Encode Marking where
-  encode (Marking mymap) = unsafeToForeign $ FO.fromFoldable $ Map.toArrayBy Tuple $ (dumpDefault <$> mymap)
+  encode (Marking mymap) = unsafeToForeign $ FO.fromFoldable (Map.toUnfoldable (dumpDefault <$> mymap) :: List _)
 
 -- should this be decodeMarking?
 instance decodeMarking :: Decode Marking where
@@ -132,7 +132,7 @@ readDefault fm mk = do
         _ -> Nothing
   pure $ Tuple mk (lr mb)
 
-markup :: Map.HashMap String (Either (Maybe Boolean) (Maybe Boolean)) -> Marking
+markup :: Map.Map String (Either (Maybe Boolean) (Maybe Boolean)) -> Marking
 markup x = Marking $ Default <$> x
 
 getMarking (Marking mymap) = mymap
@@ -163,7 +163,7 @@ type DefaultRecord =
 newtype Q = Q
   { shouldView :: ShouldView
   , andOr :: AndOr String
-  , tagNL :: Map.HashMap String String
+  , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
   , mark :: Default Bool
   , children :: Array Q
@@ -177,7 +177,7 @@ instance showQ :: Show (Q) where
 type R =
   { shouldView :: ShouldView
   , andOr :: AndOr String
-  , tagNL :: Map.HashMap String String
+  , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
   , mark :: Default Bool
   }
@@ -238,7 +238,7 @@ qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
     }
   where
   miniNL =
-    FO.fromFoldable (Map.toArrayBy Tuple tagNL :: Array (Tuple String String))
+    FO.fromFoldable (Map.toUnfoldable tagNL :: Array (Tuple String String))
 
 newtype PrePostRecord = PPR (Option.Option (pre :: String, post :: String))
 
@@ -328,13 +328,13 @@ getSV sv1 (Q sv2 (Simply x) pp m)
   | otherwise  = Nothing
 getSV _ _ = Nothing
 
-getAsks :: (ToJSONKey a, Ord a) => QTree a -> Map.HashMap a (Default Bool)
+getAsks :: (ToJSONKey a, Ord a) => QTree a -> Map.Map a (Default Bool)
 getAsks qt = Map.fromList $ catMaybes $ getSV Ask <$> flatten qt
 
 getAsksJSON :: (ToJSONKey a, Ord a) => QTree a -> B.ByteString
 getAsksJSON = encode . getAsks
 
-getViews :: (ToJSONKey a, Ord a) => QTree a -> Map.HashMap a (Default Bool)
+getViews :: (ToJSONKey a, Ord a) => QTree a -> Map.Map a (Default Bool)
 getViews qt = Map.fromList $ catMaybes $ getSV View <$> flatten qt
 
 getViewsJSON :: (ToJSONKey a, Ord a) => QTree a -> B.ByteString
