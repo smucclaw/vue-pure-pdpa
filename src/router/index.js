@@ -5,39 +5,49 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import store from '@/store/index.js';
 
+
 const routes = [
   {
     path: '/',
     component: () => import('@/views/Questions.vue'),
-    alias: '/eng/questions',
+    alias: '/nl4eng/questions',
   },
   {
-    path: '/:lang',
-    meta: {
-      icon: faQuestionCircle,
+    path: '/nl4eng',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/nl4eng/questions',
+    beforeEnter: (to, from, next) => {
+      store.commit('updateLang', 'nl4eng');
+      next();
     },
-    children: [
-      {
-        path: '',
-        name: 'LangQuestions',
-        component: () => import('@/views/Questions.vue'),
-      },
-      {
-        path: 'questions',
-        name: 'LangQuestions',
-        component: () => import('@/views/Questions.vue'),
-      },
-      {
-        path: 'diagram',
-        name: 'Diagram',
-        component: () => import('@/views/Diagram.vue'),
-      },
-      {
-        path: 'ladder',
-        name: 'Ladder',
-        component: () => import('@/views/Ladder.vue'),
-      },
-    ],
+  },
+  {
+    path: '/nl4chi',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/nl4chi/questions',
+    beforeEnter: (to, from, next) => {
+      store.commit('updateLang', 'nl4chi');
+      next();
+    },
+  },
+  {
+    path: '/nl4may',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/nl4may/questions',
+    beforeEnter: (to, from, next) => {
+      store.commit('updateLang', 'nl4may');
+      next();
+    },
+  },
+  {
+    path: '/nl4eng',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/nl4eng/questions',
+    beforeEnter: (to, from, next) => {
+      // Call your desired function here
+      store.commit('updateLang', 'nl4eng');
+      next();
+    },
   },
 ];
 
@@ -46,7 +56,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(() => {
+router.beforeEach(async (to, from) => {
   const name = process.env.VUE_APP_BROWSER_NAME;
   const isEmpty = !name || name === '';
 

@@ -5,13 +5,12 @@
     </template>
     <template v-slot:end>
       <span class="navbar-item" active-class="is-active">
-        <button v-for="(lang, index) in langs" :key="index" @click="toggleVizOptions(index)">
+        <button
+          v-for="(lang, index) in langs"
+          :key="index"
+          @click="showLang(lang, 'LangQuestions')"
+        >
           {{ langNames(lang) }}
-          <span class="viz-options" v-show="selectedIndex === index">
-            <button @click="showLang(lang, 'LangQuestions')">questions</button>
-            <button @click="showLang(lang, 'Diagram')">diagram</button>
-            <button @click="showLang(lang, 'Ladder')">ladder</button>
-          </span>
         </button>
       </span>
     </template>
@@ -74,11 +73,6 @@ export default {
     showLang(l, viz) {
       this.chosenLang = l;
       this.$store.commit("updateLang", this.chosenLang);
-      console.log(this.chosenLang);
-      this.$router.push({ name: viz, params: { lang: this.chosenLang } });
-    },
-    toggleVizOptions(index) {
-      this.selectedIndex = index;
     },
   },
   beforeMount() {
