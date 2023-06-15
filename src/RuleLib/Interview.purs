@@ -4,7 +4,7 @@
 -- Do not edit by hand.
 -- Instead, revise the toolchain starting at smucclaw/dsl/lib/haskell/natural4/app/Main.hs
 
-module RuleLib.PDPADBNO where
+module RuleLib.Interview where
 
 import Prelude
 import Data.Either
