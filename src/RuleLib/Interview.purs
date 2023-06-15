@@ -4,19 +4,19 @@
 -- Do not edit by hand.
 -- Instead, revise the toolchain starting at smucclaw/dsl/lib/haskell/natural4/app/Main.hs
 
-module RuleLib.PDPADBNO where
+module RuleLib.Interview where
 
 import Prelude
 import Data.Either
 import Data.Maybe
 import Data.Tuple
-import Data.Map as Map
+import Data.HashMap as Map
 import Foreign.Object as Object
 
 import AnyAll.Types
 
-schedule1_part1 :: Item String
-schedule1_part1 =
+interviewRules :: Item String
+interviewRules =
 
    All
     ( Pre "all of:" )
@@ -33,8 +33,8 @@ schedule1_part1 =
 
 
 
-schedule1_part1_nl :: NLDict
-schedule1_part1_nl =
+interviewRules_nl :: NLDict
+interviewRules_nl =
   Map.fromFoldable
     [ ]
     
@@ -95,5 +95,6 @@ nl4may = Object.fromFoldable [ Tuple "Person"
 ]
 nl4mayMarking :: Marking
 nl4mayMarking = Marking $ Map.fromFoldable []
+
 
 allLang = ["nl4chi", "nl4eng", "nl4may"]

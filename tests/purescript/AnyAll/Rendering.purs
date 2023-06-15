@@ -7,10 +7,10 @@ import Control.Monad.Error.Class (class MonadThrow)
 
 import AnyAll.Types
 import AnyAll.Relevance (relevant)
-import RuleLib.PDPADBNO as RuleLib.PDPADBNO
+import RuleLib.Interview as RuleLib.Interview
 
 import Partial.Unsafe (unsafeCrashWith)
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.Either (Either(..), either)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
@@ -45,8 +45,8 @@ example1_nl =
         ]
     ]
 
-pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
-pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
+pdpa_dbno_s1p1 = RuleLib.Interview.interviewRules
+pdpa_dbno_s1p1_nl = RuleLib.Interview.interviewRules_nl
 
 emptyMarking :: Marking
 emptyMarking = markup Map.empty
@@ -125,5 +125,5 @@ spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
 spec = describe "Render" do
   it "Example 1" do
     (paintQ marking1 example1_nl example1) `shouldEqual` myq
-  -- it "PDPA" do
+  -- it "Interview" do
   --   (paintQ emptyMarking pdpa_dbno_s1p1_nl pdpa_dbno_s1p1) `shouldEqual` pdpaQ2

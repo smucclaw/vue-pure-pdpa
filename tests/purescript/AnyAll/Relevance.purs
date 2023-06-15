@@ -6,7 +6,7 @@ import Effect.Exception (Error)
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import AnyAll.Types (Default(..), Hardness(..), Item(..), Label(..), Marking(..))
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.Tuple (Tuple(..))
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
