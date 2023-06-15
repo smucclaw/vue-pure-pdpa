@@ -34,7 +34,7 @@ import Effect.Console (log)
 
 import AnyAll.Types
 import AnyAll.Relevance (relevant)
-import RuleLib.PDPADBNO as RuleLib.PDPADBNO
+import RuleLib.Interview as RuleLib.Interview
 
 import Partial.Unsafe
 import Data.HashMap as Map
@@ -96,8 +96,8 @@ example1_nl =
 
 example1_encoded = encode example1
 
-pdpa_dbno_s1p1 = RuleLib.PDPADBNO.schedule1_part1
-pdpa_dbno_s1p1_nl = RuleLib.PDPADBNO.schedule1_part1_nl
+pdpa_dbno_s1p1 = RuleLib.Interview.schedule1_part1
+pdpa_dbno_s1p1_nl = RuleLib.Interview.schedule1_part1_nl
 
 emptyMarking = markup Map.empty
 

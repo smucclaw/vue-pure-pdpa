@@ -96,4 +96,5 @@ nl4may = Object.fromFoldable [ Tuple "Person"
 nl4mayMarking :: Marking
 nl4mayMarking = Marking $ Map.fromFoldable []
 
+
 allLang = ["nl4chi", "nl4eng", "nl4may"]
