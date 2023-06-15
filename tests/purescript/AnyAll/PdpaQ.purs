@@ -1,7 +1,7 @@
 module AnyAll.PdpaQ where
 
 import AnyAll.Types
-import Data.HashMap as Map
+import Data.Map as Map
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Data.Either (Either(..))

@@ -37,7 +37,7 @@ import AnyAll.Relevance (relevant)
 import RuleLib.Interview as RuleLib.Interview
 
 import Partial.Unsafe
-import Data.HashMap as Map
+import Data.Map as Map
 import Data.Either (Either(..), fromRight, either)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
@@ -96,8 +96,8 @@ example1_nl =
 
 example1_encoded = encode example1
 
-pdpa_dbno_s1p1 = RuleLib.Interview.interviewRules
-pdpa_dbno_s1p1_nl = RuleLib.Interview.interviewRules_nl
+pdpa_dbno_s1p1 = RuleLib.Interview.schedule1_part1
+pdpa_dbno_s1p1_nl = RuleLib.Interview.schedule1_part1_nl
 
 emptyMarking = markup Map.empty
 
