@@ -5,7 +5,7 @@ import Prelude
 
 import Data.Set as Set
 import Data.Tuple
-import Data.Map as Map
+import Data.HashMap as Map
 import Data.List (any, all, elem, List(..))
 import Data.Foldable (class Foldable)
 

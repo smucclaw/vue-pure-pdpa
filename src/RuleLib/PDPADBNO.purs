@@ -10,7 +10,7 @@ import Prelude
 import Data.Either
 import Data.Maybe
 import Data.Tuple
-import Data.Map as Map
+import Data.HashMap as Map
 import Foreign.Object as Object
 
 import AnyAll.Types
