@@ -107,7 +107,7 @@ derive instance eqMarking :: Eq (Marking)
 derive instance genericMarking :: Generic Marking _
 derive newtype instance showMarking :: Show (Marking)
 instance encodeMarking :: Encode Marking where
-  encode (Marking mymap) = unsafeToForeign $ FO.fromFoldable (Map.toUnfoldable (dumpDefault <$> mymap) :: List _)
+  encode (Marking mymap) = unsafeToForeign $ FO.fromFoldable $ Map.toArrayBy Tuple $ (dumpDefault <$> mymap)
 
 -- should this be decodeMarking?
 instance decodeMarking :: Decode Marking where
@@ -239,7 +239,7 @@ qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
     }
   where
   miniNL =
-    FO.fromFoldable (Map.toUnfoldable tagNL :: Array (Tuple String String))
+    FO.fromFoldable (Map.toArrayBy Tuple tagNL :: Array (Tuple String String))
 
 newtype PrePostRecord = PPR (Option.Option (pre :: String, post :: String))
 
