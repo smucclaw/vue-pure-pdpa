@@ -32,11 +32,23 @@ export default createStore({
       return state.allLangs;
     },
     questions(state) {
+      console.log(`store: state.topLDbody=${state.topLDBody}`)
       if (!state.topLDBody) {
+	console.log(`store: ! state.topLDbody`)
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(topLDBody);
+	console.log(`store: topLDbody =`)
+	console.log(topLDBody)
+	let painted = AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(topLDBody);
+	console.log(`store: paint result`)
+	console.log(painted)
+        return painted
       }
-      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(state.topLDBody);
+
+      console.log(`store: true state.topLDbody`)
+      let painted = AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(state.topLDBody);
+      console.log(`store: paint result`)
+      console.log(painted)
+      return painted
     },
     questionPrompt(state) {
       const heads = AnyAll.heads(state.topLD);
