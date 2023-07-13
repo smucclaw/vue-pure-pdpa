@@ -56,19 +56,23 @@ module.exports = {
 // or whatever, we don't have SSL certs for our localhosts, so we turn
 // off the HTTPS bits and expect to hit http://localhost:8888 or
 // whatever. If you're on your laptop, do not set this environment variable.
+module.exports.devServer = {
+  allowedHosts: "all",
+  historyApiFallback: true,
+}
 
 if (process.env.CCLAW_HTTPS) {
-  module.exports.devServer = {
-    server: {
+  module.exports.devServer.server = {
      type: 'https',
      options: {
      key:  '/etc/letsencrypt/live/cclaw.legalese.com/privkey.pem',
      cert: '/etc/letsencrypt/live/cclaw.legalese.com/cert.pem',
      },
-    },
-    allowedHosts: "all",
-    historyApiFallback: true,
-  }
+    }
 }
 
-
+if (process.env.LEGALSS_PROXY_PORT) {
+  module.exports.devServer.client = {
+      webSocketURL: `wss://cclaw.legalese.com/port/${process.env.LEGALSS_PROXY_PORT}/ws`
+  }
+}
