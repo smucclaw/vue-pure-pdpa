@@ -226,8 +226,9 @@ qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
   QoutJS $ Option.fromRecord
     { shouldView: show shouldView
     , andOr: case andOr of
-        And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: miniNL }
-        Or -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: miniNL }
+        And   -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: miniNL }
+        Or    -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: miniNL }
+        AONot -> Option.fromRecord { tag: "Not", children: qoutjs <$> children, nl: miniNL }
         (Simply x) -> Option.fromRecord
           { tag: "Leaf"
           , contents: Just x
@@ -269,8 +270,9 @@ instance encodeShouldView :: Encode ShouldView where
   encode eta = genericEncode defaultOptions eta
 
 data AndOr a
-  = And -- All
-  | Or -- And
+  = And      -- All
+  | Or       -- And
+  | AONot    -- Not
   | Simply a -- Leaf
 
 derive instance eqAndOr :: (Eq a) => Eq (AndOr a)
@@ -368,8 +370,9 @@ forD3 lang (Q q) = ForD3
   }
   where
   qName = case q.andOr of
-    And -> maybe "all of" ( {- getNL <<< -} label2pre) q.prePost
-    Or -> maybe "any of" ( {- getNL <<< -} label2pre) q.prePost
+    And   -> maybe "all of" ( {- getNL <<< -} label2pre) q.prePost
+    Or    -> maybe "any of" ( {- getNL <<< -} label2pre) q.prePost
+    AONot -> maybe "negation of" ( {- getNL <<< -} label2pre) q.prePost
     (Simply x) -> shorten 45 $ getNL x
   getNL x = case Map.lookup lang q.tagNL of
     Nothing -> x

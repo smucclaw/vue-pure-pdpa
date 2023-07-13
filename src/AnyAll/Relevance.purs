@@ -27,10 +27,10 @@ relevant sh dp marking parentValue nl self =
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
-      Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
-      Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label items -> mkQ (ask2view initVis) Or  (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
-      All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
+      Leaf x          -> mkQ (initVis)         (Simply x) (nlMap x nl)                   Nothing     (lookupMarking x marking)  []
+      Not x           -> mkQ (initVis)          AONot     Map.empty                      Nothing     (Default $ Left selfValue) paintedChildren
+      Any label items -> mkQ (ask2view initVis) Or        (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
+      All label items -> mkQ (ask2view initVis) And       (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self
   where
@@ -47,8 +47,8 @@ relevant sh dp marking parentValue nl self =
           longtext = fromMaybe "" (Map.lookup word lgDict)
         pure $ Tuple lg longtext
 
-  getChildren (Leaf _) = []
-  getChildren (Not x) = getChildren x
+  getChildren (Leaf _)  = []
+  getChildren (Not x)   = [x]
   getChildren (Any _ c) = c
   getChildren (All _ c) = c
 
