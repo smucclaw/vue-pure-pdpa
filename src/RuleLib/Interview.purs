@@ -16,15 +16,9 @@ import AnyAll.Types
 interviewRules :: Item String
 interviewRules =  All
     ( Pre "all of:" )
-    [ All
-        ( Pre "all of:" )
-        [ Leaf "does the person walk?"
-        , Any
-            ( Pre "any of:" )
-            [ Leaf "does the person eat?"
-            , Leaf "does the person drink?"
-            ]
-        ]
+    [ Leaf "are you a public agency?"
+    , Leaf "did the data breach occur on or after 1 Feb 2022?"
+    , Leaf "have you become aware that a data breach may have occurred?"
     ]
 
 
@@ -35,64 +29,478 @@ interviewRules_nl =
 
 nl4chi :: Object.Object (Item String)
 nl4chi = Object.fromFoldable
-  [ Tuple "Person"
+  [ Tuple "Notify Individuals / Notify PDPC"
     ( All
         ( Pre "all of:" )
         [ All
             ( Pre "all of:" )
-            [ Leaf "人 走 吗？"
+            [ Any
+                ( Pre "any of:" )
+                [ Any
+                    ( PrePost "有 any unauthorised 的 吗" "personal data 的" )
+                    [ Leaf "access 吗？"
+                    , Leaf "use 吗？"
+                    , Leaf "disclosure 吗？"
+                    , Leaf "copying 吗？"
+                    , Leaf "modification 吗？"
+                    , Leaf "disposal 吗？"
+                    ]
+                , Any
+                    ( PrePost "loss of storage medium on which personal data is stored in circumstances where the unauthorised" "of the personal data is likely to occur" )
+                    [ Leaf "access 吗？"
+                    , Leaf "use 吗？"
+                    , Leaf "disclosure 吗？"
+                    , Leaf "copying 吗？"
+                    , Leaf "modification 吗？"
+                    , Leaf "disposal 吗？"
+                    ]
+                ]
+            , Not
+                ( Leaf "数 据 泄 露 在 只 有 organisation 内 发 生 了 吗？" )
             , Any
                 ( Pre "any of:" )
-                [ Leaf "人 吃 吗？"
-                , Leaf "人 喝 吗？"
+                [ All
+                    ( Pre "all of:" )
+                    [ All
+                        ( Pre "all of:" )
+                        [ Any
+                            ( Pre "the data breach relates to the individual's" )
+                            [ Leaf "full name 吗？"
+                            , Leaf "alias 吗？"
+                            , Leaf "identification number 吗？"
+                            ]
+                        , Any
+                            ( Pre "any of:" )
+                            [ Leaf "1 The amount of any wages, salary, fee, commission, bonus, gratuity, allowance or other remuneration paid or payable to the individual by any person, whether under a contract of service or a contract for services. 吗？"
+                            , Leaf "2 The income of the individual from the sale of any goods or property. 吗？"
+                            , Leaf "3 The number of any credit card, charge card or debit card issued to or in the name of the individual. 吗？"
+                            , Leaf "4 The number assigned to any account the individual has with any organisation that is a bank or finance company. 吗？"
+                            , Any
+                                ( Pre "5 Any information that identifies, or is likely to lead to the identification of, the individual as a child or young person who" )
+                                [ Leaf "5.a is or had been the subject of any investigation under the CYPA; 吗？"
+                                , Leaf "5.b is or had been arrested, on or after 1 July 2020, for an offence committed under any written law; 吗？"
+                                , Leaf "5.c is or had been taken into care or custody by the Director-General of Social Welfare, a protector, any officer generally or specially authorised in that behalf in writing by the Director-General or protector or a police officer under the CYPA; 吗？"
+                                , Leaf "5.d is attending or had attended a family programme in relation to an application to be made under section 50 of the CYPA; 吗？"
+                                , Leaf "5.e is or was the subject of an order made by a court under the CYPA; or 吗？"
+                                , Leaf "5.f is or had been concerned in any proceedings in any court or on appeal from any court, whether the individual is the person against or in respect of whom the proceedings are taken or a witness in those proceedings. 吗？"
+                                ]
+                            , Any
+                                ( Pre "6 Any information that identifies, or is likely to lead to the identification of b" )
+                                [ Leaf "6.a the individual who has been or is the subject of any investigation, examination, assessment or treatment under the VAA relating to whether the individual is a vulnerable adult experiencing or at risk of abuse, neglect or self-neglect; 吗？"
+                                , Leaf "6.b the individual as a vulnerable adult who has been committed to a place of temporary care and protection or place of safety or to the care of a fit person under the VAA; 吗？"
+                                , Leaf "6.c the individual as a vulnerable adult who is the subject of an order made by a court under the VAA; 吗？"
+                                , Leaf "6.d a place of temporary care and protection or place of safety in which an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is committed, or the location of such a place of temporary care and protection or place of safety; or 吗？"
+                                , Leaf "6.e a fit person under whose care an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is placed, or the location of the premises of such a fit person. 吗？"
+                                ]
+                            , Any
+                                ( Pre "7 Any private key of or relating to the individual that is used or may be used" )
+                                [ Leaf "7.a to create a secure electronic record or secure electronic signature; 吗？"
+                                , Leaf "7.b to verify the integrity of a secure electronic record; or 吗？"
+                                , Leaf "7.c to verify the authenticity or integrity of a secure electronic signature. 吗？"
+                                ]
+                            , Leaf "8 The net worth of the individual. 吗？"
+                            , Leaf "9 The deposit of moneys by the individual with any organisation. 吗？"
+                            , Leaf "10 The withdrawal by the individual of moneys deposited with any organisation. 吗？"
+                            , Leaf "11 The granting by an organisation of advances, loans and other facilities by which the individual, being a customer of the organisation, has access to funds or financial guarantees. 吗？"
+                            , Leaf "12 The incurring by the organisation of any liabilities other than those mentioned in paragraph 11 on behalf of the individual. 吗？"
+                            , Leaf "13 The payment of any moneys, or transfer of any property, by any person to the individual, including the amount of the moneys paid or the value of the property transferred, as the case may be. 吗？"
+                            , Leaf "14 The creditworthiness of the individual. 吗？"
+                            , Leaf "15 The individual's investment in any capital markets products. 吗？"
+                            , Any
+                                ( Pre "16 The existence, and amount due or outstanding, of any debt" )
+                                [ Leaf "16.a owed by the individual to an organisation; or 吗？"
+                                , Leaf "16.b owed by an organisation to the individual. 吗？"
+                                ]
+                            , Any
+                                ( Pre "17 Any of the following:" )
+                                [ Leaf "17.a the terms and conditions of any accident and health policy or life policy (called in this item the applicable policy) of which the individual is the policy owner or under which the individual is a beneficiary; 吗？"
+                                , Leaf "17.b the premium payable by the policy owner under the applicable policy; 吗？"
+                                , Leaf "17.c the benefits payable to any beneficiary under the applicable policy; 吗？"
+                                , Leaf "17.d any information relating to any claim on, or payment under, the applicable policy, including the condition of the health of the individual and the diagnosis, treatment, prevention or alleviation of any ailment, condition, disability, disease, disorder or injury that the individual has suffered or is suffering from; 吗？"
+                                , Leaf "17.e any other information that the individual is the policy owner of, or a beneficiary under, an applicable policy. 吗？"
+                                ]
+                            , Any
+                                ( Pre "18 The assessment, diagnosis, treatment, prevention or alleviation by a health professional of any of the following affecting the individual:" )
+                                [ Leaf "18.a any sexually-transmitted disease such as Chlamydial Genital Infection, Gonorrhoea and Syphilis; 吗？"
+                                , Leaf "18.b Human Immunodeficiency Virus Infection; 吗？"
+                                , Leaf "mental illness; 吗？"
+                                , Leaf "18.c schizophrenia or delusional disorder; 吗？"
+                                , Leaf "18.d substance abuse and addiction, including drug addiction and alcoholism 吗？"
+                                ]
+                            , Any
+                                ( Pre "19 The provision of treatment to the individual for or in respect of" )
+                                [ Leaf "19.a the donation or receipt of a human egg or human sperm; or 吗？"
+                                , Leaf "19.b any contraceptive operation or procedure or abortion. 吗？"
+                                ]
+                            , Any
+                                ( Pre "20 Any of the following:" )
+                                [ Leaf "20.a subject to section 4(4)(b) of the Act, the donation and removal of any organ from the body of the deceased individual for the purpose of its transplantation into the body of another individual; 吗？"
+                                , Leaf "20.b the donation and removal of any specified organ from the individual, being a living organ donor, for the purpose of its transplantation into the body of another individual; 吗？"
+                                , Leaf "20.c the transplantation of any organ mentioned in sub-paragraph (a) or (b) into the body of the individual. 吗？"
+                                ]
+                            , Leaf "21 Subject to section 4(4)(b) of the Act, the suicide or attempted suicide of the individual. 吗？"
+                            , Leaf "22 Domestic abuse, child abuse or sexual abuse involving or alleged to involve the individual. 吗？"
+                            , Any
+                                ( Pre "23 Any of the following:" )
+                                [ Leaf "23.a information that the individual is or had been adopted pursuant to an adoption order made under the Adoption of Children Act (Cap. 4), or is or had been the subject of an application for an adoption order; 吗？"
+                                , Leaf "23.b the identity of the natural father or mother of the individual; 吗？"
+                                , Leaf "23.c the identity of the adoptive father or mother of the individual; 吗？"
+                                , Leaf "23.d the identity of any applicant for an adoption order; 吗？"
+                                , Leaf "23.e the identity of any person whose consent is necessary under that Act for an adoption order to be made, whether or not the court has dispensed with the consent of that person in accordance with that Act; 吗？"
+                                , Leaf "23.f any other information that the individual is or had been an adopted child or relating to the adoption of the individual. 吗？"
+                                ]
+                            ]
+                        ]
+                    , All
+                        ( Pre "all of:" )
+                        [ Not
+                            ( Leaf "the organisation has taken any action  to render it unlikely that the notifiable data breach will result in significant harm to the individual 吗？" )
+                        , Not
+                            ( Leaf "the organisation already implemented any technological measure to render it unlikely that the notifiable data breach will result in significant harm to the individual 吗？" )
+                        ]
+                    ]
+                , Leaf "the number of affected individuals > the prescribed threshold of affected individuals 吗？"
                 ]
             ]
+        , Not
+            ( Leaf "you are a Public Agency 吗？" )
+        ]
+    )
+, Tuple "Assessment"
+    ( All
+        ( Pre "all of:" )
+        [ Not
+            ( Leaf "你 是 公 共 机 构 吗？" )
+        , Leaf "数 据 泄 露 发 生 了 在 2022 年 2 月 1 日 还 是 之 后 吗？"
+        , Leaf "你 意 识 到 数 据 泄 露 可 能 已 经 发 生 了 吗？"
         ]
     )
 ]
+
 nl4chiMarking :: Marking
 nl4chiMarking = Marking $ Map.fromFoldable
-  []
+  [ Tuple "a Public Agency"
+    ( Default
+        ( Left ( Just false ) )
+    )
+]
+
 nl4eng :: Object.Object (Item String)
 nl4eng = Object.fromFoldable
-  [ Tuple "Person"
+  [ Tuple "Notify Individuals / Notify PDPC"
     ( All
         ( Pre "all of:" )
         [ All
             ( Pre "all of:" )
-            [ Leaf "does the person walk?"
+            [ Any
+                ( Pre "any of:" )
+                [ Any
+                    ( PrePost "is there any unauthorised" "of personal data" )
+                    [ Leaf "access?"
+                    , Leaf "use?"
+                    , Leaf "disclosure?"
+                    , Leaf "copying?"
+                    , Leaf "modification?"
+                    , Leaf "disposal?"
+                    ]
+                , Any
+                    ( PrePost "Did the following happen: loss of storage medium on which personal data is stored in circumstances where the unauthorised" "Did the following happen: of the personal data is likely to occur" )
+                    [ Leaf "access?"
+                    , Leaf "use?"
+                    , Leaf "disclosure?"
+                    , Leaf "copying?"
+                    , Leaf "modification?"
+                    , Leaf "disposal?"
+                    ]
+                ]
+            , Not
+                ( Leaf "did the data breach occur only within an organisation?" )
             , Any
                 ( Pre "any of:" )
-                [ Leaf "does the person eat?"
-                , Leaf "does the person drink?"
+                [ All
+                    ( Pre "all of:" )
+                    [ All
+                        ( Pre "all of:" )
+                        [ Any
+                            ( Pre "Did the following happen: the data breach relates to the individual's" )
+                            [ Leaf "full name?"
+                            , Leaf "alias?"
+                            , Leaf "identification number?"
+                            ]
+                        , Any
+                            ( Pre "any of:" )
+                            [ Leaf "1 The amount of any wages, salary, fee, commission, bonus, gratuity, allowance or other remuneration paid or payable to the individual by any person, whether under a contract of service or a contract for services.?"
+                            , Leaf "2 The income of the individual from the sale of any goods or property.?"
+                            , Leaf "3 The number of any credit card, charge card or debit card issued to or in the name of the individual.?"
+                            , Leaf "4 The number assigned to any account the individual has with any organisation that is a bank or finance company.?"
+                            , Any
+                                ( Pre "Did the following happen: 5 Any information that identifies, or is likely to lead to the identification of, the individual as a child or young person who" )
+                                [ Leaf "5.a is or had been the subject of any investigation under the CYPA;?"
+                                , Leaf "5.b is or had been arrested, on or after 1 July 2020, for an offence committed under any written law;?"
+                                , Leaf "5.c is or had been taken into care or custody by the Director-General of Social Welfare, a protector, any officer generally or specially authorised in that behalf in writing by the Director-General or protector or a police officer under the CYPA;?"
+                                , Leaf "5.d is attending or had attended a family programme in relation to an application to be made under section 50 of the CYPA;?"
+                                , Leaf "5.e is or was the subject of an order made by a court under the CYPA; or?"
+                                , Leaf "5.f is or had been concerned in any proceedings in any court or on appeal from any court, whether the individual is the person against or in respect of whom the proceedings are taken or a witness in those proceedings.?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 6 Any information that identifies, or is likely to lead to the identification of b" )
+                                [ Leaf "6.a the individual who has been or is the subject of any investigation, examination, assessment or treatment under the VAA relating to whether the individual is a vulnerable adult experiencing or at risk of abuse, neglect or self-neglect;?"
+                                , Leaf "6.b the individual as a vulnerable adult who has been committed to a place of temporary care and protection or place of safety or to the care of a fit person under the VAA;?"
+                                , Leaf "6.c the individual as a vulnerable adult who is the subject of an order made by a court under the VAA;?"
+                                , Leaf "6.d a place of temporary care and protection or place of safety in which an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is committed, or the location of such a place of temporary care and protection or place of safety; or?"
+                                , Leaf "6.e a fit person under whose care an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is placed, or the location of the premises of such a fit person.?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 7 Any private key of or relating to the individual that is used or may be used" )
+                                [ Leaf "7.a to create a secure electronic record or secure electronic signature;?"
+                                , Leaf "7.b to verify the integrity of a secure electronic record; or?"
+                                , Leaf "7.c to verify the authenticity or integrity of a secure electronic signature.?"
+                                ]
+                            , Leaf "8 The net worth of the individual.?"
+                            , Leaf "9 The deposit of moneys by the individual with any organisation.?"
+                            , Leaf "10 The withdrawal by the individual of moneys deposited with any organisation.?"
+                            , Leaf "11 The granting by an organisation of advances, loans and other facilities by which the individual, being a customer of the organisation, has access to funds or financial guarantees.?"
+                            , Leaf "12 The incurring by the organisation of any liabilities other than those mentioned in paragraph 11 on behalf of the individual.?"
+                            , Leaf "13 The payment of any moneys, or transfer of any property, by any person to the individual, including the amount of the moneys paid or the value of the property transferred, as the case may be.?"
+                            , Leaf "14 The creditworthiness of the individual.?"
+                            , Leaf "15 The individual's investment in any capital markets products.?"
+                            , Any
+                                ( Pre "Did the following happen: 16 The existence, and amount due or outstanding, of any debt" )
+                                [ Leaf "16.a owed by the individual to an organisation; or?"
+                                , Leaf "16.b owed by an organisation to the individual.?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 17 Any of the following:" )
+                                [ Leaf "17.a the terms and conditions of any accident and health policy or life policy (called in this item the applicable policy) of which the individual is the policy owner or under which the individual is a beneficiary;?"
+                                , Leaf "17.b the premium payable by the policy owner under the applicable policy;?"
+                                , Leaf "17.c the benefits payable to any beneficiary under the applicable policy;?"
+                                , Leaf "17.d any information relating to any claim on, or payment under, the applicable policy, including the condition of the health of the individual and the diagnosis, treatment, prevention or alleviation of any ailment, condition, disability, disease, disorder or injury that the individual has suffered or is suffering from;?"
+                                , Leaf "17.e any other information that the individual is the policy owner of, or a beneficiary under, an applicable policy.?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 18 The assessment, diagnosis, treatment, prevention or alleviation by a health professional of any of the following affecting the individual:" )
+                                [ Leaf "18.a any sexually-transmitted disease such as Chlamydial Genital Infection, Gonorrhoea and Syphilis;?"
+                                , Leaf "18.b Human Immunodeficiency Virus Infection;?"
+                                , Leaf "mental illness;?"
+                                , Leaf "18.c schizophrenia or delusional disorder;?"
+                                , Leaf "18.d substance abuse and addiction, including drug addiction and alcoholism?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 19 The provision of treatment to the individual for or in respect of" )
+                                [ Leaf "19.a the donation or receipt of a human egg or human sperm; or?"
+                                , Leaf "19.b any contraceptive operation or procedure or abortion.?"
+                                ]
+                            , Any
+                                ( Pre "Did the following happen: 20 Any of the following:" )
+                                [ Leaf "20.a subject to section 4(4)(b) of the Act, the donation and removal of any organ from the body of the deceased individual for the purpose of its transplantation into the body of another individual;?"
+                                , Leaf "20.b the donation and removal of any specified organ from the individual, being a living organ donor, for the purpose of its transplantation into the body of another individual;?"
+                                , Leaf "20.c the transplantation of any organ mentioned in sub-paragraph (a) or (b) into the body of the individual.?"
+                                ]
+                            , Leaf "21 Subject to section 4(4)(b) of the Act, the suicide or attempted suicide of the individual.?"
+                            , Leaf "22 Domestic abuse, child abuse or sexual abuse involving or alleged to involve the individual.?"
+                            , Any
+                                ( Pre "Did the following happen: 23 Any of the following:" )
+                                [ Leaf "23.a information that the individual is or had been adopted pursuant to an adoption order made under the Adoption of Children Act (Cap. 4), or is or had been the subject of an application for an adoption order;?"
+                                , Leaf "23.b the identity of the natural father or mother of the individual;?"
+                                , Leaf "23.c the identity of the adoptive father or mother of the individual;?"
+                                , Leaf "23.d the identity of any applicant for an adoption order;?"
+                                , Leaf "23.e the identity of any person whose consent is necessary under that Act for an adoption order to be made, whether or not the court has dispensed with the consent of that person in accordance with that Act;?"
+                                , Leaf "23.f any other information that the individual is or had been an adopted child or relating to the adoption of the individual.?"
+                                ]
+                            ]
+                        ]
+                    , All
+                        ( Pre "all of:" )
+                        [ Not
+                            ( Leaf "the organisation has taken any action  to render it unlikely that the notifiable data breach will result in significant harm to the individual?" )
+                        , Not
+                            ( Leaf "the organisation already implemented any technological measure to render it unlikely that the notifiable data breach will result in significant harm to the individual?" )
+                        ]
+                    ]
+                , Leaf "the number of affected individuals > the prescribed threshold of affected individuals?"
                 ]
             ]
+        , Not
+            ( Leaf "you are a Public Agency?" )
+        ]
+    )
+, Tuple "Assessment"
+    ( All
+        ( Pre "all of:" )
+        [ Not
+            ( Leaf "are you a public agency?" )
+        , Leaf "did the data breach occur on or after 1 Feb 2022?"
+        , Leaf "have you become aware that a data breach may have occurred?"
         ]
     )
 ]
+
 nl4engMarking :: Marking
 nl4engMarking = Marking $ Map.fromFoldable
-  []
+  [ Tuple "a Public Agency"
+    ( Default
+        ( Left ( Just false ) )
+    )
+]
+
 nl4may :: Object.Object (Item String)
 nl4may = Object.fromFoldable
-  [ Tuple "Person"
+  [ Tuple "Notify Individuals / Notify PDPC"
     ( All
         ( Pre "all of:" )
         [ All
             ( Pre "all of:" )
-            [ Leaf "adakah seseorang berjalan?"
+            [ Any
+                ( Pre "any of:" )
+                [ Any
+                    ( PrePost "adakah any unauthorised ada" "personal data" )
+                    [ Leaf "access?"
+                    , Leaf "use?"
+                    , Leaf "disclosure?"
+                    , Leaf "copying?"
+                    , Leaf "modification?"
+                    , Leaf "disposal?"
+                    ]
+                , Any
+                    ( PrePost "Adakah perkara berikut berlaku: loss of storage medium on which personal data is stored in circumstances where the unauthorised" "Adakah perkara berikut berlaku: of the personal data is likely to occur" )
+                    [ Leaf "access?"
+                    , Leaf "use?"
+                    , Leaf "disclosure?"
+                    , Leaf "copying?"
+                    , Leaf "modification?"
+                    , Leaf "disposal?"
+                    ]
+                ]
+            , Not
+                ( Leaf "adakah pelanggaran data berlaku [AdAdv]?" )
             , Any
                 ( Pre "any of:" )
-                [ Leaf "adakah seseorang makan?"
-                , Leaf "adakah seseorang minum?"
+                [ All
+                    ( Pre "all of:" )
+                    [ All
+                        ( Pre "all of:" )
+                        [ Any
+                            ( Pre "Adakah perkara berikut berlaku: the data breach relates to the individual's" )
+                            [ Leaf "full name?"
+                            , Leaf "alias?"
+                            , Leaf "identification number?"
+                            ]
+                        , Any
+                            ( Pre "any of:" )
+                            [ Leaf "1 The amount of any wages, salary, fee, commission, bonus, gratuity, allowance or other remuneration paid or payable to the individual by any person, whether under a contract of service or a contract for services.?"
+                            , Leaf "2 The income of the individual from the sale of any goods or property.?"
+                            , Leaf "3 The number of any credit card, charge card or debit card issued to or in the name of the individual.?"
+                            , Leaf "4 The number assigned to any account the individual has with any organisation that is a bank or finance company.?"
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 5 Any information that identifies, or is likely to lead to the identification of, the individual as a child or young person who" )
+                                [ Leaf "5.a is or had been the subject of any investigation under the CYPA;?"
+                                , Leaf "5.b is or had been arrested, on or after 1 July 2020, for an offence committed under any written law;?"
+                                , Leaf "5.c is or had been taken into care or custody by the Director-General of Social Welfare, a protector, any officer generally or specially authorised in that behalf in writing by the Director-General or protector or a police officer under the CYPA;?"
+                                , Leaf "5.d is attending or had attended a family programme in relation to an application to be made under section 50 of the CYPA;?"
+                                , Leaf "5.e is or was the subject of an order made by a court under the CYPA; or?"
+                                , Leaf "5.f is or had been concerned in any proceedings in any court or on appeal from any court, whether the individual is the person against or in respect of whom the proceedings are taken or a witness in those proceedings.?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 6 Any information that identifies, or is likely to lead to the identification of b" )
+                                [ Leaf "6.a the individual who has been or is the subject of any investigation, examination, assessment or treatment under the VAA relating to whether the individual is a vulnerable adult experiencing or at risk of abuse, neglect or self-neglect;?"
+                                , Leaf "6.b the individual as a vulnerable adult who has been committed to a place of temporary care and protection or place of safety or to the care of a fit person under the VAA;?"
+                                , Leaf "6.c the individual as a vulnerable adult who is the subject of an order made by a court under the VAA;?"
+                                , Leaf "6.d a place of temporary care and protection or place of safety in which an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is committed, or the location of such a place of temporary care and protection or place of safety; or?"
+                                , Leaf "6.e a fit person under whose care an individual or a vulnerable adult mentioned in sub-paragraph (a), (b) or (c) is placed, or the location of the premises of such a fit person.?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 7 Any private key of or relating to the individual that is used or may be used" )
+                                [ Leaf "7.a to create a secure electronic record or secure electronic signature;?"
+                                , Leaf "7.b to verify the integrity of a secure electronic record; or?"
+                                , Leaf "7.c to verify the authenticity or integrity of a secure electronic signature.?"
+                                ]
+                            , Leaf "8 The net worth of the individual.?"
+                            , Leaf "9 The deposit of moneys by the individual with any organisation.?"
+                            , Leaf "10 The withdrawal by the individual of moneys deposited with any organisation.?"
+                            , Leaf "11 The granting by an organisation of advances, loans and other facilities by which the individual, being a customer of the organisation, has access to funds or financial guarantees.?"
+                            , Leaf "12 The incurring by the organisation of any liabilities other than those mentioned in paragraph 11 on behalf of the individual.?"
+                            , Leaf "13 The payment of any moneys, or transfer of any property, by any person to the individual, including the amount of the moneys paid or the value of the property transferred, as the case may be.?"
+                            , Leaf "14 The creditworthiness of the individual.?"
+                            , Leaf "15 The individual's investment in any capital markets products.?"
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 16 The existence, and amount due or outstanding, of any debt" )
+                                [ Leaf "16.a owed by the individual to an organisation; or?"
+                                , Leaf "16.b owed by an organisation to the individual.?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 17 Any of the following:" )
+                                [ Leaf "17.a the terms and conditions of any accident and health policy or life policy (called in this item the applicable policy) of which the individual is the policy owner or under which the individual is a beneficiary;?"
+                                , Leaf "17.b the premium payable by the policy owner under the applicable policy;?"
+                                , Leaf "17.c the benefits payable to any beneficiary under the applicable policy;?"
+                                , Leaf "17.d any information relating to any claim on, or payment under, the applicable policy, including the condition of the health of the individual and the diagnosis, treatment, prevention or alleviation of any ailment, condition, disability, disease, disorder or injury that the individual has suffered or is suffering from;?"
+                                , Leaf "17.e any other information that the individual is the policy owner of, or a beneficiary under, an applicable policy.?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 18 The assessment, diagnosis, treatment, prevention or alleviation by a health professional of any of the following affecting the individual:" )
+                                [ Leaf "18.a any sexually-transmitted disease such as Chlamydial Genital Infection, Gonorrhoea and Syphilis;?"
+                                , Leaf "18.b Human Immunodeficiency Virus Infection;?"
+                                , Leaf "mental illness;?"
+                                , Leaf "18.c schizophrenia or delusional disorder;?"
+                                , Leaf "18.d substance abuse and addiction, including drug addiction and alcoholism?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 19 The provision of treatment to the individual for or in respect of" )
+                                [ Leaf "19.a the donation or receipt of a human egg or human sperm; or?"
+                                , Leaf "19.b any contraceptive operation or procedure or abortion.?"
+                                ]
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 20 Any of the following:" )
+                                [ Leaf "20.a subject to section 4(4)(b) of the Act, the donation and removal of any organ from the body of the deceased individual for the purpose of its transplantation into the body of another individual;?"
+                                , Leaf "20.b the donation and removal of any specified organ from the individual, being a living organ donor, for the purpose of its transplantation into the body of another individual;?"
+                                , Leaf "20.c the transplantation of any organ mentioned in sub-paragraph (a) or (b) into the body of the individual.?"
+                                ]
+                            , Leaf "21 Subject to section 4(4)(b) of the Act, the suicide or attempted suicide of the individual.?"
+                            , Leaf "22 Domestic abuse, child abuse or sexual abuse involving or alleged to involve the individual.?"
+                            , Any
+                                ( Pre "Adakah perkara berikut berlaku: 23 Any of the following:" )
+                                [ Leaf "23.a information that the individual is or had been adopted pursuant to an adoption order made under the Adoption of Children Act (Cap. 4), or is or had been the subject of an application for an adoption order;?"
+                                , Leaf "23.b the identity of the natural father or mother of the individual;?"
+                                , Leaf "23.c the identity of the adoptive father or mother of the individual;?"
+                                , Leaf "23.d the identity of any applicant for an adoption order;?"
+                                , Leaf "23.e the identity of any person whose consent is necessary under that Act for an adoption order to be made, whether or not the court has dispensed with the consent of that person in accordance with that Act;?"
+                                , Leaf "23.f any other information that the individual is or had been an adopted child or relating to the adoption of the individual.?"
+                                ]
+                            ]
+                        ]
+                    , All
+                        ( Pre "all of:" )
+                        [ Not
+                            ( Leaf "the organisation has taken any action  to render it unlikely that the notifiable data breach will result in significant harm to the individual?" )
+                        , Not
+                            ( Leaf "the organisation already implemented any technological measure to render it unlikely that the notifiable data breach will result in significant harm to the individual?" )
+                        ]
+                    ]
+                , Leaf "the number of affected individuals > the prescribed threshold of affected individuals?"
                 ]
             ]
+        , Not
+            ( Leaf "you are a Public Agency?" )
+        ]
+    )
+, Tuple "Assessment"
+    ( All
+        ( Pre "all of:" )
+        [ Not
+            ( Leaf "adakah kamu agensi awam?" )
+        , Leaf "adakah pelanggaran data berlaku pada atau selepas 1 Feb 2022?"
+        , Leaf "adakah kamu sudah pelanggaran data mungkin sudah berlaku menyedari?"
         ]
     )
 ]
+
 nl4mayMarking :: Marking
 nl4mayMarking = Marking $ Map.fromFoldable
-  []
+  [ Tuple "a Public Agency"
+    ( Default
+        ( Left ( Just false ) )
+    )
+]
+
 
 
 allLang = ["nl4chi", "nl4eng", "nl4may"]
