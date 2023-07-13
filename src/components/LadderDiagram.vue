@@ -58,6 +58,9 @@ function q2circuit(q) {
       null
     );
 
+console.log("q2circuit: q.andOr is")
+console.log(q.andOr)
+
     return new BoolVar(q.andOr.contents, // [TODO] nl.en || contents
       false, // [TODO] this should depend on SimplyNot
       q.mark.source === 'default' ? utf : null,
