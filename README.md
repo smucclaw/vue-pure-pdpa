@@ -25,12 +25,11 @@ NVM is a version manager for node. Follow the instructions on the [nvm github](h
 
 First, install nvm from https://nvm.sh/
 
-Then run the following set of install scripts:
+Then run the following set of install scripts, from inside the vue-pure-pdpa directory:
 
 ```shell
-$ echo 18.16.0 > .nvmrc
-$ nvm use
 $ nvm install
+$ nvm use
 $ nvm exec
 $ npm install -g node-gyp@latest
 $ npm install
@@ -90,14 +89,18 @@ You only have to do this once:
 ```
 mkdir ~/v8kworkdir
 cd ~/v8kworkdir
-export V8K_WORKDIR=~/v8kworkdir
-rsync -va ~/src/smucclaw/vue-pure-pdpa/ vue-big/
+export V8K_WORKDIR=$HOME/v8kworkdir
+git clone git://github.com/smucclaw/vue-pure-pdpa
+rsync -va vue-pure-pdpa/ vue-big/
+(cd vue-big; npm i; npm run deps)
 rsync -va --exclude={.spago,.git,node_modules} vue-big/ vue-small/
 cd vue-small
 ln -s ../vue-big/.git .
 ln -s ../vue-big/node_modules .
 ln -s ../vue-big/.spago .
 ```
+
+Remember to update your gunicorn conf file to set V8K_WORKDIR to the path as above.
 
 This sets you up with `vue-small`, which is a copy of `vue-big`, which is a copy of the `vue-pure-pdpa` repo.
 

@@ -4,11 +4,17 @@
       class="button is-radio-button px-2"
       v-for="(opt, index) in btnOptions"
       :key="index"
-      :class="getColor(opt.color, opt.value, selectedValue)"
+      :class="getColor(opt.color, opt.value, selectedValue, disabled)"
       :checked="opt.value === selectedValue"
     >
       <!-- Max: added :disabled="disabled" -->
-      <input type="radio" v-model="selectedValue" :id="opt.value" :value="opt.value" :disabled="disabled"/>
+      <input
+        type="radio"
+        v-model="selectedValue"
+        :id="opt.value"
+        :value="opt.value"
+        :disabled="disabled"
+      />
       <FontAwesomeIcon class="icon is-small m-0" :icon="opt.icon" />
       <span class="is-hidden-mobile ml-1">{{ opt.name }}</span>
     </label>
@@ -65,10 +71,11 @@ export default {
     },
   },
   methods: {
-    getColor(currentColor, currentValue, selectedValue) {
+    getColor(currentColor, currentValue, selectedValue, disabled) {
       const isSelected = currentValue === selectedValue;
-      const shouldShowActive = isSelected ? "is-active" : "is-outlined";
-      return currentColor.concat(" ", shouldShowActive);
+      const shouldShowActive = isSelected && !disabled ? "is-active" : "is-outlined";
+      const disabledClass = disabled ? "is-disabled" : "";
+      return currentColor.concat(" ", shouldShowActive, " ", disabledClass);
     },
   },
 };
