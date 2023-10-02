@@ -71,8 +71,11 @@ if (process.env.CCLAW_HTTPS) {
     }
 }
 
+const wsProxyHostname = process.env.WS_PROXY_HOSTNAME ? process.env.WS_PROXY_HOSTNAME : 'cclaw.legalese.com';
+const wsProxyProtocol = process.env.WS_PROXY_PROTOCOL ? process.env.WS_PROXY_PROTOCOL : 'wss';
+
 if (process.env.LEGALSS_PROXY_PORT) {
   module.exports.devServer.client = {
-      webSocketURL: `wss://cclaw.legalese.com/port/${process.env.LEGALSS_PROXY_PORT}/ws`
-  }
+    webSocketURL: `${wsProxyProtocol}://${wsProxyHostname}/port/${process.env.LEGALSS_PROXY_PORT}/ws`,
+  };
 }
