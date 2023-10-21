@@ -12,7 +12,11 @@ import Data.Foldable (class Foldable)
 import Data.Maybe
 import Data.Either (Either(..), either)
 
--- paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
+-- | paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
+-- In a Q structure, we preserve the original structure of the input Item, but we perform a De Morgan nnf
+-- transformation in the course of returning the Q structure. @Not Leaf@ elements are equipped with an `AONot` :: `AndOr`.
+-- @Not Any@ and @Not All@ elements are left wrapped in a Not node.
+
 relevant :: Hardness -> DisplayPref -> Marking -> Maybe Bool -> NLDict -> Item String -> Q
 relevant sh dp marking parentValue nl self =
   let
@@ -27,10 +31,12 @@ relevant sh dp marking parentValue nl self =
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
-      Leaf x          -> mkQ (initVis)         (Simply x) (nlMap x nl)                   Nothing     (lookupMarking x marking)  []
-      Not x           -> mkQ (initVis)          AONot     Map.empty                      Nothing     (Default $ Left selfValue) paintedChildren
-      Any label items -> mkQ (ask2view initVis) Or        (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
-      All label items -> mkQ (ask2view initVis) And       (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
+      Leaf x            -> mkQ (initVis)         (Simply x) (nlMap x nl)                   Nothing     (lookupMarking x marking)  []
+      Not (Leaf x)      -> mkQ (initVis)          AONot     Map.empty                      Nothing     (Default $ Left selfValue) paintedChildren
+      Not (Not x)       -> relevant sh dp marking parentValue nl x
+      Not _             -> mkQ (ask2view initVis) Not       (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
+      Any label items   -> mkQ (ask2view initVis) Or        (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
+      All label items   -> mkQ (ask2view initVis) And       (nlMap (label2pre label) nl)  (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self
   where
