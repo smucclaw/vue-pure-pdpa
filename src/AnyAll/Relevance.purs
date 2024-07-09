@@ -28,7 +28,7 @@ relevant sh dp marking parentValue nl self =
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
-      Not x -> makeQNode x
+      Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
       Any label items -> mkQ (ask2view initVis) Or  (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
       All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output

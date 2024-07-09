@@ -4,19 +4,13 @@
       <div class="navbar-item">{{ appName }}</div>
     </template>
     <template v-slot:end>
-      <router-link
-        class="navbar-item"
-        active-class="is-active"
-        v-for="menu in navigationLinks"
-        :key="menu.name"
-        :to="menu.path"
-      >
-        <FontAwesomeIcon class="icon is-small mr-2" :icon="menu.meta.icon" />
-        <span>{{ menu.name }}</span>
-      </router-link>
       <span class="navbar-item" active-class="is-active">
-        <button v-for="(lang, index) in langs" :key="index" @click="showLang(lang)">
-          {{ lang }}
+        <button
+          v-for="(lang, index) in langs"
+          :key="index"
+          @click="showLang(lang, 'LangQuestions')"
+        >
+          {{ langNames(lang) }}
         </button>
       </span>
     </template>
@@ -33,7 +27,7 @@
         :key="menu.name"
         :to="menu.path"
       >
-        <FontAwesomeIcon :icon="menu.meta.icon" />
+        <!-- <FontAwesomeIcon :icon="menu.meta.icon" /> -->
         <p class="is-size-7">{{ menu.name }}</p>
       </router-link>
     </template>
@@ -55,6 +49,8 @@ export default {
       navigationLinks: [],
       langs: this.$store.getters.langs,
       chosenLang: "",
+      showOptions: new Array(this.$store.getters.langs.length).fill(false),
+      selectedIndex: null,
     };
   },
   computed: {
@@ -66,7 +62,15 @@ export default {
     },
   },
   methods: {
-    showLang(l) {
+    langNames(l) {
+      const fulllangs = {
+        nl4chi: "Chinese",
+        nl4eng: "English",
+        nl4may: "Malay",
+      };
+      return fulllangs[l];
+    },
+    showLang(l, viz) {
       this.chosenLang = l;
       this.$store.commit("updateLang", this.chosenLang);
     },
