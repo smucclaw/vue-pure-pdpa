@@ -2,7 +2,7 @@
   <section>
     <Notification class="is-always-on-top" :theme-color="responseTheme">
       <p class="title is-spaced">{{ questionPrompt }}</p>
-      <p class="subtitle">{{ responseMsg }}</p>
+      <p class="subtitle" data-test="response-message">{{ responseMsg }}</p>
     </Notification>
     <!-- Max: added columns, getTopLevelDecisions, changeQuestionPrompt, vertical-container -->
     <div class="columns">
