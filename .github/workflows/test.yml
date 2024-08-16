@@ -10,12 +10,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup
-        uses: ./.github/actions/setup
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Spago Dependencies
+        run: npx spago install
+
       - name: Test Purescript
         run: npm run test:purs
+
       - name: Test Components
         run: npm run test:unit
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
