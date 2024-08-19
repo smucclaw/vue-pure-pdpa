@@ -2,9 +2,7 @@
   <div class="question-block" v-if="!question.andOr.contents">
     <div class="question-content" v-if="question.prePost.pre" :class="theme">
       <div class="is-single-question" :style="indentParent">
-        <strong
-          ><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong
-        >
+        <strong><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong>
       </div>
     </div>
     <template v-if="question.andOr.children">
@@ -14,8 +12,7 @@
         :question="child"
         :parent-tag="question.andOr.tag"
         :parent-view="question.shouldView"
-        :depth="newDepth"
-      />
+        :depth="newDepth" />
     </template>
   </div>
   <div class="question-content" v-if="question.andOr.contents" :class="theme">
@@ -27,8 +24,7 @@
         </strong>
         <strong v-else>{{ question.andOr.contents }}</strong>
       </div>
-      <!-- Max: removed v-if="!isHidden" and added :disabled="isHidden" -->
-      <div class="is-answering">
+      <div class="is-answering" :data-test="question.andOr.contents">
         <QuestionRadio v-model="leaf" :disabled="isHidden" />
       </div>
     </div>
@@ -104,18 +100,22 @@ export default {
     margin-bottom: 0.25rem;
     padding: 0.5rem 0;
     border-radius: 4px;
+
     &:last-child {
       margin-bottom: 0;
     }
+
     .is-single-question {
       margin-right: 0.5rem;
       margin-top: 0;
       margin-bottom: 0;
       gap: 0.5rem;
     }
+
     .is-asking {
       flex-grow: 1;
     }
+
     .is-answering {
       flex-shrink: 0;
       text-align: right;

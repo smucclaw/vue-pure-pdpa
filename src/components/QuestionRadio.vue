@@ -7,7 +7,6 @@
       :class="getColor(opt.color, opt.value, selectedValue, disabled)"
       :checked="opt.value === selectedValue"
     >
-      <!-- Max: added :disabled="disabled" -->
       <input
         type="radio"
         v-model="selectedValue"
