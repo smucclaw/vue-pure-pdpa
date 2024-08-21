@@ -8,8 +8,6 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
-// import { mapFields } from 'vuex-map-fields';
 import * as d3 from "d3";
 
 export default {
@@ -194,12 +192,8 @@ export default {
     },
   },
   computed: {
-    // ...mapFields(['marking', 'anyallform', 'formTitle']),
-    // ...mapGetters(['qrootExample1']),
   },
   components: {
-    // Q,
-    // HelloWorld,
   },
   mounted() {
     this.init(this.question);
