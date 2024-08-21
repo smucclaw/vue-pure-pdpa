@@ -3,9 +3,6 @@ import { getField, updateField } from 'vuex-map-fields';
 import * as AnyAll from '../AnyAll.purs';
 import * as Interview from '../RuleLib/Interview.purs';
 
-import { BoolVar, AllQuantifier, AnyQuantifier } from "ladder-diagram"
-
-
 function getLins(Interview) {
   const allLins = {}
   for (const e of Interview.allLang) {
@@ -17,7 +14,6 @@ function getLins(Interview) {
 export default createStore({
   state: {
     marking: AnyAll.emptyMarking,
-    rulesInterview: Interview.interviewRules,
     rulesInterview_nl: Interview.interviewRules_nl,
     topLD: Interview.nl4eng,
     topLDBody: '',
@@ -42,15 +38,9 @@ export default createStore({
       const heads = AnyAll.heads(state.topLD);
       return heads;
     },
-    // statements(state) {
-    //   const s = AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(Object.values(state.topS)[state.whichPrompt]);
-    //   return s;
-    // },
     getMarkingField(state) {
       return getField(state.marking);
     },
-
-
   },
   mutations: {
     updateField,
@@ -59,8 +49,6 @@ export default createStore({
     },
     updateTopLDBody(state, payload) {
       state.topLDBody = Object.values(state.topLD)[payload];
-    },
-    updateStatements(state, payload) {
     },
     updateLang(state, payload) {
       state.topLD = state.objects[payload];

@@ -125,5 +125,3 @@ spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
 spec = describe "Render" do
   it "Example 1" do
     (paintQ marking1 example1_nl example1) `shouldEqual` myq
-  -- it "PDPA" do
-  --   (paintQ emptyMarking pdpa_dbno_s1p1_nl pdpa_dbno_s1p1) `shouldEqual` pdpaQ2
