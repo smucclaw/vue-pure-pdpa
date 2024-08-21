@@ -3,6 +3,7 @@ module AnyAll
   , heads
   , paint
   , soft
+  , emptyMarking
   )
   where
 
@@ -31,6 +32,8 @@ main = log "AnyAll main"
 
 hard = Hard
 soft = Soft
+
+emptyMarking = markup Map.empty
 
 decodeMarking :: Foreign -> Marking
 decodeMarking marking =
