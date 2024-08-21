@@ -321,31 +321,6 @@ instance showStdinSchema :: (Show a) => Show (StdinSchema a) where
 instance encodeStdinSchema :: (Show a, Encode a) => Encode (StdinSchema a) where
   encode eta = genericEncode defaultOptions eta
 
-{-
-getSV :: ShouldView -> Q a -> Maybe (a, Default Bool)
-getSV sv1 (Q sv2 (Simply x) pp m)
-  | sv1 == sv2 = Just (x, m)
-  | otherwise  = Nothing
-getSV _ _ = Nothing
-
-getAsks :: (ToJSONKey a, Ord a) => QTree a -> Map.Map a (Default Bool)
-getAsks qt = Map.fromList $ catMaybes $ getSV Ask <$> flatten qt
-
-getAsksJSON :: (ToJSONKey a, Ord a) => QTree a -> B.ByteString
-getAsksJSON = encode . getAsks
-
-getViews :: (ToJSONKey a, Ord a) => QTree a -> Map.Map a (Default Bool)
-getViews qt = Map.fromList $ catMaybes $ getSV View <$> flatten qt
-
-getViewsJSON :: (ToJSONKey a, Ord a) => QTree a -> B.ByteString
-getViewsJSON = encode . getViews
-
-getForUI :: (ToJSONKey a, Ord a) => QTree a -> B.ByteString
-getForUI qt = encode (Map.fromList [("view" :: TL.Text, getViews qt)
-                                   ,("ask" :: TL.Text, getAsks qt)])
-
--}
-
 newtype ForD3 = ForD3
   { name :: String
   , children :: Array ForD3
