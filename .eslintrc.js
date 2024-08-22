@@ -1,13 +1,15 @@
 require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
+  parser: '@typescript-eslint/parser',
   root: true,
   env: {
     node: true,
   },
   extends: [
     'plugin:vue/vue3-essential',
-    '@vue/eslint-config-airbnb'
+    '@vue/eslint-config-airbnb',
+    '@vue/typescript',
   ],
   parserOptions: {
     ecmaVersion: 2020,
