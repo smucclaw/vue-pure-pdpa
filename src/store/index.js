@@ -30,9 +30,9 @@ export default createStore({
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(topLDBody);
+        return AnyAll.paintHard(state.marking)(state.rulesInterview_nl)(topLDBody);
       }
-      return AnyAll.paint(AnyAll.hard)(state.marking)(state.rulesInterview_nl)(state.topLDBody);
+      return AnyAll.paintHard(state.marking)(state.rulesInterview_nl)(state.topLDBody);
     },
     questionPrompt(state) {
       const heads = AnyAll.heads(state.topLD);

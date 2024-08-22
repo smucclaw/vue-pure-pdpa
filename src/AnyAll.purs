@@ -1,7 +1,7 @@
 module AnyAll
   ( hard
   , heads
-  , paint
+  , paintHard
   , soft
   , emptyMarking
   )
@@ -48,5 +48,9 @@ decodeMarking marking =
 paint :: Hardness -> Foreign -> NLDict -> Item String -> QoutJS
 paint h fm nl item =
   qoutjs $ relevant h DPNormal (decodeMarking fm) Nothing nl item
+
+paintHard :: Foreign -> NLDict -> Item String -> QoutJS
+paintHard fm nl item =
+  qoutjs $ relevant Hard DPNormal (decodeMarking fm) Nothing nl item
 
 heads x = Object.keys(x)
