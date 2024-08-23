@@ -27,26 +27,12 @@ relevant sh dp marking parentValue nl self =
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant sh dp marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
-      Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
+      Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label items -> mkQ (ask2view initVis) Or  (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
-      All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
+      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
+      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self
-  where
-  -- from a dictionary of { langID: { shortword: longtext } }
-  -- to a dictionary of { langID: longtext }
-  nlMap word nldict =
-    let
-      langs = Set.toUnfoldable $ Map.keys nldict :: Array String
-    in
-      Map.fromFoldable $ do
-        lg <- langs
-        let
-          lgDict = fromMaybe Map.empty (Map.lookup lg nl)
-          longtext = fromMaybe "" (Map.lookup word lgDict)
-        pure $ Tuple lg longtext
-
 
 getChildren (Leaf _) = []
 getChildren (Not x) = getChildren x
@@ -75,24 +61,23 @@ relevantHard dp marking parentValue nl self =
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
     paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevantHard dp marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
-      Leaf x -> mkQ (initVis) (Simply x) (nlMap x nl) Nothing (lookupMarking x marking) []
+      Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label items -> mkQ (ask2view initVis) Or  (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
-      All label items -> mkQ (ask2view initVis) And (nlMap (label2pre label) nl) (Just label) (Default $ Left selfValue) paintedChildren
+      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
+      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self
-  where
-  nlMap word nldict =
-    let
-      langs = Set.toUnfoldable $ Map.keys nldict :: Array String
-    in
-      Map.fromFoldable $ do
-        lg <- langs
-        let
-          lgDict = fromMaybe Map.empty (Map.lookup lg nl)
-          longtext = fromMaybe "" (Map.lookup word lgDict)
-        pure $ Tuple lg longtext
 
+nlMapFn word nldict nl =
+  let
+    langs = Set.toUnfoldable $ Map.keys nldict :: Array String
+  in
+    Map.fromFoldable $ do
+      lg <- langs
+      let
+        lgDict = fromMaybe Map.empty (Map.lookup lg nl)
+        longtext = fromMaybe "" (Map.lookup word lgDict)
+      pure $ Tuple lg longtext
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
 evaluate :: Hardness -> Marking -> Item String -> Maybe Bool
