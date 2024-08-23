@@ -1,38 +1,24 @@
 module AnyAll
-  ( hard
-  , heads
+  ( heads
   , paintHard
-  , soft
   , emptyMarking
   )
   where
 
 import Prelude
-import Effect (Effect)
-import Effect.Console (log)
 
 import AnyAll.Types
-import AnyAll.Relevance (relevant)
-import RuleLib.Interview as RuleLib.Interview
+import AnyAll.Relevance (relevantHard)
 
-import Partial.Unsafe
+import Partial.Unsafe (unsafeCrashWith)
 import Data.Map as Map
-import Data.Either (Either(..), fromRight, either)
-import Data.Maybe (Maybe(..), fromJust)
-import Data.Tuple (Tuple(..))
-import Data.List (concatMap, head)
-import Data.Foldable (foldMap)
-import Foreign.Generic
-import Control.Monad.Except
-import Foreign
-import Record (merge)
-import Foreign.Object as Object
+import Data.Either (either)
+import Data.Maybe (Maybe(..))
+import Foreign.Generic  (Foreign, decode)
+import Control.Monad.Except (runExcept)
+import Foreign.Object(Object, keys)
 
-main = log "AnyAll main"
-
-hard = Hard
-soft = Soft
-
+emptyMarking :: Marking
 emptyMarking = markup Map.empty
 
 decodeMarking :: Foreign -> Marking
@@ -45,12 +31,9 @@ decodeMarking marking =
       (\m -> m)
       eitherm
 
-paint :: Hardness -> Foreign -> NLDict -> Item String -> QoutJS
-paint h fm nl item =
-  qoutjs $ relevant h DPNormal (decodeMarking fm) Nothing nl item
-
 paintHard :: Foreign -> NLDict -> Item String -> QoutJS
 paintHard fm nl item =
-  qoutjs $ relevant Hard DPNormal (decodeMarking fm) Nothing nl item
+  qoutjs $ relevantHard DPNormal (decodeMarking fm) Nothing nl item
 
-heads x = Object.keys(x)
+heads ::  forall t2. Object t2 -> Array String
+heads x = keys(x)
