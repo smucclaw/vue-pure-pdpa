@@ -47,19 +47,19 @@ ask2view :: ShouldView -> ShouldView
 ask2view Ask = View
 ask2view x = x
 
-relevantHard :: DisplayPref -> Marking -> Maybe Bool -> NLDict -> Item String -> Q
-relevantHard dp marking parentValue nl self =
+relevantQ :: Marking -> Maybe Bool -> NLDict -> Item String -> Q
+relevantQ marking parentValue nl self =
   let
-    selfValue = evaluate Hard marking self
+    selfValue = evaluateHard marking self
     initVis =
       if isJust parentValue then
         if parentValue == selfValue then View
         else Hide
-      else if isJust (evaluate Hard marking self) then View
+      else if isJust (evaluateHard marking self) then View
       else Ask
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
-    paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevantHard dp marking selfValue nl <$> getChildren self
+    paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevantQ marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
@@ -92,6 +92,16 @@ evaluate Hard (Marking marking) (Leaf x) = case Map.lookup x marking of
 evaluate sh marking (Not item) = not <$> (evaluate sh marking item)
 evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
 evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
+
+-- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
+evaluateHard :: Marking -> Item String -> Maybe Bool
+evaluateHard (Marking marking) (Leaf x) = case Map.lookup x marking of
+  Just (Default (Right (Just y))) -> Just y
+  _ -> Nothing
+
+evaluateHard marking (Not item) = not <$> (evaluateHard marking item)
+evaluateHard marking (Any _ items) = evaluateAny (evaluateHard marking <$> items)
+evaluateHard marking (All _ items) = evaluateAll (evaluateHard marking <$> items)
 
 evaluateAny :: forall f. Foldable f => f (Maybe Bool) -> Maybe Bool
 evaluateAny items
