@@ -16,14 +16,11 @@ import AnyAll.Types
 interviewRules :: Item String
 interviewRules =  All
     ( Pre "all of:" )
-    [ All
-        ( Pre "all of:" )
-        [ Leaf "does the person walk?"
-        , Any
-            ( Pre "any of:" )
-            [ Leaf "does the person eat?"
-            , Leaf "does the person drink?"
-            ]
+    [ Leaf "does the person walk?"
+    , Any
+        ( Pre "any of:" )
+        [ Leaf "does the person eat?"
+        , Leaf "does the person drink?"
         ]
     ]
 
@@ -38,61 +35,58 @@ nl4chi = Object.fromFoldable
   [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ All
-            ( Pre "all of:" )
-            [ Leaf "人 走 吗？"
-            , Any
-                ( Pre "any of:" )
-                [ Leaf "人 吃 吗？"
-                , Leaf "人 喝 吗？"
-                ]
+        [ Leaf "人 走 吗？"
+        , Any
+            ( Pre "any of:" )
+            [ Leaf "人 吃 吗？"
+            , Leaf "人 喝 吗？"
             ]
         ]
     )
 ]
+
 nl4chiMarking :: Marking
 nl4chiMarking = Marking $ Map.fromFoldable
   []
+
 nl4eng :: Object.Object (Item String)
 nl4eng = Object.fromFoldable
   [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ All
-            ( Pre "all of:" )
-            [ Leaf "does the person walk?"
-            , Any
-                ( Pre "any of:" )
-                [ Leaf "does the person eat?"
-                , Leaf "does the person drink?"
-                ]
+        [ Leaf "does the person walk?"
+        , Any
+            ( Pre "any of:" )
+            [ Leaf "does the person eat?"
+            , Leaf "does the person drink?"
             ]
         ]
     )
 ]
+
 nl4engMarking :: Marking
 nl4engMarking = Marking $ Map.fromFoldable
   []
+
 nl4may :: Object.Object (Item String)
 nl4may = Object.fromFoldable
   [ Tuple "Person"
     ( All
         ( Pre "all of:" )
-        [ All
-            ( Pre "all of:" )
-            [ Leaf "adakah seseorang berjalan?"
-            , Any
-                ( Pre "any of:" )
-                [ Leaf "adakah seseorang makan?"
-                , Leaf "adakah seseorang minum?"
-                ]
+        [ Leaf "adakah seseorang berjalan?"
+        , Any
+            ( Pre "any of:" )
+            [ Leaf "adakah seseorang makan?"
+            , Leaf "adakah seseorang minum?"
             ]
         ]
     )
 ]
+
 nl4mayMarking :: Marking
 nl4mayMarking = Marking $ Map.fromFoldable
   []
+
 
 
 allLang = ["nl4chi", "nl4eng", "nl4may"]
