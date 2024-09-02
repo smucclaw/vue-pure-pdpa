@@ -1,8 +1,8 @@
-import { evaluate } from 'purs/AnyAll.Relevance';
-import { Hard, Leaf, Default, Marking } from 'purs/AnyAll.Types';
-import { Right } from 'purs/Data.Either';
-import { Just } from 'purs/Data.Maybe';
-import { fromFoldable } from 'purs/Data.Map';
+import { evaluate } from '@ps/AnyAll.Relevance';
+import { Hard, Leaf, Default, Marking } from '@ps/AnyAll.Types/index.js';
+import { Right } from '@ps/Data.Either';
+import { Just } from '@ps/Data.Maybe';
+import { singleton } from '@ps/Data.Map';
 
 describe('Test TheMain Component', () => {
     it('expects to be true', () => {
@@ -10,12 +10,10 @@ describe('Test TheMain Component', () => {
       const right = new Right(jTrue);
       const defaultR = Default(right);
 
-      const marking = Marking(fromFoldable([['key', defaultR]]));
       const keyLeaf = new Leaf('key');
+      const trueRightMarking = Marking(singleton("key")(defaultR));
 
-      console.info(keyLeaf instanceof Leaf)
-
-      evaluate(Hard)(marking)(keyLeaf);
-      expect(true).toBe(true);
+      const mumboJumbo = evaluate(Hard.value)(trueRightMarking)(keyLeaf);
+      expect(mumboJumbo).toEqual(jTrue);
     });
 });
