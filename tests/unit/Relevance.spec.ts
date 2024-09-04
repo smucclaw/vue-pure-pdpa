@@ -4,16 +4,29 @@ import { Right } from '@ps/Data.Either';
 import { Just } from '@ps/Data.Maybe';
 import { singleton } from '@ps/Data.Map';
 
-describe('Test TheMain Component', () => {
-    it('expects to be true', () => {
-      const jTrue = new Just(true);
-      const right = new Right(jTrue);
-      const defaultR = Default(right);
+const keyString = 'key';
+const keyLeaf = new Leaf('key');
 
-      const keyLeaf = new Leaf('key');
-      const trueRightMarking = Marking(singleton("key")(defaultR));
+function makeRightMarking(mark : boolean) {
+  const defaultR = Default(new Right(new Just(mark)));
 
-      const mumboJumbo = evaluate(Hard.value)(trueRightMarking)(keyLeaf);
-      expect(mumboJumbo).toEqual(jTrue);
+  return Marking(singleton(keyString)(defaultR));
+}
+
+describe('evaluate', () => {
+    it('right key present in marking and True', () => {
+      expect(
+        evaluate(Hard.value)(makeRightMarking(true))(keyLeaf)
+      ).toEqual(
+        new Just(true)
+      );
+    });
+
+    it('right key present in marking and False', () => {
+      expect(
+        evaluate(Hard.value)(makeRightMarking(false))(keyLeaf)
+      ).toEqual(
+        new Just(false)
+      );
     });
 });
