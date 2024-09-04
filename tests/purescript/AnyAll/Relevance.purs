@@ -1,4 +1,14 @@
-module Test.AnyAll.RelevanceTest where
+module Test.AnyAll.RelevanceTest
+  ( all
+  , any
+  , keyLeaf
+  , keyString
+  , missingLeaf
+  , not
+  , right
+  , spec
+  )
+  where
 
 import Prelude
 import Control.Monad.Error.Class (class MonadThrow)
@@ -17,6 +27,10 @@ keyString = "key"
 
 right :: Boolean -> Marking
 right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Right (Just b) ]
+
+
+trueRight :: Marking
+trueRight = Marking (Map.singleton "key" (Default (Right (Just true))))
 
 left :: Boolean -> Marking
 left b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Left (Just b) ]
@@ -41,7 +55,7 @@ spec = describe "evaluate" do
   describe "leaf" do
     describe "key present in marking" do
       it "Soft matching right true" do
-        evaluate Soft (right true) keyLeaf `shouldEqual` (Just true)
+        evaluate Soft trueRight keyLeaf `shouldEqual` (Just true)
       it "Soft matching right false" do
         evaluate Soft (right false) keyLeaf `shouldEqual` (Just false)
       it "Soft matching left true" do
