@@ -13,7 +13,7 @@ import Data.Maybe
 import Data.Either (Either(..), either)
 
 -- paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
-relevant :: Hardness -> DisplayPref -> Marking -> Maybe Bool -> NLDict -> Item String -> Q
+relevant :: Hardness -> DisplayPref -> Marking -> Maybe Boolean -> NLDict -> Item String -> Q
 relevant sh dp marking parentValue nl self =
   let
     selfValue = evaluate sh marking self
@@ -47,7 +47,7 @@ ask2view :: ShouldView -> ShouldView
 ask2view Ask = View
 ask2view x = x
 
-relevantQ :: Marking -> Maybe Bool -> NLDict -> Item String -> Q
+relevantQ :: Marking -> Maybe Boolean -> NLDict -> Item String -> Q
 relevantQ marking parentValue nl self =
   let
     selfValue = evaluateHard marking self
@@ -80,7 +80,7 @@ nlMapFn word nldict nl =
       pure $ Tuple lg longtext
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
-evaluate :: Hardness -> Marking -> Item String -> Maybe Bool
+evaluate :: Hardness -> Marking -> Item String -> Maybe Boolean
 evaluate Soft (Marking marking) (Leaf x) = case Map.lookup x marking of
   Just (Default (Right (Just y))) -> Just y
   Just (Default (Left (Just y))) -> Just y
@@ -94,7 +94,7 @@ evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
 evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
-evaluateHard :: Marking -> Item String -> Maybe Bool
+evaluateHard :: Marking -> Item String -> Maybe Boolean
 evaluateHard (Marking marking) (Leaf x) = case Map.lookup x marking of
   Just (Default (Right (Just y))) -> Just y
   _ -> Nothing
@@ -103,13 +103,13 @@ evaluateHard marking (Not item) = not <$> (evaluateHard marking item)
 evaluateHard marking (Any _ items) = evaluateAny (evaluateHard marking <$> items)
 evaluateHard marking (All _ items) = evaluateAll (evaluateHard marking <$> items)
 
-evaluateAny :: forall f. Foldable f => f (Maybe Bool) -> Maybe Bool
+evaluateAny :: forall f. Foldable f => f (Maybe Boolean) -> Maybe Boolean
 evaluateAny items
   | Just true `elem` items = Just true
   | all (_ == Just false) items = Just false
   | otherwise = Nothing
 
-evaluateAll :: forall f. Foldable f => f (Maybe Bool) -> Maybe Bool
+evaluateAll :: forall f. Foldable f => f (Maybe Boolean) -> Maybe Boolean
 evaluateAll items
   | all (_ == Just true) items = Just true
   | Just false `elem` items = Just false

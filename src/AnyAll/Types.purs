@@ -1,4 +1,27 @@
-module AnyAll.Types where
+module AnyAll.Types(
+  Item(..),
+  Label(..),
+  NLDict,
+  Marking(..),
+  Default(..),
+  Q(..),
+  QoutJS(..),
+  PrePostRecord(..),
+  ShouldView(..),
+  AndOr(..),
+  DisplayPref(..),
+  Hardness(..),
+  StdinSchema(..),
+  ForD3(..),
+  nnf,
+  decodeIt,
+  DefaultRecord,
+  getMarking,
+  mkQ,
+  label2pre,
+  markup,
+  qoutjs
+) where
 
 import Prelude
 
@@ -27,7 +50,6 @@ import Foreign.Generic
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
-type Bool = Boolean
 
 --
 -- the "native" data type represents an And/Or structure as a simple tree of Items
@@ -89,10 +111,10 @@ instance decodeLabel :: (Decode a) => Decode (Label a) where
   decode eta = genericDecode defaultOptions eta
 
 label2pre (Pre x) = x
-label2pre (PrePost x y) = x
+label2pre (PrePost x _) = x
 
-label2post (PrePost x y) = y
-label2post (Pre x) = "" -- maybe throw an error?
+label2post (PrePost _ y) = y
+label2post (Pre _) = "" -- maybe throw an error?
 
 type NLDict = Map.Map String (Map.Map String String)
 
@@ -100,7 +122,7 @@ type NLDict = Map.Map String (Map.Map String String)
 -- By contrast, a Marking contains the current state of which elements have received user input;
 -- if no user input was received, the Marking gives default values. This gets updated every time the user clicks something.
 
-newtype Marking = Marking (Map.Map String (Default Bool))
+newtype Marking = Marking (Map.Map String (Default Boolean))
 
 derive instance eqMarking :: Eq (Marking)
 derive instance genericMarking :: Generic Marking _
@@ -165,7 +187,7 @@ newtype Q = Q
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default Bool
+  , mark :: Default Boolean
   , children :: Array Q
   }
 
@@ -179,7 +201,7 @@ type R =
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default Bool
+  , mark :: Default Boolean
   }
 
 -- instance encodeQ :: Encode (Q) where
@@ -222,7 +244,7 @@ instance showQoutJS :: Show QoutJS where
   show eta = genericShow eta
 
 qoutjs :: Q -> QoutJS
-qoutjs (Q q@{ shouldView, andOr, tagNL, prePost, mark, children }) =
+qoutjs (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
   QoutJS $ Option.fromRecord
     { shouldView: show shouldView
     , andOr: case andOr of
