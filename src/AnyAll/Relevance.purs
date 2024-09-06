@@ -16,12 +16,12 @@ import Data.Either (Either(..), either)
 relevant :: Hardness -> DisplayPref -> Marking -> Maybe Boolean -> NLDict -> Item String -> Q
 relevant sh dp marking parentValue nl self =
   let
-    selfValue = evaluate sh marking self
+    selfValue = evaluate marking self
     initVis =
       if isJust parentValue then
         if parentValue == selfValue then View
         else Hide
-      else if isJust (evaluate Hard marking self) then View
+      else if isJust (evaluate marking self) then View
       else Ask
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
@@ -80,18 +80,14 @@ nlMapFn word nldict nl =
       pure $ Tuple lg longtext
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
-evaluate :: Hardness -> Marking -> Item String -> Maybe Boolean
-evaluate Soft (Marking marking) (Leaf x) = case Map.lookup x marking of
-  Just (Default (Right (Just y))) -> Just y
-  Just (Default (Left (Just y))) -> Just y
-  _ -> Nothing
-evaluate Hard (Marking marking) (Leaf x) = case Map.lookup x marking of
+evaluate :: Marking -> Item String -> Maybe Boolean
+evaluate (Marking marking) (Leaf x) = case Map.lookup x marking of
   Just (Default (Right (Just y))) -> Just y
   _ -> Nothing
 
-evaluate sh marking (Not item) = not <$> (evaluate sh marking item)
-evaluate sh marking (Any _ items) = evaluateAny (evaluate sh marking <$> items)
-evaluate sh marking (All _ items) = evaluateAll (evaluate sh marking <$> items)
+evaluate  marking (Not item) = not <$> (evaluate marking item)
+evaluate  marking (Any _ items) = evaluateAny (evaluate marking <$> items)
+evaluate  marking (All _ items) = evaluateAll (evaluate marking <$> items)
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
 evaluateHard :: Marking -> Item String -> Maybe Boolean

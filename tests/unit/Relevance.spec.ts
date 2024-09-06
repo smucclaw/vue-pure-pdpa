@@ -16,7 +16,7 @@ function makeRightMarking(mark : boolean) {
 describe('evaluate', () => {
     it('right key present in marking and True', () => {
       expect(
-        evaluate(Hard.value)(makeRightMarking(true))(keyLeaf)
+        evaluate(makeRightMarking(true))(keyLeaf)
       ).toEqual(
         new Just(true)
       );
@@ -24,7 +24,7 @@ describe('evaluate', () => {
 
     it('right key present in marking and False', () => {
       expect(
-        evaluate(Hard.value)(makeRightMarking(false))(keyLeaf)
+        evaluate(makeRightMarking(false))(keyLeaf)
       ).toEqual(
         new Just(false)
       );
