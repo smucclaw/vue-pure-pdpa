@@ -1,5 +1,5 @@
 import { evaluate } from '@ps/AnyAll.Relevance';
-import { Hard, Leaf, Default, Marking } from '@ps/AnyAll.Types/index.js';
+import { Leaf, Default, Marking } from '@ps/AnyAll.Types/index.js';
 import { Right } from '@ps/Data.Either';
 import { Just } from '@ps/Data.Maybe';
 import { singleton } from '@ps/Data.Map';
