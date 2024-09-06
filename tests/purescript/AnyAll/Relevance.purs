@@ -26,14 +26,7 @@ keyString :: String
 keyString = "key"
 
 right :: Boolean -> Marking
-right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Right (Just b) ]
-
-
-trueRight :: Marking
-trueRight = Marking (Map.singleton "key" (Default (Right (Just true))))
-
-left :: Boolean -> Marking
-left b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Left (Just b) ]
+right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString (Just b) ]
 
 keyLeaf :: Item String
 keyLeaf = Leaf keyString
@@ -58,20 +51,12 @@ spec = describe "evaluate" do
         evaluate  (right true) keyLeaf `shouldEqual` (Just true)
       it "Hard matching right false" do
         evaluate  (right false) keyLeaf `shouldEqual` (Just false)
-      it "Hard matching left Nothing" do
-        evaluate  (left true) keyLeaf `shouldEqual` Nothing
-      it "Hard matching left Nothing" do
-        evaluate  (left true) keyLeaf `shouldEqual` Nothing
 
     describe "key is not present in marking" do
       it "Hard missing right true" do
         evaluate  (right true) missingLeaf `shouldEqual` Nothing
       it "Hard missing right false" do
         evaluate  (right false) missingLeaf `shouldEqual` Nothing
-      it "Hard missing left Nothing" do
-        evaluate  (left true) missingLeaf `shouldEqual` Nothing
-      it "Hard missing left Nothing" do
-        evaluate  (left true) missingLeaf `shouldEqual` Nothing
 
   describe "Any" do
     it "true present" do

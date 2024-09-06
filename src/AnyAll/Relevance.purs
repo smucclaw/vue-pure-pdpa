@@ -29,8 +29,8 @@ relevant marking parentValue nl self =
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
-      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
+      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default selfValue) paintedChildren
+      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default selfValue) paintedChildren
   in -- convert to a QTree for output
     makeQNode self
 
@@ -47,27 +47,6 @@ ask2view :: ShouldView -> ShouldView
 ask2view Ask = View
 ask2view x = x
 
-relevantQ :: Marking -> Maybe Boolean -> NLDict -> Item String -> Q
-relevantQ marking parentValue nl self =
-  let
-    selfValue = evaluateHard marking self
-    initVis =
-      if isJust parentValue then
-        if parentValue == selfValue then View
-        else Hide
-      else if isJust (evaluateHard marking self) then View
-      else Ask
-    -- we compute the initial visibility of the subtree.
-    -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
-    paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevantQ marking selfValue nl <$> getChildren self
-    makeQNode itemNode = case itemNode of
-      Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
-      Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
-      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default $ Left selfValue) paintedChildren
-  in -- convert to a QTree for output
-    makeQNode self
-
 nlMapFn word nldict nl =
   let
     langs = Set.toUnfoldable $ Map.keys nldict :: Array String
@@ -82,22 +61,12 @@ nlMapFn word nldict nl =
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
 evaluate :: Marking -> Item String -> Maybe Boolean
 evaluate (Marking marking) (Leaf x) = case Map.lookup x marking of
-  Just (Default (Right (Just y))) -> Just y
+  Just (Default (Just y)) -> Just y
   _ -> Nothing
 
 evaluate  marking (Not item) = not <$> (evaluate marking item)
 evaluate  marking (Any _ items) = evaluateAny (evaluate marking <$> items)
 evaluate  marking (All _ items) = evaluateAll (evaluate marking <$> items)
-
--- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
-evaluateHard :: Marking -> Item String -> Maybe Boolean
-evaluateHard (Marking marking) (Leaf x) = case Map.lookup x marking of
-  Just (Default (Right (Just y))) -> Just y
-  _ -> Nothing
-
-evaluateHard marking (Not item) = not <$> (evaluateHard marking item)
-evaluateHard marking (Any _ items) = evaluateAny (evaluateHard marking <$> items)
-evaluateHard marking (All _ items) = evaluateAll (evaluateHard marking <$> items)
 
 evaluateAny :: forall f. Foldable f => f (Maybe Boolean) -> Maybe Boolean
 evaluateAny items
@@ -112,4 +81,4 @@ evaluateAll items
   | otherwise = Nothing
 
 lookupMarking :: String -> Marking -> Default Boolean
-lookupMarking node marking = fromMaybe (Default $ Left Nothing) (Map.lookup node (getMarking marking))
+lookupMarking node marking = fromMaybe (Default Nothing) (Map.lookup node (getMarking marking))

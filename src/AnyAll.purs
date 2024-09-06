@@ -1,6 +1,6 @@
 module AnyAll
   ( heads
-  , paintHard
+  , paint
   , emptyMarking
   )
   where
@@ -8,7 +8,7 @@ module AnyAll
 import Prelude
 
 import AnyAll.Types
-import AnyAll.Relevance (relevantQ)
+import AnyAll.Relevance (relevant)
 
 import Partial.Unsafe (unsafeCrashWith)
 import Data.Map as Map
@@ -31,9 +31,9 @@ decodeMarking marking =
       (\m -> m)
       eitherm
 
-paintHard :: Foreign -> NLDict -> Item String -> QoutJS
-paintHard fm nl item =
-  qoutjs $ relevantQ (decodeMarking fm) Nothing nl item
+paint :: Foreign -> NLDict -> Item String -> QoutJS
+paint fm nl item =
+  qoutjs $ relevant (decodeMarking fm) Nothing nl item
 
 heads ::  forall t2. Object t2 -> Array String
 heads x = keys(x)
