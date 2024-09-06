@@ -55,15 +55,15 @@ readDefault fm mk = do
         "false" -> Just false
         "undefined" -> Nothing
         _ -> Nothing
-  pure $ Tuple mk (lr mb)
+  pure $ Tuple mk mb
 
-markup :: Map.Map String (Either (Maybe Boolean) (Maybe Boolean)) -> Marking
+markup :: Map.Map String (Maybe Boolean) -> Marking
 markup x = Marking $ Default <$> x
 
 getMarking ∷ Marking → Map.Map String (Default Boolean)
 getMarking (Marking mymap) = mymap
 
-newtype Default a = Default (Either (Maybe a) (Maybe a))
+newtype Default a = Default (Maybe a)
 
 derive instance eqDefault :: (Eq a) => Eq (Default a)
 derive instance genericDefault :: Generic (Default a) _
@@ -74,8 +74,7 @@ instance encodeDefault :: (Show a, Encode a) => Encode (Default a) where
   encode eta = encode $ dumpDefault (eta)
 
 dumpDefault ∷ ∀ a. Show a ⇒ Default a → DefaultRecord
-dumpDefault (Default (Left x)) = { source: "default", value: maybe2string x }
-dumpDefault (Default (Right x)) = { source: "user", value: maybe2string x }
+dumpDefault (Default x) = { source: "user", value: maybe2string x }
 
 type DefaultRecord =
   { source :: String

@@ -7,7 +7,6 @@ import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Data.Map as Map
 import Data.Tuple (Tuple(..))
-import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import AnyAll.Relevance (relevant)
 import AnyAll.Types
@@ -16,10 +15,7 @@ keyString :: String
 keyString = "key"
 
 right :: Boolean -> Marking
-right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Right (Just b) ]
-
-left :: Boolean -> Marking
-left b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ Left (Just b) ]
+right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString $ (Just b) ]
 
 keyLeaf :: Item String
 keyLeaf = Leaf keyString
@@ -51,7 +47,7 @@ myq =
   ( Q
       { andOr: (Simply "single")
       , children: []
-      , mark: (Default (Left Nothing))
+      , mark: (Default Nothing)
       , prePost: Nothing
       , shouldView: Ask
       , tagNL: Map.empty
@@ -68,12 +64,6 @@ spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
 spec = describe "hide view" do
   describe "Hard" do
     it "Self Just T / Parent Just T" do
-      let qq = relevant (left true) (Just true) example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Hide
-    it "Self Just F / Parent Just T" do
-      let qq = relevant (left false) (Just true) example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Hide
-    it "Self Just T / Parent Just T" do
       let qq = relevant (right true) (Just true) example1_nl keyLeaf
       getShouldView qq `shouldEqual` View
     it "Self Just F / Parent Just T" do
@@ -81,12 +71,6 @@ spec = describe "hide view" do
       getShouldView qq `shouldEqual` Hide
     it "Self Nothing / Parent Just T" do
       let qq = relevant emptyMarking (Just true) example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Hide
-    it "Self Just T / Parent Just F" do
-      let qq = relevant (left true) (Just false) example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Hide
-    it "Self Just F / Parent Just F" do
-      let qq = relevant (left false) (Just false) example1_nl keyLeaf
       getShouldView qq `shouldEqual` Hide
     it "Self Just T / Parent Just F" do
       let qq = relevant (right true) (Just false) example1_nl keyLeaf
@@ -97,12 +81,6 @@ spec = describe "hide view" do
     it "Self Nothing / Parent Just F" do
       let qq = relevant emptyMarking (Just false) example1_nl keyLeaf
       getShouldView qq `shouldEqual` Hide
-    it "Self Just T / Parent Nothing" do
-      let qq = relevant (left true) Nothing example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Ask
-    it "Self Just F / Parent Nothing" do
-      let qq = relevant (left false) Nothing example1_nl keyLeaf
-      getShouldView qq `shouldEqual` Ask
     it "Self Just T / Parent Nothing" do
       let qq = relevant (right true) Nothing example1_nl keyLeaf
       getShouldView qq `shouldEqual` View
