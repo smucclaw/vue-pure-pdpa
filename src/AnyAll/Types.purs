@@ -8,7 +8,6 @@ module AnyAll.Types(
   ShouldView(..),
   AndOr(..),
   DisplayPref(..),
-  Hardness(..),
   StdinSchema(..),
   ForD3(..),
   mkQ,
@@ -177,21 +176,6 @@ instance showDisplayPref :: Show DisplayPref where
 
 instance encodeDisplayPref :: Encode DisplayPref where
   encode eta = genericEncode defaultOptions eta
-
-data Hardness
-  = Soft -- use Left defaults
-  | Hard -- require Right input
-
-derive instance eqHardness :: Eq (Hardness)
-derive instance genericHardness :: Generic Hardness _
-instance showHardness :: Show Hardness where
-  show = genericShow
-
-instance encodeHardness :: Encode Hardness where
-  encode eta = genericEncode defaultOptions eta
-
-instance decodeHardness :: Decode Hardness where
-  decode eta = genericDecode defaultOptions eta
 
 data StdinSchema a = StdinSchema
   { marking :: Marking
