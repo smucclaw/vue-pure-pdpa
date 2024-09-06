@@ -1,8 +1,7 @@
 module AnyAll.Types(
   module AnyAll.Item,
-  NLDict,
-  Marking(..),
-  Default(..),
+  module AnyAll.BasicTypes,
+  module AnyAll.Marking,
   Q(..),
   QoutJS(..),
   PrePostRecord(..),
@@ -12,17 +11,12 @@ module AnyAll.Types(
   Hardness(..),
   StdinSchema(..),
   ForD3(..),
-  DefaultRecord,
-  getMarking,
   mkQ,
-  markup,
   qoutjs
 ) where
 
 import Prelude
 
-import Effect (Effect)
-import Effect.Console (log)
 
 import Data.Traversable (sequence)
 import Data.Tuple
@@ -47,69 +41,8 @@ import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
 import AnyAll.Item
-
-
-type NLDict = Map.Map String (Map.Map String String)
-
--- an Item tree represents the logic. The logic is immutable, at least within the short-term lifetime of a user session.
--- By contrast, a Marking contains the current state of which elements have received user input;
--- if no user input was received, the Marking gives default values. This gets updated every time the user clicks something.
-
-newtype Marking = Marking (Map.Map String (Default Boolean))
-
-derive instance eqMarking :: Eq (Marking)
-derive instance genericMarking :: Generic Marking _
-derive newtype instance showMarking :: Show (Marking)
-instance encodeMarking :: Encode Marking where
-  encode (Marking mymap) = unsafeToForeign $ FO.fromFoldable (Map.toUnfoldable (dumpDefault <$> mymap) :: List _)
-
--- should this be decodeMarking?
-instance decodeMarking :: Decode Marking where
-  decode fm = do
-    mkeys <- FK.keys fm
-    astuples <- sequence $ (readDefault fm <$> mkeys)
-    pure $ markup $ Map.fromFoldable astuples
-
--- there's a tutorial about how to deal with undefined but for now we are just going to go with string values of Maybe Bool
-readDefault fm mk = do
-  source <- (fm ! mk) >>= readProp "source" >>= readString
-  value <- (fm ! mk) >>= readProp "value" >>= readString
-  let
-    lr = case source of
-      "default" -> Left
-      "user" -> Right
-      _ -> Left
-    mb =
-      case value of
-        "true" -> Just true
-        "false" -> Just false
-        "undefined" -> Nothing
-        _ -> Nothing
-  pure $ Tuple mk (lr mb)
-
-markup :: Map.Map String (Either (Maybe Boolean) (Maybe Boolean)) -> Marking
-markup x = Marking $ Default <$> x
-
-getMarking (Marking mymap) = mymap
-
-newtype Default a = Default (Either (Maybe a) (Maybe a))
-
-derive instance eqDefault :: (Eq a) => Eq (Default a)
-derive instance genericDefault :: Generic (Default a) _
-instance showDefault :: (Show a) => Show (Default a) where
-  show = genericShow
-
-instance encodeDefault :: (Show a, Encode a) => Encode (Default a) where
-  encode eta = encode $ dumpDefault (eta)
-
-dumpDefault :: forall a. Show a => Default a -> DefaultRecord
-dumpDefault (Default (Left x)) = { source: "default", value: maybe2string x }
-dumpDefault (Default (Right x)) = { source: "user", value: maybe2string x }
-
-type DefaultRecord =
-  { source :: String
-  , value :: String
-  }
+import AnyAll.BasicTypes
+import AnyAll.Marking
 
 -- together, an Item and a Marking get computed into a tree of Q, which has more structure,
 -- and represents the result of and/or shortcutting.
@@ -209,9 +142,6 @@ dumpPrePost :: Maybe (Label String) -> PrePostRecord
 dumpPrePost (Just (Pre x)) = PPR $ Option.fromRecord { pre: x }
 dumpPrePost (Just (PrePost x y)) = PPR $ Option.fromRecord { pre: x, post: y }
 dumpPrePost (Nothing) = PPR $ Option.empty
-
-maybe2string (Just x) = show x
-maybe2string Nothing = "undefined"
 
 data ShouldView = View | Hide | Ask
 
