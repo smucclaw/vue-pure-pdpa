@@ -13,8 +13,8 @@ import Data.Maybe
 import Data.Either (Either(..), either)
 
 -- paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
-relevant :: DisplayPref -> Marking -> Maybe Boolean -> NLDict -> Item String -> Q
-relevant dp marking parentValue nl self =
+relevant :: Marking -> Maybe Boolean -> NLDict -> Item String -> Q
+relevant marking parentValue nl self =
   let
     selfValue = evaluate marking self
     initVis =
@@ -25,7 +25,7 @@ relevant dp marking parentValue nl self =
       else Ask
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
-    paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant dp marking selfValue nl <$> getChildren self
+    paintedChildren = (if initVis /= Hide then identity else ask2hide) <$> relevant marking selfValue nl <$> getChildren self
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well

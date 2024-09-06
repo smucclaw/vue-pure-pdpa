@@ -7,7 +7,6 @@ module AnyAll.Types(
   PrePostRecord(..),
   ShouldView(..),
   AndOr(..),
-  DisplayPref(..),
   StdinSchema(..),
   ForD3(..),
   mkQ,
@@ -163,18 +162,6 @@ instance showAndOr :: (Show a) => Show (AndOr a) where
   show = genericShow
 
 instance encodeAndOr :: (Encode a) => Encode (AndOr a) where
-  encode eta = genericEncode defaultOptions eta
-
--- a few other types for configuration of the user interface
-
-data DisplayPref = DPTerse | DPNormal | DPVerbose
-
-derive instance eqDisplayPref :: Eq DisplayPref
-derive instance genericDisplayPref :: Generic DisplayPref _
-instance showDisplayPref :: Show DisplayPref where
-  show = genericShow
-
-instance encodeDisplayPref :: Encode DisplayPref where
   encode eta = genericEncode defaultOptions eta
 
 data StdinSchema a = StdinSchema
