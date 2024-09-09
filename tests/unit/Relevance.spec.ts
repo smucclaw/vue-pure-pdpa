@@ -1,5 +1,5 @@
 import { evaluate } from '@ps/AnyAll.Relevance';
-import { Leaf, Default, Marking } from '@ps/AnyAll.Types/index.js';
+import { Leaf, Marking } from '@ps/AnyAll.Types/index.js';
 import { Just } from '@ps/Data.Maybe';
 import { singleton } from '@ps/Data.Map';
 
@@ -7,7 +7,7 @@ const keyString = 'key';
 const keyLeaf = new Leaf('key');
 
 function makeRightMarking(mark : boolean) {
-  const defaultR = Default(new Just(mark));
+  const defaultR = new Just(mark);
 
   return Marking(singleton(keyString)(defaultR));
 }

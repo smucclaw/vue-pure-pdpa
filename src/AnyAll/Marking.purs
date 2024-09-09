@@ -1,10 +1,7 @@
 module AnyAll.Marking(
   Marking(..),
-  Default(..),
-  DefaultRecord,
   getMarking,
-  markup,
-  dumpDefault
+  markup
 ) where
 
 import Prelude
@@ -25,8 +22,9 @@ import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
 import AnyAll.BasicTypes  (maybe2string)
+import AnyAll.Ternary
 
-newtype Marking = Marking (Map.Map String Default)
+newtype Marking = Marking (Map.Map String Ternary)
 
 derive instance eqMarking :: Eq (Marking)
 derive instance genericMarking :: Generic Marking _
@@ -40,44 +38,10 @@ instance decodeMarking :: Decode Marking where
     astuples <- sequence $ (readDefault fm <$> mkeys)
     pure $ markup $ Map.fromFoldable astuples
 
--- there's a tutorial about how to deal with undefined but for now we are just going to go with string values of Maybe Bool
-readDefault fm mk = do
-  source <- (fm ! mk) >>= readProp "source" >>= readString
-  value <- (fm ! mk) >>= readProp "value" >>= readString
-  let
-    lr = case source of
-      "default" -> Left
-      "user" -> Right
-      _ -> Left
-    mb =
-      case value of
-        "true" -> Just true
-        "false" -> Just false
-        "undefined" -> Nothing
-        _ -> Nothing
-  pure $ Tuple mk mb
 
-markup :: Map.Map String (Maybe Boolean) -> Marking
-markup x = Marking $ Default <$> x
+markup :: Map.Map String Ternary -> Marking
+markup x = Marking $ x
 
-getMarking ∷ Marking → Map.Map String Default
+getMarking ∷ Marking → Map.Map String Ternary
 getMarking (Marking mymap) = mymap
-
-newtype Default = Default (Maybe Boolean)
-
-derive instance eqDefault :: Eq (Default)
-derive instance genericDefault :: Generic (Default) _
-instance showDefault :: Show (Default) where
-  show = genericShow
-
-instance encodeDefault :: Encode (Default) where
-  encode eta = encode $ dumpDefault (eta)
-
-dumpDefault ∷ Default → DefaultRecord
-dumpDefault (Default x) = { source: "user", value: maybe2string x }
-
-type DefaultRecord =
-  { source :: String
-  , value :: String
-  }
 

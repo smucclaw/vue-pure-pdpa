@@ -52,10 +52,10 @@ emptyMarking = markup Map.empty
 
 marking1 :: Marking
 marking1 = markup $ Map.fromFoldable
-  [ Tuple "walk" $  (Just true)
-  , Tuple "run" $  (Just true)
-  , Tuple "eat" $  (Just true)
-  , Tuple "drink" $  (Just false)
+  [ Tuple "walk" $  True
+  , Tuple "run" $  True
+  , Tuple "eat" $  True
+  , Tuple "drink" $  False
   ]
 
 myq :: Q
@@ -66,7 +66,7 @@ myq =
           [ ( Q
                 { andOr: (Simply "walk")
                 , children: []
-                , mark: (Default (Just true))
+                , mark: True
                 , prePost: Nothing
                 , shouldView: View
                 , tagNL: (Map.fromFoldable [ (Tuple "en" "walk slowly") ])
@@ -75,7 +75,7 @@ myq =
           , ( Q
                 { andOr: (Simply "run")
                 , children: []
-                , mark: (Default (Just true))
+                , mark: True
                 , prePost: Nothing
                 , shouldView: Ask
                 , tagNL: (Map.fromFoldable [ (Tuple "en" "run fast") ])
@@ -87,7 +87,7 @@ myq =
                     [ ( Q
                           { andOr: (Simply "eat")
                           , children: []
-                          , mark: (Default (Just true))
+                          , mark: True
                           , prePost: Nothing
                           , shouldView: Ask
                           , tagNL: (Map.fromFoldable [ (Tuple "en" "eat food") ])
@@ -96,21 +96,21 @@ myq =
                     , ( Q
                           { andOr: (Simply "drink")
                           , children: []
-                          , mark: (Default (Just false))
+                          , mark: False
                           , prePost: Nothing
                           , shouldView: View
                           , tagNL: (Map.fromFoldable [ (Tuple "en" "drink beverages") ])
                           }
                       )
                     ]
-                , mark: (Default Nothing)
+                , mark: Unknown
                 , prePost: (Just (Pre "either"))
                 , shouldView: View
                 , tagNL: (Map.fromFoldable [ (Tuple "en" "") ])
                 }
             )
           ]
-      , mark: (Default Nothing)
+      , mark: Unknown
       , prePost: (Just (Pre "all of"))
       , shouldView: View
       , tagNL: (Map.fromFoldable [ (Tuple "en" "") ])

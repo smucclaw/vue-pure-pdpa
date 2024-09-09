@@ -11,22 +11,23 @@ module Test.AnyAll.RelevanceTest
   where
 
 import Prelude
+
+import AnyAll.Relevance (evaluate)
+import AnyAll.Types (Item(..), Label(..), Marking(..), Ternary(..))
 import Control.Monad.Error.Class (class MonadThrow)
+import Data.Either (Either(..))
+import Data.Map as Map
+import Data.Maybe (Maybe(..))
+import Data.Tuple (Tuple(..))
 import Effect.Exception (Error)
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)
-import AnyAll.Types (Default(..), Item(..), Label(..), Marking(..))
-import Data.Map as Map
-import Data.Tuple (Tuple(..))
-import Data.Either (Either(..))
-import Data.Maybe (Maybe(..))
-import AnyAll.Relevance (evaluate)
 
 keyString :: String
 keyString = "key"
 
-right :: Boolean -> Marking
-right b = Marking $ Default <$> Map.fromFoldable [ Tuple keyString (Just b) ]
+right :: Ternary -> Marking
+right b = Marking $ Map.fromFoldable [ Tuple keyString  b]
 
 keyLeaf :: Item String
 keyLeaf = Leaf keyString
@@ -48,36 +49,36 @@ spec = describe "evaluate" do
   describe "leaf" do
     describe "key present in marking" do
       it "Hard matching right true" do
-        evaluate  (right true) keyLeaf `shouldEqual` (Just true)
+        evaluate  (right True) keyLeaf `shouldEqual` True
       it "Hard matching right false" do
-        evaluate  (right false) keyLeaf `shouldEqual` (Just false)
+        evaluate  (right False) keyLeaf `shouldEqual` False
 
     describe "key is not present in marking" do
       it "Hard missing right true" do
-        evaluate  (right true) missingLeaf `shouldEqual` Nothing
+        evaluate  (right True) missingLeaf `shouldEqual` Unknown
       it "Hard missing right false" do
-        evaluate  (right false) missingLeaf `shouldEqual` Nothing
+        evaluate  (right False) missingLeaf `shouldEqual` Unknown
 
   describe "Any" do
     it "true present" do
-      evaluate  (right true) (any [ "key", "run" ]) `shouldEqual` (Just true)
+      evaluate  (right True) (any [ "key", "run" ]) `shouldEqual` True
     it "all false" do
-      evaluate  (right false) (any [ "key" ]) `shouldEqual` (Just false)
+      evaluate  (right False) (any [ "key" ]) `shouldEqual` False
     it "missing key" do
-      evaluate  (right false) (any [ "missing" ]) `shouldEqual` Nothing
+      evaluate  (right False) (any [ "missing" ]) `shouldEqual` Unknown
 
   describe "All" do
     it "all true" do
-      evaluate  (right true) (all [ "key" ]) `shouldEqual` (Just true)
+      evaluate  (right True) (all [ "key" ]) `shouldEqual` True
     it "false present" do
-      evaluate  (right false) (all [ "key", "run" ]) `shouldEqual` (Just false)
+      evaluate  (right False) (all [ "key", "run" ]) `shouldEqual` False
     it "missing key" do
-      evaluate  (right false) (all [ "missing" ]) `shouldEqual` Nothing
+      evaluate  (right False) (all [ "missing" ]) `shouldEqual` Unknown
 
   describe "Not" do
     it "not true" do
-      evaluate  (right true) (not "key") `shouldEqual` (Just false)
+      evaluate  (right True) (not "key") `shouldEqual` False
     it "not false" do
-      evaluate  (right false) (not "key") `shouldEqual` (Just true)
+      evaluate  (right False) (not "key") `shouldEqual` True
     it "missing key" do
-      evaluate  (right false) (not "missing") `shouldEqual` Nothing
+      evaluate  (right False) (not "missing") `shouldEqual` Unknown
