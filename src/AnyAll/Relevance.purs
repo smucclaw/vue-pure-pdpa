@@ -13,15 +13,15 @@ import Data.Maybe
 import Data.Either (Either(..), either)
 
 -- paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
-relevant :: Marking -> Maybe Boolean -> NLDict -> Item String -> Q
+relevant :: Marking -> Ternary -> NLDict -> Item String -> Q
 relevant marking parentValue nl self =
   let
     selfValue = evaluate marking self
     initVis =
-      if isJust parentValue then
+      if parentValue /= Unknown then
         if parentValue == selfValue then View
         else Hide
-      else if isJust (evaluate marking self) then View
+      else if (evaluate marking self) /= Unknown then View
       else Ask
     -- we compute the initial visibility of the subtree.
     -- if our initial visibility is to hide, then we mute all our children by converting Ask to Hide; but if any of our children are View, we leave them as View.
@@ -29,8 +29,8 @@ relevant marking parentValue nl self =
     makeQNode itemNode = case itemNode of
       Leaf x -> mkQ (initVis) (Simply x) (nlMapFn x nl nl) Nothing (lookupMarking x marking) []
       Not x -> makeQNode x -- [TODO] we should have a SimplyNot as well
-      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) (Default selfValue) paintedChildren
-      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) (Default selfValue) paintedChildren
+      Any label _ -> mkQ (ask2view initVis) Or  (nlMapFn (label2pre label) nl nl) (Just label) selfValue paintedChildren
+      All label _ -> mkQ (ask2view initVis) And (nlMapFn (label2pre label) nl nl) (Just label) selfValue paintedChildren
   in -- convert to a QTree for output
     makeQNode self
 
@@ -59,26 +59,26 @@ nlMapFn word nldict nl =
       pure $ Tuple lg longtext
 
 -- well, it depends on what values the children have. and that depends on whether we're assessing them in soft or hard mode.
-evaluate :: Marking -> Item String -> Maybe Boolean
+evaluate :: Marking -> Item String -> Ternary
 evaluate (Marking marking) (Leaf x) = case Map.lookup x marking of
-  Just (Default (Just y)) -> Just y
-  _ -> Nothing
+  Just y -> y
+  _ -> Unknown
 
-evaluate  marking (Not item) = not <$> (evaluate marking item)
+evaluate  marking (Not item) = not3 (evaluate marking item)
 evaluate  marking (Any _ items) = evaluateAny (evaluate marking <$> items)
 evaluate  marking (All _ items) = evaluateAll (evaluate marking <$> items)
 
-evaluateAny :: forall f. Foldable f => f (Maybe Boolean) -> Maybe Boolean
+evaluateAny :: forall f. Foldable f => f Ternary -> Ternary
 evaluateAny items
-  | Just true `elem` items = Just true
-  | all (_ == Just false) items = Just false
-  | otherwise = Nothing
+  | True `elem` items = True
+  | all (_ == False) items = False
+  | otherwise = Unknown
 
-evaluateAll :: forall f. Foldable f => f (Maybe Boolean) -> Maybe Boolean
+evaluateAll :: forall f. Foldable f => f Ternary -> Ternary
 evaluateAll items
-  | all (_ == Just true) items = Just true
-  | Just false `elem` items = Just false
-  | otherwise = Nothing
+  | all (_ == True) items = True
+  | False `elem` items = False
+  | otherwise = Unknown
 
-lookupMarking :: String -> Marking -> Default
-lookupMarking node marking = fromMaybe (Default Nothing) (Map.lookup node (getMarking marking))
+lookupMarking :: String -> Marking -> Ternary
+lookupMarking node marking = fromMaybe Unknown (Map.lookup node (getMarking marking))

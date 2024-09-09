@@ -2,6 +2,7 @@ module AnyAll.Types(
   module AnyAll.Item,
   module AnyAll.BasicTypes,
   module AnyAll.Marking,
+  module AnyAll.Ternary,
   Q(..),
   QoutJS(..),
   PrePostRecord(..),
@@ -40,6 +41,7 @@ import Data.Show.Generic (genericShow)
 
 import AnyAll.Item
 import AnyAll.BasicTypes
+import AnyAll.Ternary
 import AnyAll.Marking
 
 -- together, an Item and a Marking get computed into a tree of Q, which has more structure,
@@ -51,7 +53,7 @@ newtype Q = Q
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default
+  , mark :: Ternary
   , children :: Array Q
   }
 
@@ -65,7 +67,7 @@ type R =
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default
+  , mark :: Ternary
   }
 
 -- instance encodeQ :: Encode (Q) where
