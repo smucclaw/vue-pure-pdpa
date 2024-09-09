@@ -26,7 +26,7 @@ import Data.Show.Generic (genericShow)
 
 import AnyAll.BasicTypes  (maybe2string)
 
-newtype Marking = Marking (Map.Map String (Default Boolean))
+newtype Marking = Marking (Map.Map String Default)
 
 derive instance eqMarking :: Eq (Marking)
 derive instance genericMarking :: Generic Marking _
@@ -60,20 +60,20 @@ readDefault fm mk = do
 markup :: Map.Map String (Maybe Boolean) -> Marking
 markup x = Marking $ Default <$> x
 
-getMarking ∷ Marking → Map.Map String (Default Boolean)
+getMarking ∷ Marking → Map.Map String Default
 getMarking (Marking mymap) = mymap
 
-newtype Default a = Default (Maybe a)
+newtype Default = Default (Maybe Boolean)
 
-derive instance eqDefault :: (Eq a) => Eq (Default a)
-derive instance genericDefault :: Generic (Default a) _
-instance showDefault :: (Show a) => Show (Default a) where
+derive instance eqDefault :: Eq (Default)
+derive instance genericDefault :: Generic (Default) _
+instance showDefault :: Show (Default) where
   show = genericShow
 
-instance encodeDefault :: (Show a, Encode a) => Encode (Default a) where
+instance encodeDefault :: Encode (Default) where
   encode eta = encode $ dumpDefault (eta)
 
-dumpDefault ∷ ∀ a. Show a ⇒ Default a → DefaultRecord
+dumpDefault ∷ Default → DefaultRecord
 dumpDefault (Default x) = { source: "user", value: maybe2string x }
 
 type DefaultRecord =
