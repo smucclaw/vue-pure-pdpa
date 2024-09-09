@@ -51,7 +51,7 @@ newtype Q = Q
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default Boolean
+  , mark :: Default
   , children :: Array Q
   }
 
@@ -65,7 +65,7 @@ type R =
   , andOr :: AndOr String
   , tagNL :: Map.Map String String
   , prePost :: Maybe (Label String)
-  , mark :: Default Boolean
+  , mark :: Default
   }
 
 -- instance encodeQ :: Encode (Q) where

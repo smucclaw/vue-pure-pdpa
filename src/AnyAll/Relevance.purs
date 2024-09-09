@@ -80,5 +80,5 @@ evaluateAll items
   | Just false `elem` items = Just false
   | otherwise = Nothing
 
-lookupMarking :: String -> Marking -> Default Boolean
+lookupMarking :: String -> Marking -> Default
 lookupMarking node marking = fromMaybe (Default Nothing) (Map.lookup node (getMarking marking))
