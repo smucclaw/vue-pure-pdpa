@@ -1,31 +1,28 @@
 import { evaluate } from '@ps/AnyAll.Relevance';
-import { Leaf, Marking } from '@ps/AnyAll.Types/index.js';
-import { Just } from '@ps/Data.Maybe';
+import { False, Leaf, Marking, True } from '@ps/AnyAll.Types/index.js';
 import { singleton } from '@ps/Data.Map';
 
 const keyString = 'key';
 const keyLeaf = new Leaf('key');
 
-function makeRightMarking(mark : boolean) {
-  const defaultR = new Just(mark);
-
-  return Marking(singleton(keyString)(defaultR));
+function makeMarking(mark: any) {
+  return Marking(singleton(keyString)(mark));
 }
 
 describe('evaluate', () => {
     it('right key present in marking and True', () => {
       expect(
-        evaluate(makeRightMarking(true))(keyLeaf)
+        evaluate(makeMarking(True))(keyLeaf)
       ).toEqual(
-        new Just(true)
+        True
       );
     });
 
     it('right key present in marking and False', () => {
       expect(
-        evaluate(makeRightMarking(false))(keyLeaf)
+        evaluate(makeMarking(False))(keyLeaf)
       ).toEqual(
-        new Just(false)
+        False
       );
     });
 });
