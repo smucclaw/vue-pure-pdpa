@@ -1,4 +1,4 @@
-module AnyAll.PdpaQ where
+module Test.AnyAll.PdpaQ where
 
 import AnyAll.Types
 import Data.Map as Map

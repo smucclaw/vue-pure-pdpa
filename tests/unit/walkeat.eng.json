@@ -1,0 +1,71 @@
+{
+    "shouldView": "View",
+    "prePost": {
+        "pre": "all of:"
+    },
+    "mark": {
+        "source": "user",
+        "value": "true"
+    },
+    "andOr": {
+        "tag": "All",
+        "nl": {},
+        "children": [
+            {
+                "shouldView": "View",
+                "prePost": {},
+                "mark": {
+                    "source": "user",
+                    "value": "true"
+                },
+                "andOr": {
+                    "tag": "Leaf",
+                    "nl": {},
+                    "contents": "does the person walk?"
+                }
+            },
+            {
+                "shouldView": "View",
+                "prePost": {
+                    "pre": "any of:"
+                },
+                "mark": {
+                    "source": "user",
+                    "value": "true"
+                },
+                "andOr": {
+                    "tag": "Any",
+                    "nl": {},
+                    "children": [
+                        {
+                            "shouldView": "View",
+                            "prePost": {},
+                            "mark": {
+                                "source": "user",
+                                "value": "true"
+                            },
+                            "andOr": {
+                                "tag": "Leaf",
+                                "nl": {},
+                                "contents": "does the person eat?"
+                            }
+                        },
+                        {
+                            "shouldView": "Hide",
+                            "prePost": {},
+                            "mark": {
+                                "source": "user",
+                                "value": "undefined"
+                            },
+                            "andOr": {
+                                "tag": "Leaf",
+                                "nl": {},
+                                "contents": "does the person drink?"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
