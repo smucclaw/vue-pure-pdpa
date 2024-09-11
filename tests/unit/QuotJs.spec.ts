@@ -1,5 +1,7 @@
 import { evaluate } from '@ps/AnyAll.Relevance';
 import * as AA from '@ps/AnyAll.Types/index.js';
+import { decodeMarking } from '@ps/AnyAll/index.js';
+import { encodeMarking } from '@ps/AnyAll.Marking/index.js';
 import { singleton as singletonMap, empty as emptyMap } from '@ps/Data.Map';
 import { Nothing, Just } from '@ps/Data.Maybe';
 import { singleton as singletonArray } from '@ps/Data.Array';
@@ -120,3 +122,52 @@ describe('Ternary dumpDefault', () => {
     );
   });
 })
+
+describe('decodeMarking', () => {
+  it('Asks does the person drink?', () => {
+    expect(
+      encodeMarking.encode(decodeMarking({
+        "a household appliance?": {
+          "source": "user",
+          "value": "true"
+        },
+        "birds?": {
+          "source": "user",
+          "value": "false"
+        },
+        "is Loss or Damage caused by birds?": {
+          "source": "user",
+          "value": "undefined"
+        }
+      }))
+    ).toEqual(
+      {
+        "a household appliance?": {
+          "source": "user",
+          "value": "true"
+        },
+        "birds?": {
+          "source": "user",
+          "value": "false"
+        },
+        "is Loss or Damage caused by birds?": {
+          "source": "user",
+          "value": "undefined"
+        }
+      }
+    );
+  })
+})
+
+describe('Argo', () => {
+  it('Asks does the person drink?', () => {
+    expect(
+      AA.encodeJsonQ.encodeJson(mkAskRequest("does the person drink?"))
+    ).toEqual(
+      {
+        "shouldView": "Ask"
+      }
+    );
+  });
+
+});

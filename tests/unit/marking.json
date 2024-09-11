@@ -1,0 +1,18 @@
+{
+    "a household appliance?": {
+        "source": "user",
+        "value": "true"
+    },
+    "birds?": {
+        "source": "user",
+        "value": "true"
+    },
+    "is Loss or Damage caused by birds?": {
+        "source": "user",
+        "value": "true"
+    },
+    "is Loss or Damage to contents?": {
+        "source": "user",
+        "value": "true"
+    }
+}

@@ -37,6 +37,11 @@ import Foreign.Generic
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 
+import Data.Argonaut.Encode
+import Data.Argonaut.Core
+import Data.Argonaut.Encode.Generic (genericEncodeJson)
+import Data.Argonaut.Decode.Generic (genericDecodeJson)
+
 import AnyAll.Item
 import AnyAll.BasicTypes
 import AnyAll.Ternary
@@ -143,6 +148,20 @@ instance showShouldView :: Show ShouldView where
 instance encodeShouldView :: Encode ShouldView where
   encode eta = genericEncode defaultOptions eta
 
+
+instance encodeJsonShouldView :: EncodeJson ShouldView where
+  encodeJson a = encodeJson $ shouldViewToString a
+
+shouldViewToString :: ShouldView -> String
+shouldViewToString = case _ of
+  View -> "View"
+  Hide -> "Hide"
+  Ask -> "Ask"
+
+instance encodeJsonQ :: EncodeJson Q where
+  encodeJson (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
+    "shouldView" := shouldView
+     ~> jsonEmptyObject
 data AndOr a
   = And -- All
   | Or -- And
