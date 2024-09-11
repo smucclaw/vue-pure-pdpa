@@ -33,9 +33,6 @@ derive instance genericDefault :: Generic (Ternary) _
 instance showDefault :: Show (Ternary) where
   show = genericShow
 
-instance encodeDefault :: Encode (Ternary) where
-  encode eta = encode $ dumpDefault (eta)
-
 ternary2string ∷ Ternary → String
 ternary2string True = "true"
 ternary2string False = "false"

@@ -56,7 +56,7 @@ function mkOrResponse(children: any) {
   }
 }
 
-describe('evaluate', () => {
+describe('qoutjs', () => {
   it('Asks does the person drink?', () => {
     expect(
       AA.qoutjs(mkAskRequest("does the person drink?"))
@@ -87,3 +87,36 @@ describe('evaluate', () => {
     );
   });
 });
+
+function marked(mark: string) {
+  return {
+    "source": "user",
+    "value": mark
+  }
+}
+
+describe('Ternary dumpDefault', () => {
+  it('True', () => {
+    expect(
+      AA.dumpDefault(AA.True.value)
+    ).toEqual(
+      marked("true")
+    );
+  });
+
+  it('False', () => {
+    expect(
+      AA.dumpDefault(AA.False.value)
+    ).toEqual(
+      marked("false")
+    );
+  });
+
+  it('Unknown', () => {
+    expect(
+      AA.dumpDefault(AA.Unknown.value)
+    ).toEqual(
+      marked("undefined")
+    );
+  });
+})

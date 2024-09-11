@@ -62,14 +62,6 @@ derive instance genericQ :: Generic (Q) _
 instance showQ :: Show (Q) where
   show eta = genericShow eta
 
-type R =
-  { shouldView :: ShouldView
-  , andOr :: AndOr String
-  , tagNL :: Map.Map String String
-  , prePost :: Maybe (Label String)
-  , mark :: Ternary
-  }
-
 -- instance encodeQ :: Encode (Q) where
 --   encode (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
 --     genericEncode defaultOptions { shouldView, andOr, prePost, mark, children }
