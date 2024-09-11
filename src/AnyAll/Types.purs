@@ -11,8 +11,7 @@ module AnyAll.Types(
   StdinSchema(..),
   ForD3(..),
   mkQ,
-  qoutjs,
-  mkEasyQ
+  qoutjs
 ) where
 
 import Prelude
@@ -87,16 +86,6 @@ mkQ sv ao nl pp m c =
     , prePost: pp
     , mark: m
     , children: c
-    }
-
-mkEasyQ sv ao nl pp m =
-  Q
-    { shouldView: sv
-    , andOr: ao -- slightly different from QoutJS, which contains children in it
-    , tagNL: nl
-    , prePost: pp
-    , mark: m
-    , children: []
     }
 
 newtype QoutJS = QoutJS
