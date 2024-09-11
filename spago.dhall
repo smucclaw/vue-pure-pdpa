@@ -32,6 +32,8 @@ to generate this file without the comments in this block.
   , "strings"
   , "transformers"
   , "tuples"
+  , "argonaut-codecs"
+  , "argonaut-core"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "tests/purescript/**/*.purs" ]
