@@ -26,13 +26,10 @@ to generate this file without the comments in this block.
   , "foreign-object"
   , "lists"
   , "maybe"
-  , "option"
   , "ordered-collections"
   , "partial"
   , "prelude"
-  , "simple-json"
   , "spec"
-  , "strings"
   , "transformers"
   , "tuples"
   ]
