@@ -19,6 +19,10 @@ import Foreign.Generic  (Foreign, decode)
 import Control.Monad.Except (runExcept)
 import Foreign.Object(Object, keys)
 
+import Data.Argonaut.Core
+import Data.Argonaut.Encode
+
+
 emptyMarking :: Marking
 emptyMarking = markup Map.empty
 
@@ -32,9 +36,9 @@ decodeMarking marking =
       (\m -> m)
       eitherm
 
-paint :: Foreign -> NLDict -> Item String -> QoutJS
+paint :: Foreign -> NLDict -> Item String -> Json
 paint fm _ item =
-  qoutjs $ relevant (decodeMarking fm) Unknown item
+  encodeJson $ relevant (decodeMarking fm) Unknown item
 
 heads ::  forall t2. Object t2 -> Array String
 heads x = keys(x)

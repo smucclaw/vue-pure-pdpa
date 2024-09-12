@@ -16,6 +16,8 @@ import Partial.Unsafe (unsafeCrashWith)
 
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
+import Data.Argonaut.Encode
+
 
 --
 -- the "native" data type represents an And/Or structure as a simple tree of Items
@@ -75,6 +77,10 @@ instance encodeLabel :: (Encode a) => Encode (Label a) where
 
 instance decodeLabel :: (Decode a) => Decode (Label a) where
   decode eta = genericDecode defaultOptions eta
+
+instance encodeJsonLabel :: (EncodeJson a) => EncodeJson (Label a) where
+  encodeJson (Pre x) = encodeJson $ {  pre : x }
+  encodeJson (PrePost x y) = encodeJson $ {  pre : x, post: y }
 
 label2pre ∷ Label String → String
 label2pre (Pre x) = x
