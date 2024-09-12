@@ -69,7 +69,6 @@ myq =
                 , mark: True
                 , prePost: Nothing
                 , shouldView: View
-                , tagNL: (Map.fromFoldable [ (Tuple "en" "walk slowly") ])
                 }
             )
           , ( Q
@@ -78,7 +77,6 @@ myq =
                 , mark: True
                 , prePost: Nothing
                 , shouldView: Ask
-                , tagNL: (Map.fromFoldable [ (Tuple "en" "run fast") ])
                 }
             )
           , ( Q
@@ -90,7 +88,6 @@ myq =
                           , mark: True
                           , prePost: Nothing
                           , shouldView: Ask
-                          , tagNL: (Map.fromFoldable [ (Tuple "en" "eat food") ])
                           }
                       )
                     , ( Q
@@ -99,21 +96,18 @@ myq =
                           , mark: False
                           , prePost: Nothing
                           , shouldView: View
-                          , tagNL: (Map.fromFoldable [ (Tuple "en" "drink beverages") ])
                           }
                       )
                     ]
                 , mark: Unknown
                 , prePost: (Just (Pre "either"))
                 , shouldView: View
-                , tagNL: (Map.fromFoldable [ (Tuple "en" "") ])
                 }
             )
           ]
       , mark: Unknown
       , prePost: (Just (Pre "all of"))
       , shouldView: View
-      , tagNL: (Map.fromFoldable [ (Tuple "en" "") ])
       }
   )
 
