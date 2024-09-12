@@ -6,10 +6,6 @@ import { singleton as singletonMap, empty as emptyMap } from '@ps/Data.Map';
 import { Nothing, Just } from '@ps/Data.Maybe';
 import { singleton as singletonArray } from '@ps/Data.Array';
 
-
-const keyString = 'key';
-
-
 function mkAskResponse(q: string) {
   return {
     "shouldView": "Ask",
@@ -165,7 +161,12 @@ describe('Argo', () => {
       AA.encodeJsonQ.encodeJson(mkAskRequest("does the person drink?"))
     ).toEqual(
       {
-        "shouldView": "Ask"
+        "shouldView": "Ask",
+        "prePost": {},
+        "mark": {
+          "source": "user",
+          "value": "undefined"
+        }
       }
     );
   });

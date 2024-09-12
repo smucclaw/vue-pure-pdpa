@@ -25,6 +25,7 @@ import Foreign.Keys as FK
 import Foreign.Object as FO
 import Control.Monad.Except.Trans
 import Data.List.Lazy.Types
+import Data.Argonaut.Encode
 
 data Ternary = True | False | Unknown
 
@@ -45,6 +46,9 @@ not3 Unknown = Unknown
 
 dumpDefault ∷ Ternary → DefaultRecord
 dumpDefault x = { source: "user", value: ternary2string x }
+
+instance encodeJsonTernary :: EncodeJson Ternary where
+  encodeJson a = encodeJson $ { source: "user", value: ternary2string a }
 
 readDefault fm mk = do
   source <- (fm ! mk) >>= readProp "source" >>= readString

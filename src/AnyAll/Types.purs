@@ -39,8 +39,6 @@ import Data.Show.Generic (genericShow)
 
 import Data.Argonaut.Encode
 import Data.Argonaut.Core
-import Data.Argonaut.Encode.Generic (genericEncodeJson)
-import Data.Argonaut.Decode.Generic (genericDecodeJson)
 
 import AnyAll.Item
 import AnyAll.BasicTypes
@@ -161,7 +159,10 @@ shouldViewToString = case _ of
 instance encodeJsonQ :: EncodeJson Q where
   encodeJson (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
     "shouldView" := shouldView
-     ~> jsonEmptyObject
+      ~> "prePost" := jsonEmptyObject
+      ~> "mark" := mark
+      ~> jsonEmptyObject
+
 data AndOr a
   = And -- All
   | Or -- And
@@ -174,3 +175,8 @@ instance showAndOr :: (Show a) => Show (AndOr a) where
 
 instance encodeAndOr :: (Encode a) => Encode (AndOr a) where
   encode eta = genericEncode defaultOptions eta
+
+instance encodeJsonAndOr :: (EncodeJson a) => EncodeJson (AndOr a) where
+  encodeJson (Simply a) = encodeJson $ {  tag : "Leaf" }
+  encodeJson And = encodeJson $ {  tag : "Leaf" }
+  encodeJson Or = encodeJson $ {  tag : "Leaf" }
