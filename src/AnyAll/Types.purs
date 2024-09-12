@@ -102,20 +102,16 @@ qoutjs (Q { shouldView, andOr, prePost, mark, children }) =
   QoutJS $ Option.fromRecord
     { shouldView: show shouldView
     , andOr: case andOr of
-        And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: FO.empty }
-        Or -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: FO.empty }
+        And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: FO.empty :: FO.Object String }
+        Or -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: FO.empty :: FO.Object String }
         (Simply x) -> Option.fromRecord
           { tag: "Leaf"
           , contents: Just x
-          , nl: FO.empty
+          , nl: FO.empty :: FO.Object String
           }
     , prePost: dumpPrePost prePost
     , mark: dumpDefault mark
     }
-
-
-miniNL =
-    FO.fromFoldable (Map.toUnfoldable tagNL :: Array (Tuple String String))
 
 newtype PrePostRecord = PPR (Option.Option (pre :: String, post :: String))
 
