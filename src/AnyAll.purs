@@ -2,6 +2,7 @@ module AnyAll
   ( heads
   , paint
   , emptyMarking
+  , decodeMarking
   )
   where
 

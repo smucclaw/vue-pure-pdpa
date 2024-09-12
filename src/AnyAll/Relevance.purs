@@ -47,6 +47,7 @@ ask2view :: ShouldView -> ShouldView
 ask2view Ask = View
 ask2view x = x
 
+nlMapFn ∷ String → Map.Map String (Map.Map String String) → Map.Map String (Map.Map String String) → Map.Map String String
 nlMapFn word nldict nl =
   let
     langs = Set.toUnfoldable $ Map.keys nldict :: Array String

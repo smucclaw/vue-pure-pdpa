@@ -13,7 +13,10 @@ to generate this file without the comments in this block.
 { name = "my-project"
 , dependencies =
   [ "aff"
+  , "argonaut-codecs"
+  , "argonaut-core"
   , "console"
+  , "debug"
   , "effect"
   , "either"
   , "exceptions"
@@ -32,8 +35,6 @@ to generate this file without the comments in this block.
   , "strings"
   , "transformers"
   , "tuples"
-  , "argonaut-codecs"
-  , "argonaut-core"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "tests/purescript/**/*.purs" ]
