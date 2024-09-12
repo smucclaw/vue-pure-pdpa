@@ -4,7 +4,6 @@ module AnyAll.Types(
   module AnyAll.Marking,
   module AnyAll.Ternary,
   Q(..),
-  PrePostRecord(..),
   ShouldView(..),
   AndOr(..),
   mkQ
@@ -13,24 +12,7 @@ module AnyAll.Types(
 import Prelude
 
 
-import Data.Traversable (sequence)
-import Data.Tuple
-import Data.Either
 import Data.Maybe
-import Data.String
-import Data.String as DString
-import Data.Symbol
-import Data.Map as Map
-import Option as Option
-import Simple.JSON as JSON
-
-import Partial.Unsafe
-import Data.List
-import Control.Monad.Except
-import Foreign
-import Foreign.Index ((!), readProp)
-import Foreign.Keys as FK
-import Foreign.Object as FO
 import Foreign.Generic
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
@@ -76,21 +58,6 @@ mkQ sv ao pp m c =
     , mark: m
     , children: c
     }
-
-newtype PrePostRecord = PPR (Option.Option (pre :: String, post :: String))
-
-derive instance eqPrePostRecord :: Eq PrePostRecord
-derive instance genericPrePostRecord :: Generic PrePostRecord _
-instance showPrePostRecord :: Show PrePostRecord where
-  show eta = genericShow eta
-
-instance encodePrePostRecord :: Encode PrePostRecord where
-  encode eta = unsafeToForeign eta
-
-dumpPrePost :: Maybe (Label String) -> PrePostRecord
-dumpPrePost (Just (Pre x)) = PPR $ Option.fromRecord { pre: x }
-dumpPrePost (Just (PrePost x y)) = PPR $ Option.fromRecord { pre: x, post: y }
-dumpPrePost (Nothing) = PPR $ Option.empty
 
 data ShouldView = View | Hide | Ask
 
@@ -141,6 +108,3 @@ encodeAndOrArgo Or children = encodeJson $ {  tag : "Any", children: encodeJson 
 encodePrePostArgo :: forall a. EncodeJson a => Maybe (Label a) -> Json
 encodePrePostArgo (Just x) = encodeJson x
 encodePrePostArgo Nothing = jsonEmptyObject
-
-encodeJsonArgoQ :: Q -> Json
-encodeJsonArgoQ q = encodeJson q

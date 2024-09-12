@@ -6,22 +6,15 @@ module AnyAll.Marking(
 
 import Prelude
 
-
 import Data.Traversable (sequence)
-import Data.Tuple (Tuple(..))
-import Data.Either (Either(..))
-import Data.Maybe (Maybe(..))
 import Data.Map as Map
 import Data.List  (List)
 import Foreign (readString, unsafeToForeign)
-import Foreign.Index ((!), readProp)
 import Foreign.Keys as FK
 import Foreign.Object as FO
 import Foreign.Generic  (class Decode, class Encode, encode)
 import Data.Generic.Rep (class Generic)
-import Data.Show.Generic (genericShow)
 
-import AnyAll.BasicTypes  (maybe2string)
 import AnyAll.Ternary
 
 newtype Marking = Marking (Map.Map String Ternary)

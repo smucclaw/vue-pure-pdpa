@@ -6,25 +6,18 @@ module AnyAll.Ternary(
   not3
 ) where
 
+import Prelude
 
 import AnyAll.BasicTypes
-import Data.Maybe
-import Prelude
 
 import Data.Either (Either(..))
 import Data.Generic.Rep (class Generic)
-import Data.List (List)
-import Data.Map as Map
 import Data.Show.Generic (genericShow)
-import Data.Traversable (sequence)
 import Data.Tuple (Tuple(..))
 import Foreign (readString, unsafeToForeign, ForeignError)
 import Foreign.Generic (class Decode, class Encode, encode)
 import Foreign.Index ((!), readProp, class Index, class Indexable)
-import Foreign.Keys as FK
-import Foreign.Object as FO
 import Control.Monad.Except.Trans
-import Data.List.Lazy.Types
 import Data.Argonaut.Encode
 
 data Ternary = True | False | Unknown
