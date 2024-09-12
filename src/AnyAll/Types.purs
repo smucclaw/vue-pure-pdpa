@@ -4,42 +4,43 @@ module AnyAll.Types(
   module AnyAll.Marking,
   module AnyAll.Ternary,
   Q(..),
-  QoutJS(..),
   PrePostRecord(..),
   ShouldView(..),
   AndOr(..),
-  mkQ,
-  qoutjs
+  mkQ
 ) where
 
-import AnyAll.BasicTypes
-import AnyAll.Item
-import AnyAll.Marking
-import AnyAll.Ternary
-import Control.Monad.Except
-import Data.Argonaut.Core
-import Data.Argonaut.Encode
-import Data.Either
-import Data.List
-import Data.Maybe
-import Data.String
-import Data.Symbol
-import Data.Tuple
-import Foreign
-import Foreign.Generic
-import Partial.Unsafe
 import Prelude
 
-import Data.Generic.Rep (class Generic)
-import Data.Map as Map
-import Data.Show.Generic (genericShow)
-import Data.String as DString
+
 import Data.Traversable (sequence)
+import Data.Tuple
+import Data.Either
+import Data.Maybe
+import Data.String
+import Data.String as DString
+import Data.Symbol
+import Data.Map as Map
+import Option as Option
+import Simple.JSON as JSON
+
+import Partial.Unsafe
+import Data.List
+import Control.Monad.Except
+import Foreign
 import Foreign.Index ((!), readProp)
 import Foreign.Keys as FK
 import Foreign.Object as FO
-import Option as Option
-import Simple.JSON as JSON
+import Foreign.Generic
+import Data.Generic.Rep (class Generic)
+import Data.Show.Generic (genericShow)
+import Data.Argonaut.Encode
+import Data.Argonaut.Core
+
+import AnyAll.Item
+import AnyAll.BasicTypes
+import AnyAll.Ternary
+import AnyAll.Marking
 
 -- together, an Item and a Marking get computed into a tree of Q, which has more structure,
 -- and represents the result of and/or shortcutting.
@@ -74,43 +75,6 @@ mkQ sv ao pp m c =
     , prePost: pp
     , mark: m
     , children: c
-    }
-
-newtype QoutJS = QoutJS
-  ( Option.Option
-      ( shouldView :: String
-      , andOr ::
-          Option.Option
-            ( tag :: String
-            , nl :: FO.Object String
-            , contents :: String
-            , children :: Array QoutJS
-            )
-      , prePost :: PrePostRecord
-      , post :: String
-      , mark :: DefaultRecord
-      )
-  )
-
-derive instance eqQoutJS :: Eq QoutJS
-derive instance genericQoutJS :: Generic QoutJS _
-instance showQoutJS :: Show QoutJS where
-  show eta = genericShow eta
-
-qoutjs :: Q -> QoutJS
-qoutjs (Q { shouldView, andOr, prePost, mark, children }) =
-  QoutJS $ Option.fromRecord
-    { shouldView: show shouldView
-    , andOr: case andOr of
-        And -> Option.fromRecord { tag: "All", children: qoutjs <$> children, nl: FO.empty :: FO.Object String }
-        Or -> Option.fromRecord { tag: "Any", children: qoutjs <$> children, nl: FO.empty :: FO.Object String }
-        (Simply x) -> Option.fromRecord
-          { tag: "Leaf"
-          , contents: Just x
-          , nl: FO.empty :: FO.Object String
-          }
-    , prePost: dumpPrePost prePost
-    , mark: dumpDefault mark
     }
 
 newtype PrePostRecord = PPR (Option.Option (pre :: String, post :: String))
@@ -151,8 +115,9 @@ shouldViewToString = case _ of
 instance encodeJsonQ :: EncodeJson Q where
   encodeJson (Q { shouldView, andOr, prePost, mark, children }) =
     "shouldView" := shouldView
-      ~> "prePost" := jsonEmptyObject
+      ~> "prePost" := encodePrePostArgo prePost
       ~> "mark" := mark
+      ~> "andOr" := encodeAndOrArgo andOr children
       ~> jsonEmptyObject
 
 data AndOr a
@@ -168,7 +133,14 @@ instance showAndOr :: (Show a) => Show (AndOr a) where
 instance encodeAndOr :: (Encode a) => Encode (AndOr a) where
   encode eta = genericEncode defaultOptions eta
 
-instance encodeJsonAndOr :: (EncodeJson a) => EncodeJson (AndOr a) where
-  encodeJson (Simply a) = encodeJson $ {  tag : "Leaf" }
-  encodeJson And = encodeJson $ {  tag : "Leaf" }
-  encodeJson Or = encodeJson $ {  tag : "Leaf" }
+encodeAndOrArgo :: forall a. EncodeJson a => AndOr a -> Array Q -> Json
+encodeAndOrArgo (Simply a) _ = encodeJson $ {  tag : "Leaf" , contents: a, nl: jsonEmptyObject}
+encodeAndOrArgo And children = encodeJson $ {  tag : "All", children: encodeJson <$> children, nl: jsonEmptyObject }
+encodeAndOrArgo Or children = encodeJson $ {  tag : "Any", children: encodeJson <$> children, nl: jsonEmptyObject }
+
+encodePrePostArgo :: forall a. EncodeJson a => Maybe (Label a) -> Json
+encodePrePostArgo (Just x) = encodeJson x
+encodePrePostArgo Nothing = jsonEmptyObject
+
+encodeJsonArgoQ :: Q -> Json
+encodeJsonArgoQ q = encodeJson q

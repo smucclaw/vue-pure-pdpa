@@ -30,9 +30,14 @@ function mkAskRequest(q: string) {
 }
 
 function mkOrRequest(children: any) {
-  const tagNl = emptyMap
   const andOr = AA.Or.value
   const prePost = new Just(new AA.Pre("any of:"));
+  return AA.mkQ(AA.View.value)(andOr)(prePost)(AA.Unknown.value)(children)
+}
+
+function mkAndRequest(children: any) {
+  const andOr = AA.And.value
+  const prePost = new Just(new AA.Pre("all of:"));
   return AA.mkQ(AA.View.value)(andOr)(prePost)(AA.Unknown.value)(children)
 }
 
@@ -54,10 +59,28 @@ function mkOrResponse(children: any) {
   }
 }
 
+function mkAndResponse(children: any) {
+  return {
+    "shouldView": "View",
+    "prePost": {
+      "pre": "all of:"
+    },
+    "mark": {
+      "source": "user",
+      "value": "undefined"
+    },
+    "andOr": {
+      "tag": "All",
+      "nl": {},
+      "children": children
+    }
+  }
+}
+
 describe('qoutjs', () => {
   it('Asks does the person drink?', () => {
     expect(
-      AA.qoutjs(mkAskRequest("does the person drink?"))
+      AA.encodeJsonQ.encodeJson(mkAskRequest("does the person drink?"))
     ).toEqual(
       mkAskResponse("does the person drink?")
     );
@@ -65,7 +88,7 @@ describe('qoutjs', () => {
 
   it('Asks does the person eat?', () => {
     expect(
-      AA.qoutjs(mkAskRequest("does the person eat?"))
+      AA.encodeJsonQ.encodeJson(mkAskRequest("does the person eat?"))
     ).toEqual(
       mkAskResponse("does the person eat?")
     );
@@ -73,12 +96,26 @@ describe('qoutjs', () => {
 
   it('Asks does the person eat?', () => {
     expect(
-      AA.qoutjs(mkOrRequest([
+      AA.encodeJsonQ.encodeJson(mkOrRequest([
         mkAskRequest("does the person eat?"),
         mkAskRequest("does the person drink?")
       ]))
     ).toEqual(
       mkOrResponse([
+        mkAskResponse("does the person eat?"),
+        mkAskResponse("does the person drink?")
+      ])
+    );
+  });
+
+  it('Asks does the person eat?', () => {
+    expect(
+      AA.encodeJsonQ.encodeJson(mkAndRequest([
+        mkAskRequest("does the person eat?"),
+        mkAskRequest("does the person drink?")
+      ]))
+    ).toEqual(
+      mkAndResponse([
         mkAskResponse("does the person eat?"),
         mkAskResponse("does the person drink?")
       ])
@@ -154,21 +191,3 @@ describe('decodeMarking', () => {
     );
   })
 })
-
-describe('Argo', () => {
-  it('Asks does the person drink?', () => {
-    expect(
-      AA.encodeJsonQ.encodeJson(mkAskRequest("does the person drink?"))
-    ).toEqual(
-      {
-        "shouldView": "Ask",
-        "prePost": {},
-        "mark": {
-          "source": "user",
-          "value": "undefined"
-        }
-      }
-    );
-  });
-
-});
