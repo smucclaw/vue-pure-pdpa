@@ -33,8 +33,8 @@ decodeMarking marking =
       eitherm
 
 paint :: Foreign -> NLDict -> Item String -> QoutJS
-paint fm nl item =
-  qoutjs $ relevant (decodeMarking fm) Unknown nl item
+paint fm _ item =
+  qoutjs $ relevant (decodeMarking fm) Unknown item
 
 heads ::  forall t2. Object t2 -> Array String
 heads x = keys(x)

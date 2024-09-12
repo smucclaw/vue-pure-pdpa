@@ -26,14 +26,14 @@ function mkAskRequest(q: string) {
   const tagNl = emptyMap
   const andOr = new AA.Simply(q)
   const prePost = Nothing.value
-  return AA.mkQ(AA.Ask.value)(andOr)(tagNl)(prePost)(AA.Unknown.value)([])
+  return AA.mkQ(AA.Ask.value)(andOr)(prePost)(AA.Unknown.value)([])
 }
 
 function mkOrRequest(children: any) {
   const tagNl = emptyMap
   const andOr = AA.Or.value
   const prePost = new Just(new AA.Pre("any of:"));
-  return AA.mkQ(AA.View.value)(andOr)(tagNl)(prePost)(AA.Unknown.value)(children)
+  return AA.mkQ(AA.View.value)(andOr)(prePost)(AA.Unknown.value)(children)
 }
 
 function mkOrResponse(children: any) {
