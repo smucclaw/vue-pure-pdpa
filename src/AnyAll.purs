@@ -36,9 +36,9 @@ decodeMarking marking =
       (\m -> m)
       eitherm
 
-paint :: Foreign -> NLDict -> Item String -> Json
+paint :: Json -> NLDict -> Item String -> Json
 paint fm _ item =
-  encodeJson $ relevant (decodeMarking fm) Unknown item
+  encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
 
 heads ::  forall t2. Object t2 -> Array String
 heads x = keys(x)
