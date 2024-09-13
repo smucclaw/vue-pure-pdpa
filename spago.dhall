@@ -21,8 +21,6 @@ to generate this file without the comments in this block.
   , "either"
   , "exceptions"
   , "foldable-traversable"
-  , "foreign"
-  , "foreign-generic"
   , "foreign-object"
   , "lists"
   , "maybe"
@@ -32,7 +30,6 @@ to generate this file without the comments in this block.
   , "spec"
   , "transformers"
   , "tuples"
-  , "unfoldable"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "tests/purescript/**/*.purs" ]

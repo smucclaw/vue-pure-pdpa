@@ -11,13 +11,11 @@ module AnyAll.Types(
 
 import Prelude
 
-
-import Data.Maybe
-import Foreign.Generic
+import Data.Maybe (Maybe(..))
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Data.Argonaut.Encode
-import Data.Argonaut.Core
+import Data.Argonaut.Core (Json, jsonEmptyObject)
 
 import AnyAll.Item
 import AnyAll.BasicTypes
@@ -41,14 +39,6 @@ derive instance genericQ :: Generic (Q) _
 instance showQ :: Show (Q) where
   show eta = genericShow eta
 
--- instance encodeQ :: Encode (Q) where
---   encode (Q { shouldView, andOr, tagNL, prePost, mark, children }) =
---     genericEncode defaultOptions { shouldView, andOr, prePost, mark, children }
--- and then do something about the tagNL map
-
--- it would be nice to use record wildcard constructors but i can't seem to figure it out.
--- https://github.com/purescript/documentation/blob/master/language/Records.md
--- I tried mkQ = Q <<< { shouldView: _, ... }
 mkQ ∷ ShouldView → AndOr String → Maybe (Label String) → Ternary → Array Q → Q
 mkQ sv ao pp m c =
   Q
@@ -65,10 +55,6 @@ derive instance eqShouldView :: Eq (ShouldView)
 derive instance genericShouldView :: Generic ShouldView _
 instance showShouldView :: Show ShouldView where
   show eta = genericShow eta
-
-instance encodeShouldView :: Encode ShouldView where
-  encode eta = genericEncode defaultOptions eta
-
 
 instance encodeJsonShouldView :: EncodeJson ShouldView where
   encodeJson a = encodeJson $ shouldViewToString a
@@ -96,9 +82,6 @@ derive instance eqAndOr :: (Eq a) => Eq (AndOr a)
 derive instance genericAndOr :: Generic (AndOr a) _
 instance showAndOr :: (Show a) => Show (AndOr a) where
   show = genericShow
-
-instance encodeAndOr :: (Encode a) => Encode (AndOr a) where
-  encode eta = genericEncode defaultOptions eta
 
 encodeAndOrArgo :: forall a. EncodeJson a => AndOr a -> Array Q -> Json
 encodeAndOrArgo (Simply a) _ = encodeJson $ {  tag : "Leaf" , contents: a, nl: jsonEmptyObject}

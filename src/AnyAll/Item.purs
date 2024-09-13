@@ -2,21 +2,15 @@ module AnyAll.Item(
   Item(..),
   Label(..),
   nnf,
-  decodeIt,
   label2pre,
   label2post
 ) where
 
 import Prelude
 
-import Control.Monad.Except (runExcept)
-import Data.Either (either)
-import Foreign.Generic
-import Partial.Unsafe (unsafeCrashWith)
-
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Data.Argonaut.Encode
+import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 
 
 --
@@ -47,19 +41,6 @@ derive instance genericItem :: Generic (Item a) _
 instance showItem :: (Show a) => Show (Item a) where
   show eta = genericShow eta
 
-instance encodeItem :: (Encode a) => Encode (Item a) where
-  encode eta = genericEncode defaultOptions eta
-
-instance decodeItem :: (Decode a) => Decode (Item a) where
-  decode eta = genericDecode defaultOptions eta
-
-decodeIt :: Foreign -> (Item String)
-decodeIt f =
-  either
-    (\e -> unsafeCrashWith $ "error while decoding Item: " <> show e)
-    (\v -> v)
-    (runExcept (decode f))
-
 --
 -- Item uses Label to prefix a tree with strings like "all of the following" or "any of the below"
 --
@@ -71,12 +52,6 @@ derive instance eqLabel :: (Eq a) => Eq (Label a)
 derive instance genericLabel :: Generic (Label a) _
 instance showLabel :: (Show a) => Show (Label a) where
   show = genericShow
-
-instance encodeLabel :: (Encode a) => Encode (Label a) where
-  encode eta = genericEncode defaultOptions eta
-
-instance decodeLabel :: (Decode a) => Decode (Label a) where
-  decode eta = genericDecode defaultOptions eta
 
 instance encodeJsonLabel :: (EncodeJson a) => EncodeJson (Label a) where
   encodeJson (Pre x) = encodeJson $ {  pre : x }
