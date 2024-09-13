@@ -6,17 +6,12 @@ import Effect.Exception (Error)
 import Control.Monad.Error.Class (class MonadThrow)
 
 import AnyAll.Types
-import AnyAll.Relevance (relevant)
 import RuleLib.Interview as RuleLib.Interview
 
-import Partial.Unsafe (unsafeCrashWith)
 import Data.Map as Map
-import Data.Either (Either(..), either)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 
-import Foreign.Generic (Foreign, decode, encode)
-import Control.Monad.Except (runExcept)
 
 import Test.Spec (SpecT, describe, it)
 import Test.Spec.Assertions (shouldEqual)

@@ -2,24 +2,18 @@ module AnyAll.Ternary(
   Ternary(..),
   ternary2string,
   dumpDefault,
-  readDefault,
   not3
 ) where
 
 import Prelude
 
-import AnyAll.BasicTypes
+import AnyAll.BasicTypes (DefaultRecord)
 
-import Data.Maybe
-import Data.Either (Either(..), note)
+import Data.Maybe (Maybe(..))
+import Data.Either (note)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
-import Data.Tuple (Tuple(..))
-import Foreign (readString, unsafeToForeign, ForeignError)
-import Foreign.Generic (class Decode, class Encode, encode)
-import Foreign.Index ((!), readProp, class Index, class Indexable)
-import Control.Monad.Except.Trans
-import Data.Argonaut.Encode
+import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Argonaut.Decode
 
 data Ternary = True | False | Unknown
@@ -56,19 +50,3 @@ instance decodeJsonTernary :: DecodeJson Ternary where
     obj <- decodeJson json
     value <- obj .: "value"
     note (TypeMismatch "Ternary") (Just $ ternaryFromString value)
-
-readDefault fm mk = do
-  source <- (fm ! mk) >>= readProp "source" >>= readString
-  value <- (fm ! mk) >>= readProp "value" >>= readString
-  let
-    lr = case source of
-      "default" -> Left
-      "user" -> Right
-      _ -> Left
-    mb =
-      case value of
-        "true" -> True
-        "false" -> False
-        "undefined" -> Unknown
-        _ -> Unknown
-  pure $ Tuple mk mb
