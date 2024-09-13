@@ -1,7 +1,8 @@
 import { evaluate } from '@ps/AnyAll.Relevance';
 import * as AA from '@ps/AnyAll.Types/index.js';
+import * as AD from '@ps/Data.Argonaut.Decode.Class/index.js';
 import { decodeMarking } from '@ps/AnyAll/index.js';
-import { encodeMarking } from '@ps/AnyAll.Marking/index.js';
+import { encodeMarking, decodeMarkingArgo } from '@ps/AnyAll.Marking/index.js';
 import { singleton as singletonMap, empty as emptyMap } from '@ps/Data.Map';
 import { Nothing, Just } from '@ps/Data.Maybe';
 import { singleton as singletonArray } from '@ps/Data.Array';
@@ -159,7 +160,7 @@ describe('Ternary dumpDefault', () => {
 describe('decodeMarking', () => {
   it('Asks does the person drink?', () => {
     expect(
-      encodeMarking.encode(decodeMarking({
+      encodeMarking.encode(decodeMarkingArgo({
         "a household appliance?": {
           "source": "user",
           "value": "true"

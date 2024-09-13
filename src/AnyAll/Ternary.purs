@@ -10,7 +10,8 @@ import Prelude
 
 import AnyAll.BasicTypes
 
-import Data.Either (Either(..))
+import Data.Maybe
+import Data.Either (Either(..), note)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Data.Tuple (Tuple(..))
@@ -19,6 +20,7 @@ import Foreign.Generic (class Decode, class Encode, encode)
 import Foreign.Index ((!), readProp, class Index, class Indexable)
 import Control.Monad.Except.Trans
 import Data.Argonaut.Encode
+import Data.Argonaut.Decode
 
 data Ternary = True | False | Unknown
 
@@ -32,6 +34,12 @@ ternary2string True = "true"
 ternary2string False = "false"
 ternary2string Unknown = "undefined"
 
+ternaryFromString :: String -> Ternary
+ternaryFromString = case _ of
+  "true" -> True
+  "false" -> False
+  _ -> Unknown
+
 not3 ∷ Ternary → Ternary
 not3 True = False
 not3 False = True
@@ -42,6 +50,12 @@ dumpDefault x = { source: "user", value: ternary2string x }
 
 instance encodeJsonTernary :: EncodeJson Ternary where
   encodeJson a = encodeJson $ { source: "user", value: ternary2string a }
+
+instance decodeJsonTernary :: DecodeJson Ternary where
+  decodeJson json = do
+    obj <- decodeJson json
+    value <- obj .: "value"
+    note (TypeMismatch "Ternary") (Just $ ternaryFromString value)
 
 readDefault fm mk = do
   source <- (fm ! mk) >>= readProp "source" >>= readString
