@@ -2,7 +2,7 @@ const fs = require('fs');
 
 // vue.config.js
 const getPublicPath = () => {
-  const baseUrl = process.env.BASE_URL;
+  const baseUrl = import.meta.env.BASE_URL;
   const isBaseUrlEmpty = !baseUrl || baseUrl === '';
 
   return isBaseUrlEmpty ? '/vue-pure-pdpa' : baseUrl;
