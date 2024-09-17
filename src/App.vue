@@ -14,23 +14,34 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
+:root {
+  --vertical-container-padding-top: 50px;
+  --vertical-container-padding-right: 20px;
+  --vertical-container-padding-bottom: 50px;
+  --vertical-container-padding-left: 20px;
+  --vertical-container-border-width: 5px;
+  --vertical-container-border-color: white;
+  --vertical-container-hover-bg-color: lightgray;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
-// Max: added vertical-container
+
 .vertical-container {
-  padding-top: 50px;
-  padding-right: 20px;
-  padding-bottom: 50px;
-  padding-left: 20px;
+  padding-top: var(--vertical-container-padding-top);
+  padding-right: var(--vertical-container-padding-right);
+  padding-bottom: var(--vertical-container-padding-bottom);
+  padding-left: var(--vertical-container-padding-left);
   cursor: pointer;
-  border: 5px solid white;
+  border: var(--vertical-container-border-width) solid var(--vertical-container-border-color);
 }
+
 .vertical-container:hover {
-  background-color: lightgray;
+  background-color: var(--vertical-container-hover-bg-color);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="control">
     <label
-      class="button is-radio-button px-2"
+      class="button is-radio-button button px-2"
       v-for="(opt, index) in btnOptions"
       :key="index"
       :class="getColor(opt.color, opt.value, selectedValue, disabled)"
