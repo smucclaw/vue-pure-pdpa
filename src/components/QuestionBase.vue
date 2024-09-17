@@ -93,33 +93,31 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.question-block {
-  .question-content {
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    padding: 0.5rem 0;
-    border-radius: 4px;
+<style scoped>
+.question-block .question-content {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 0;
+  border-radius: 4px;
+}
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+.question-block .question-content:last-child {
+  margin-bottom: 0;
+}
 
-    .is-single-question {
-      margin-right: 0.5rem;
-      margin-top: 0;
-      margin-bottom: 0;
-      gap: 0.5rem;
-    }
+.question-block .question-content .is-single-question {
+  margin-right: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  gap: 0.5rem;
+}
 
-    .is-asking {
-      flex-grow: 1;
-    }
+.question-block .question-content .is-asking {
+  flex-grow: 1;
+}
 
-    .is-answering {
-      flex-shrink: 0;
-      text-align: right;
-    }
-  }
+.question-block .question-content .is-answering {
+  flex-shrink: 0;
+  text-align: right;
 }
 </style>

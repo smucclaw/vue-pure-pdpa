@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card is-shadowless">
     <svg class="tree" id="tree">
       <!-- preserveAspectRatio="xMinYMin meet"> -->
       <clippath id="clip" />
