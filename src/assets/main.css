@@ -1,0 +1,29 @@
+@import '~bulma';
+/*- @import '~bulmaswatch/darkly/bulmaswatch';
+-@import '~bulma-list/sass/bulma-list';*/
+
+.is-radio-button {
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+  }
+}
+
+.is-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: transparent;
+  opacity: 0.6;
+}
+
+:root {
+  --card-border-width: 1px;
+  --card-border-color: rgba(0, 0, 0, 0.125);
+}
+
+.card-border {
+  border: var(--card-border-width, 1px) solid var(--card-border-color, rgba(0, 0, 0, 0.125));
+}
