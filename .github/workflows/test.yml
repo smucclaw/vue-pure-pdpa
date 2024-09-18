@@ -24,7 +24,7 @@ jobs:
         working-directory: anyall-purs
 
       - name: Test Purescript
-        run: npm run test:purs
+        run: npm run test
         working-directory: anyall-purs
 
       - name: Test Components
