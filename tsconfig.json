@@ -22,7 +22,7 @@
         "src/*"
       ],
       "@ps/*": [
-        "output/*"
+        "anyall-purs/output/*"
       ]
     },
     "lib": [
