@@ -10,8 +10,7 @@
     "lint": "vue-cli-service lint",
     "clean": "rm -rf node_modules && npm run clean:purs",
     "clean:purs": "rm -rf output .spago",
-    "deps": "npm install && npx spago build --source-maps && npx spago install",
-    "test:purs": "npx spago test --source-maps"
+    "deps": "npm install && npx spago build --source-maps && npx spago install"
   },
   "dependencies": {
     "@codemirror/basic-setup": "^0.19.0",
