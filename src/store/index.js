@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
-import * as AnyAll from 'anyall-purs'
+import * as AnyAll from 'anyall-purs/index.js';
 
 function getLins(Interview) {
   const allLins = {}

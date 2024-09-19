@@ -3,14 +3,15 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "(cd anyall-purs && npm run prepare); vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "clean": "rm -rf node_modules && npm run clean:purs",
     "clean:purs": "rm -rf output .spago",
-    "deps": "npm install && npx spago build --source-maps && npx spago install"
+    "deps": "npm install && npx spago build --source-maps && npx spago install",
+    "postinstall": "cd anyall-purs && npm run prepare"
   },
   "dependencies": {
     "@codemirror/basic-setup": "^0.19.0",
@@ -21,7 +22,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "anyall-purs": "file:anyall-purs",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bulmaswatch": "^0.8.1",
     "d3": "^7.6.1",
