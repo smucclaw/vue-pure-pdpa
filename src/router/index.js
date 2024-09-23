@@ -52,12 +52,12 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
 router.beforeEach(async (to, from) => {
-  const name = process.env.VUE_APP_BROWSER_NAME;
+  const name = import.meta.env.VUE_APP_BROWSER_NAME;
   const isEmpty = !name || name === '';
 
   window.document.title = isEmpty ? 'Dolora the Law Explorer' : name;

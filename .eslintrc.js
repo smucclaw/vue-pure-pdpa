@@ -3,16 +3,13 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 module.exports = {
   parser: '@typescript-eslint/parser',
   root: true,
-  env: {
-    node: true,
-  },
   extends: [
     'plugin:vue/vue3-essential',
     '@vue/eslint-config-airbnb',
     '@vue/typescript',
   ],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: latest,
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -33,5 +30,14 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: [
+        'cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}',
+        'cypress/support/**/*.{js,ts,jsx,tsx}'
+      ],
+      'extends': [
+        'plugin:cypress/recommended'
+      ]
+    }
   ],
 };

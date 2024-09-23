@@ -131,7 +131,7 @@ onUpdated(() => {
 </script>
 
 <style>
-@import '~ladder-diagram/css/ladder.css';
+@import 'ladder-diagram/css/ladder.css';
 </style>
 
 <!--

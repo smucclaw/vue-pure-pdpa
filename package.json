@@ -3,11 +3,12 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "serve": "(cd anyall-purs && npm run prepare); vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint",
+    "serve": "(cd anyall-purs && npm run prepare); vite",
+    "build": "vite build",
+    "test:unit": "vitest",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "postinstall": "cd anyall-purs && npm i"
   },
   "dependencies": {
@@ -16,7 +17,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "bulmaswatch": "^0.8.1",
     "ladder-diagram": "^2.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
@@ -30,30 +30,21 @@
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
-    "@vue/cli-plugin-e2e-cypress": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-plugin-router": "~5.0.8",
-    "@vue/cli-plugin-typescript": "~5.0.0",
-    "@vue/cli-plugin-unit-jest": "~5.0.8",
-    "@vue/cli-plugin-vuex": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
-    "@vue/compiler-sfc": "^3.2.45",
+    "@vitejs/plugin-vue": "^5.1.3",
     "@vue/eslint-config-airbnb": "^8.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.2.4",
     "@vue/vue3-jest": "^27.0.0",
     "bulma": "^1.0.2",
     "cypress": "^13.13.3",
-    "eslint": ">=7.5.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-vue": "^9.7.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "eslint-plugin-cypress": "^3.3.0",
     "ts-jest": "^27.0.4",
     "typescript": "~4.9.3",
-    "webpack": "^5.75.0"
-  },
-  "babel": {
-    "plugins": [
-      "transform-es2015-modules-commonjs"
-    ]
+    "vite-plugin-vue-devtools": "^7.3.1",
+    "vitest": "^1.6.0",
+    "start-server-and-test": "^2.0.4"
   }
 }
