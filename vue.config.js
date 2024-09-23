@@ -13,13 +13,6 @@ module.exports = {
   lintOnSave: false,
   // the HTTPS logic is farther down in this file
   chainWebpack: (config) => {
-
-    config.module
-      .rule('jison')
-      .test(/\.jison$/)
-          .use('jison-gho-loader')
-          .loader('jison-gho-loader');
-
     config.module
       .rule('vue')
       .use('vue-loader')
