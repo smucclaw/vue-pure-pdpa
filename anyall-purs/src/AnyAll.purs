@@ -1,5 +1,6 @@
 module AnyAll
-  ( heads
+  ( module RuleLib.Interview
+  , heads
   , paint
   , emptyMarking
   )
@@ -15,6 +16,8 @@ import Foreign.Object(Object, keys)
 
 import Data.Argonaut.Core (Json)
 import Data.Argonaut.Encode (encodeJson)
+
+import RuleLib.Interview
 
 
 emptyMarking :: Marking

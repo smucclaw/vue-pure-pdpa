@@ -1,0 +1,19 @@
+{
+  "name": "anyall-purs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "npx spago build",
+    "test": "npx spago test",
+    "prepare": "npx spago bundle-module --main AnyAll --to index.js" 
+  },
+  "author": "",
+  "description": "",
+  "devDependencies": {
+    "purescript": "^0.14.9",
+    "spago": "^0.21.0"
+  }
+}

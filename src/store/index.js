@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
-import * as AnyAll from '../AnyAll.purs';
-import * as Interview from '../RuleLib/Interview.purs';
+import * as AnyAll from '../../anyall-purs/index.js';
 
 function getLins(Interview) {
   const allLins = {}
@@ -14,13 +13,13 @@ function getLins(Interview) {
 export default createStore({
   state: {
     marking: AnyAll.emptyMarking,
-    rulesInterview_nl: Interview.interviewRules_nl,
-    topLD: Interview.nl4eng,
+    rulesInterview_nl: AnyAll.interviewRules_nl,
+    topLD: AnyAll.nl4eng,
     topLDBody: '',
     // topS: Interview.toplevelStatements,
     whichPrompt: 0,
-    objects: getLins(Interview),
-    allLangs: Interview.allLang
+    objects: getLins(AnyAll),
+    allLangs: AnyAll.allLang
   },
   getters: {
     getField,

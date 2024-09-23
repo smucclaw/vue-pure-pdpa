@@ -5,6 +5,6 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@ps/(.*)$': '<rootDir>/output/$1'
+    '^@ps/(.*)$': '<rootDir>/anyall-purs/output/$1'
   }
 };
