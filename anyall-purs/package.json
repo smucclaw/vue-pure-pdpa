@@ -8,12 +8,15 @@
   "scripts": {
     "build": "npx spago build",
     "test": "npx spago test",
-    "prepare": "npx spago bundle-module --main AnyAll --to index.js" 
+    "prepare": "npx spago bundle --bundle-type module --module AnyAll --outfile index.js"
   },
   "author": "",
   "description": "",
   "devDependencies": {
-    "purescript": "^0.14.9",
-    "spago": "^0.21.0"
+    "purescript": "^0.15.15",
+    "spago": "^0.93.39"
+  },
+  "dependencies": {
+    "esbuild": "^0.24.0"
   }
 }
