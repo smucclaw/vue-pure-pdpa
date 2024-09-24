@@ -1,5 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
-import TheQuestion from '@/components/TheQuestion.vue';
+import { describe, it, expect } from 'vitest'
 
 describe('Test TheQuestion Component', () => {
   it('expects to be true', () => {

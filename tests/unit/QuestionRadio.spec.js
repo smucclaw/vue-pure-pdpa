@@ -1,5 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
-import QuestionRadio from '@/components/QuestionRadio.vue';
+import { describe, it, expect } from 'vitest'
 
 describe('Test QuestionRadio Component', () => {
   it('expects to be true', () => {

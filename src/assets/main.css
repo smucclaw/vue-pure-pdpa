@@ -1,6 +1,4 @@
-@import '~bulma';
-/*- @import '~bulmaswatch/darkly/bulmaswatch';
--@import '~bulma-list/sass/bulma-list';*/
+@import 'bulma';
 
 .is-radio-button {
   input {

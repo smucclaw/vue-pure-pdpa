@@ -1,23 +1,8 @@
-// import { shallowMount } from '@vue/test-utils';
+import { describe, it, expect } from 'vitest'
 import BaseNotification from '@/components/BaseNotification.vue';
 
-/*
-const factory = (propsData) => shallowMount(BaseNotification, {
-  ...propsData,
-});
-*/
 
 describe('Test BaseNotification Component', () => {
-  /*
-  it('renders notification', () => {
-    const themeDanger = 'is-danger';
-    const wrapper = factory({
-      themeColor: themeDanger,
-    });
-
-    expect(wrapper.find('div.notification').classes()).toContain(themeDanger);
-  });
-  */
 
   it('notification is not light', () => {
     const isLightSetting = {

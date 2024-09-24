@@ -1,5 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
-import QuestionBase from '@/components/QuestionBase.vue';
+import { describe, it, expect } from 'vitest'
 
 describe('Test QuestionBase Component', () => {
   it('expects to be true', () => {
