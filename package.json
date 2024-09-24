@@ -2,12 +2,14 @@
   "name": "vue-pure-pdpa",
   "version": "0.2.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "(cd anyall-purs && npm run prepare); vite",
+    "serve": "(cd anyall-purs && npm run prepare); vite build; vite preview",
     "build": "vite build",
+    "preview": "vite build; vite preview --port 8080",
     "test:unit": "vitest",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "test:e2e": "start-server-and-test preview http://localhost:8080 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --port 8080' http://localhost:8080 'cypress open --e2e'",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "postinstall": "cd anyall-purs && npm i"
   },

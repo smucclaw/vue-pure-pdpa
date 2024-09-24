@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.BASE_URL ?? '/vue-pure-pdpa/',
   plugins: [
     vue(),
     vueDevTools(),
