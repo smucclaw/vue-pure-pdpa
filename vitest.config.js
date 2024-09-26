@@ -9,6 +9,11 @@ export default mergeConfig(
       environment: 'jsdom',
       exclude: [...configDefaults.exclude, 'e2e/**'],
       root: fileURLToPath(new URL('./', import.meta.url))
+    },
+    resolve: {
+      alias: {
+        '@ps': fileURLToPath(new URL('./anyall-purs/output/', import.meta.url))
+      }
     }
   })
 )

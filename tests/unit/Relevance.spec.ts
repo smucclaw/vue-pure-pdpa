@@ -1,5 +1,7 @@
+import { describe, it, expect } from 'vitest'
+
 import { evaluate } from '@ps/AnyAll.Relevance';
-import { False, Leaf, Marking, True } from '@ps/AnyAll.Types/index.js';
+import { False, Leaf, Marking, True } from '@ps/AnyAll.Types';
 import { singleton } from '@ps/Data.Map';
 
 const keyString = 'key';
