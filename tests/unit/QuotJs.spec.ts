@@ -1,10 +1,9 @@
-import { evaluate } from '@ps/AnyAll.Relevance';
-import * as AA from '@ps/AnyAll.Types/index.js';
-import * as AD from '@ps/Data.Argonaut.Decode.Class/index.js';
+import { describe, it, expect } from 'vitest'
+
+import * as AA from '@ps/AnyAll.Types';
 import { encodeJsonMarking, decodeMarkingArgo } from '@ps/AnyAll.Marking/index.js';
-import { singleton as singletonMap, empty as emptyMap } from '@ps/Data.Map';
+import { empty as emptyMap } from '@ps/Data.Map';
 import { Nothing, Just } from '@ps/Data.Maybe';
-import { singleton as singletonArray } from '@ps/Data.Array';
 
 function mkAskResponse(q: string) {
   return {
