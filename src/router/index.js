@@ -1,8 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import {
-  faQuestionCircle,
-  faProjectDiagram,
-} from '@fortawesome/free-solid-svg-icons';
 import store from '@/store/index.js';
 
 
