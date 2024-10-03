@@ -10,7 +10,7 @@ function getLins(Interview) {
   return allLins
 }
 
-export default defineStore('vueStore',{
+export const useVueStore = defineStore('vueStore',{
   state: () => ( {
     marking: AnyAll.emptyMarking,
     rulesInterview_nl: AnyAll.interviewRules_nl,

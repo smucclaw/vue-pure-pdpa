@@ -37,6 +37,7 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import BaseNavigation from "@/components/BaseNavigation.vue";
+import { useVueStore } from '@/stores/vueStore'
 
 export default {
   name: "TheMain",
@@ -45,11 +46,13 @@ export default {
     BaseNavigation,
   },
   data() {
+    const store = useVueStore()
+
     return {
       navigationLinks: [],
-      langs: this.$store.getters.langs,
+      langs: store.langs,
       chosenLang: "",
-      showOptions: new Array(this.$store.getters.langs.length).fill(false),
+      showOptions: new Array(store.langs.length).fill(false),
       selectedIndex: null,
     };
   },
