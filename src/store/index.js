@@ -34,8 +34,8 @@ export default createStore({
       const heads = AnyAll.heads(state.topLD);
       return heads;
     },
-    getMarkingField(state) {
-      return getField(state.marking);
+    getMarkingField: (state) => (id) => {
+      return state.marking[id]
     },
   },
   mutations: {
