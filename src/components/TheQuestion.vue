@@ -4,7 +4,7 @@
       <p class="title is-spaced">{{ questionPrompt }}</p>
       <p class="subtitle" data-test="response-message">{{ responseMsg }}</p>
     </Notification>
-    <!-- Max: added columns, getTopLevelDecisions, changeQuestionPrompt, vertical-container -->
+
     <div class="columns">
       <div class="column is-one-fifth has-text-left is-size-4">
         <Notification class="is-next-from-top clearEdges">
@@ -28,7 +28,6 @@
 <script>
 import Notification from "@/components/BaseNotification.vue";
 
-// Max: added whichPrompt, whichHeading
 export default {
   name: "TheQuestion",
   components: {
