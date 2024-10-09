@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "npx spago build",
-    "test": "npx spago test",
+    "test": "spago test; spago test --main Test.JsonSerde",
     "prepare": "npx spago bundle --bundle-type module --module AnyAll --outfile index.js"
   },
   "author": "",

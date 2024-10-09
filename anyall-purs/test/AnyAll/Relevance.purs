@@ -20,7 +20,7 @@ import Data.Map as Map
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..))
 import Effect.Exception (Error)
-import Test.Spec (SpecT, describe, it)
+import Test.Spec (SpecT, describe, it, Spec)
 import Test.Spec.Assertions (shouldEqual)
 
 keyString :: String
@@ -44,7 +44,7 @@ all leafs = (All (Pre "dummy") (Leaf <$> leafs))
 not :: String -> Item String
 not leaf = (Not (Leaf leaf))
 
-spec :: forall t1 t2. Monad t1 => MonadThrow Error t2 => SpecT t2 Unit t1 Unit
+spec :: Spec Unit
 spec = describe "evaluate" do
   describe "leaf" do
     describe "key present in marking" do
