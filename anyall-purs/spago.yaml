@@ -18,6 +18,7 @@ package:
     - spec
     - transformers
     - tuples
+    - spec-node
   name: my-project
 workspace:
   packageSet:
