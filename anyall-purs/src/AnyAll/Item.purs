@@ -1,9 +1,7 @@
 module AnyAll.Item(
   Item(..),
   Label(..),
-  nnf,
-  label2pre,
-  label2post
+  nnf
 ) where
 
 import Prelude
@@ -11,11 +9,8 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
-
-
---
--- the "native" data type represents an And/Or structure as a simple tree of Items
---
+import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:), (.:!), (.:?), (.!=))
+import Data.Maybe (maybe)
 
 data Item a
   = Leaf a
@@ -24,8 +19,6 @@ data Item a
   | Not (Item a)
 
 
-
--- | nnf based on the nnf found in dsl/lib/haskell/anyall/src/AnyAll/BoolStruct.hs
 nnf :: forall a. Item a -> Item a
 nnf (Not (Not p)) = nnf p
 nnf (Not (All l ps)) = Any l $ nnf <$> Not <$> ps
@@ -41,9 +34,6 @@ derive instance genericItem :: Generic (Item a) _
 instance showItem :: (Show a) => Show (Item a) where
   show eta = genericShow eta
 
---
--- Item uses Label to prefix a tree with strings like "all of the following" or "any of the below"
---
 data Label a
   = Pre a
   | PrePost a a
@@ -57,10 +47,9 @@ instance encodeJsonLabel :: (EncodeJson a) => EncodeJson (Label a) where
   encodeJson (Pre x) = encodeJson $ {  pre : x }
   encodeJson (PrePost x y) = encodeJson $ {  pre : x, post: y }
 
-label2pre ∷ Label String → String
-label2pre (Pre x) = x
-label2pre (PrePost x _) = x
-
-label2post ∷ Label String → String
-label2post (PrePost _ y) = y
-label2post (Pre _) = "" -- maybe throw an error?
+instance decodeJsonLabel :: (DecodeJson a) => DecodeJson (Label a) where
+  decodeJson json = do
+    obj <- decodeJson json              -- decode `Json` to `Object Json`
+    pre <- obj .: "pre"               -- decode the "name" key to a `String`
+    post <- obj .:? "post"                -- decode the "age" key to a `Maybe Int`
+    pure $ maybe (Pre pre) (PrePost pre) post 
