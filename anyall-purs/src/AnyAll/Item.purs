@@ -1,16 +1,24 @@
-module AnyAll.Item(
-  Item(..),
-  Label(..),
-  nnf
-) where
+module AnyAll.Item
+  ( Item(..)
+  , Label(..)
+  , decodeAajsonGroupItem
+  , decodeAajsonItem
+  , nnf
+  )
+  where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
-import Data.Show.Generic (genericShow)
-import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Argonaut.Core (Json, stringify)
 import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:), (.:!), (.:?), (.!=))
-import Data.Maybe (maybe)
+import Data.Argonaut.Decode.Decoders (getFieldOptional', decodeArray, getField)
+import Data.Argonaut.Decode.Error (JsonDecodeError, printJsonDecodeError)
+import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Either (Either(..), either)
+import Data.Generic.Rep (class Generic)
+import Data.Maybe (Maybe, maybe)
+import Data.Show.Generic (genericShow)
+import Data.Tuple (Tuple(..))
 
 data Item a
   = Leaf a
@@ -44,12 +52,31 @@ instance showLabel :: (Show a) => Show (Label a) where
   show = genericShow
 
 instance encodeJsonLabel :: (EncodeJson a) => EncodeJson (Label a) where
-  encodeJson (Pre x) = encodeJson $ {  pre : x }
-  encodeJson (PrePost x y) = encodeJson $ {  pre : x, post: y }
+  encodeJson (Pre x) = encodeJson $ {  "Pre" : x }
+  encodeJson (PrePost x y) = encodeJson $ {  "Pre" : x, "Post": y }
 
 instance decodeJsonLabel :: (DecodeJson a) => DecodeJson (Label a) where
   decodeJson json = do
     obj <- decodeJson json              -- decode `Json` to `Object Json`
-    pre <- obj .: "pre"               -- decode the "name" key to a `String`
-    post <- obj .:? "post"                -- decode the "age" key to a `Maybe Int`
-    pure $ maybe (Pre pre) (PrePost pre) post 
+    pre <- obj .: "Pre"               -- decode the "name" key to a `String`
+    post <- obj .:? "Post"                -- decode the "age" key to a `Maybe Int`
+    pure $ maybe (Pre pre) (PrePost pre) post
+
+decodeAajsonItem :: Json -> Either JsonDecodeError (Item String)
+decodeAajsonItem json = do
+  obj <- decodeJson json
+  leafValue <- obj .:? "Leaf"
+  notValue <- getFieldOptional' decodeAajsonItem obj "Not"
+  anyValue <- getFieldOptional' decodeAajsonGroupItem obj "Any"
+  allValue <- getFieldOptional' decodeAajsonGroupItem obj "All"
+  pure $ maybe (maybe (maybe (maybe (Leaf "default") (itemFromTuple All) allValue) (itemFromTuple Any) anyValue) Not notValue) Leaf leafValue
+
+itemFromTuple:: (Label String → Array (Item String) → Item String) -> Tuple (Label String) (Array (Item String)) -> Item String
+itemFromTuple ic (Tuple l c) = ic l c
+
+decodeAajsonGroupItem :: Json -> Either JsonDecodeError (Tuple (Label String) (Array (Item String)))
+decodeAajsonGroupItem json = do
+  obj <- decodeJson json
+  label <- obj .: "label"
+  notValue <- getField (decodeArray decodeAajsonItem) obj "children"
+  pure $ Tuple label notValue

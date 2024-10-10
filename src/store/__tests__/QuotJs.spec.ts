@@ -44,7 +44,7 @@ function mkOrResponse(children: any) {
   return {
     "shouldView": "View",
     "prePost": {
-      "pre": "any of:"
+      "Pre": "any of:"
     },
     "mark": {
       "source": "user",
@@ -62,7 +62,7 @@ function mkAndResponse(children: any) {
   return {
     "shouldView": "View",
     "prePost": {
-      "pre": "all of:"
+      "Pre": "all of:"
     },
     "mark": {
       "source": "user",
