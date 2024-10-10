@@ -14,8 +14,18 @@ import Data.Monoid (power)
 import Effect (Effect)
 import Effect.Class (liftEffect)
 import Effect.Class.Console (log)
-import Effect.Exception (throw)
+import Effect.Exception (throw, Error, error)
+import Test.Spec.Assertions (shouldEqual, fail)
+import Control.Monad.Error.Class (class MonadError, class MonadThrow, throwError, try)
 
+
+shouldEqualJson :: forall m . MonadThrow Error m
+  => Json
+  -> Json
+  -> m Unit
+shouldEqualJson v1 v2 =
+  when (v1 /= v2) $
+    fail $ stringify v1 <> " ≠ " <> stringify v2
 
 type Test = ReaderT Int Effect Unit
 
@@ -60,5 +70,8 @@ manualRecordDecode = do
         case decodeJson prePostJson of
           Right (PrePost "Hello" "World") -> pure unit
           _ -> failure ("Failed to properly decode JSON string: " <> stringify prePostJson)
+
+      test "(Pre Hello) should encode to {pre: Hello}" do
+        encodeJson (Pre "Hello") `shouldEqualJson` preJson
 
   suite "Test Label serde" testLabelCases
