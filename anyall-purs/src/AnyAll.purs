@@ -1,8 +1,9 @@
 module AnyAll
-  ( module RuleLib.Interview
+  ( emptyMarking
   , heads
+  , module RuleLib.Interview
   , paint
-  , emptyMarking
+  , paint2
   )
   where
 
@@ -26,6 +27,10 @@ emptyMarking = markup Map.empty
 paint :: Json -> NLDict -> Item String -> Json
 paint fm _ item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
+
+paint2 :: Json -> NLDict -> Json -> Json
+paint2 fm _ item =
+  encodeJson $ relevant (decodeMarkingArgo fm) Unknown (decodeItemArgo item)
 
 heads ::  forall t2. Object t2 -> Array String
 heads x = keys(x)
