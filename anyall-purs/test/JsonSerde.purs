@@ -71,7 +71,7 @@ manualRecordDecode = do
           Right (PrePost "Hello" "World") -> pure unit
           _ -> failure ("Failed to properly decode JSON string: " <> stringify prePostJson)
 
-      test "{pre: Hello, post: World} should decode to PrePost" do
-        encodeJson (Pre "Helo") `shouldEqualJson` preJson
+      test "(Pre Hello) should encode to {pre: Hello}" do
+        encodeJson (Pre "Hello") `shouldEqualJson` preJson
 
   suite "Test Label serde" testLabelCases
