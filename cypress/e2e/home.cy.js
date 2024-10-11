@@ -14,4 +14,19 @@ describe('My First Test', () => {
       'Yes!',
     );
   });
+
+  it('Has all of', () => {
+    cy.visit('http://localhost:8080/vue-pure-pdpa/');
+    cy.get(':nth-child(1) > :nth-child(1) > .is-single-question').contains(
+      'all of:',
+    );
+  });
+
+  it('Has any of', () => {
+    cy.visit('http://localhost:8080/vue-pure-pdpa/');
+    cy.get(':nth-child(1) > .question-block > :nth-child(1)').contains(
+      'any of:',
+    );
+  });
+  
 });
