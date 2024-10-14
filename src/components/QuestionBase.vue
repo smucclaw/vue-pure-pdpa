@@ -1,8 +1,8 @@
 <template>
   <div class="question-block" v-if="!question.andOr.contents">
-    <div class="question-content" v-if="question.prePost.pre" :class="theme">
+    <div class="question-content" v-if="question.prePost.Pre" :class="theme">
       <div class="is-single-question" :style="indentParent">
-        <strong><em>{{ question.prePost.pre }}</em> {{ question.andOr.nl.en }}</strong>
+        <strong><em>{{ question.prePost.Pre }}</em> {{ question.andOr.nl.en }}</strong>
       </div>
     </div>
     <template v-if="question.andOr.children">
