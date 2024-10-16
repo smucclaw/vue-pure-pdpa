@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import * as AnyAll from '../../anyall-purs/index.js';
+import * as AaJson from '../assets/Interview.json';
 
 function getLins(Interview) {
   const allLins = {}
@@ -7,6 +8,12 @@ function getLins(Interview) {
     allLins[e] = (Interview[e])
   }
   return allLins
+}
+
+function aaJsonLangs() {
+  const langs = AaJson.default.map(x => Object.keys(x)[0])
+  console.log(langs)
+  return langs
 }
 
 export default createStore({
@@ -17,7 +24,7 @@ export default createStore({
     topLDBody: '',
     whichPrompt: 0,
     objects: getLins(AnyAll),
-    allLangs: AnyAll.allLang
+    allLangs: aaJsonLangs()
   },
   getters: {
     langs(state) {
@@ -46,7 +53,7 @@ export default createStore({
       state.topLDBody = Object.values(state.topLD)[payload];
     },
     updateLang(state, payload) {
-      state.topLD = state.objects[payload];
+      state.topLD = AaJson.default[payload];
     },
   },
   actions: {

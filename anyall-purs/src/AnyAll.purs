@@ -28,8 +28,8 @@ paint :: Json -> NLDict -> Item String -> Json
 paint fm _ item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
 
-paint2 :: Json -> NLDict -> Json -> Json
-paint2 fm _ item =
+paint2 :: Json -> Json -> Json
+paint2 fm item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown (decodeItemArgo item)
 
 heads ::  forall t2. Object t2 -> Array String
