@@ -10,21 +10,23 @@ function getLins(Interview) {
   return allLins
 }
 
-function aaJsonLangs() {
-  const langs = AaJson.default.map(x => Object.keys(x)[0])
-  console.log(langs)
-  return langs
+export function getAaJsonLins(aaJson) {
+  return aaJson
+}
+
+export function aaJsonLangs(aaJson) {
+  return Object.keys(aaJson)
 }
 
 export default createStore({
   state: {
     marking: AnyAll.emptyMarking,
     rulesInterview_nl: AnyAll.interviewRules_nl,
-    topLD: AnyAll.nl4eng,
+    topLD: AaJson.default["nl4eng"][0],
     topLDBody: '',
     whichPrompt: 0,
-    objects: getLins(AnyAll),
-    allLangs: aaJsonLangs()
+    objects: getAaJsonLins(AaJson.default),
+    allLangs: aaJsonLangs(AaJson.default)
   },
   getters: {
     langs(state) {
@@ -33,9 +35,9 @@ export default createStore({
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        return AnyAll.paint(state.marking)(state.rulesInterview_nl)(topLDBody);
+        return AnyAll.paint2(state.marking)(topLDBody);
       }
-      return AnyAll.paint(state.marking)(state.rulesInterview_nl)(state.topLDBody);
+      return AnyAll.paint2(state.marking)(state.topLDBody);
     },
     questionPrompt(state) {
       const heads = AnyAll.heads(state.topLD);
@@ -53,7 +55,8 @@ export default createStore({
       state.topLDBody = Object.values(state.topLD)[payload];
     },
     updateLang(state, payload) {
-      state.topLD = AaJson.default[payload];
+      console.log('payload', payload)
+      state.topLD = state.objects[payload][0];
     },
   },
   actions: {
