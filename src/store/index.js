@@ -11,7 +11,7 @@ function getLins(Interview) {
 
 export default createStore({
   state: {
-    marking: AnyAll.emptyMarking,
+    marking: {},
     rulesInterview_nl: AnyAll.interviewRules_nl,
     topLD: AnyAll.nl4eng,
     topLDBody: '',
