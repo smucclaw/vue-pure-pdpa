@@ -2,7 +2,6 @@ module AnyAll
   ( module RuleLib.Interview
   , heads
   , paint
-  , emptyMarking
   )
   where
 
@@ -18,10 +17,6 @@ import Data.Argonaut.Core (Json)
 import Data.Argonaut.Encode (encodeJson)
 
 import RuleLib.Interview
-
-
-emptyMarking :: Marking
-emptyMarking = markup Map.empty
 
 paint :: Json -> NLDict -> Item String -> Json
 paint fm _ item =
