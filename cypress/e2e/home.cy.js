@@ -28,5 +28,11 @@ describe('My First Test', () => {
       'any of:',
     );
   });
-  
+
+  it('Question = Person', () => {
+    cy.visit('http://localhost:8080/vue-pure-pdpa/');
+    cy.get('.vertical-container').contains(
+      'Person',
+    );
+  });
 });
