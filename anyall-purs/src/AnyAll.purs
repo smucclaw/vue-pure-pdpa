@@ -18,8 +18,8 @@ import Data.Argonaut.Encode (encodeJson)
 
 import RuleLib.Interview
 
-paint :: Json -> NLDict -> Item String -> Json
-paint fm _ item =
+paint :: Json -> Item String -> Json
+paint fm item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
 
 heads ::  forall t2. Object t2 -> Array String

@@ -12,7 +12,6 @@ function getLins(Interview) {
 export default createStore({
   state: {
     marking: {},
-    rulesInterview_nl: AnyAll.interviewRules_nl,
     topLD: AnyAll.nl4eng,
     topLDBody: '',
     whichPrompt: 0,
@@ -26,9 +25,9 @@ export default createStore({
     questions(state) {
       if (!state.topLDBody) {
         const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        return AnyAll.paint(state.marking)(state.rulesInterview_nl)(topLDBody);
+        return AnyAll.paint(state.marking)(topLDBody);
       }
-      return AnyAll.paint(state.marking)(state.rulesInterview_nl)(state.topLDBody);
+      return AnyAll.paint(state.marking)(state.topLDBody);
     },
     questionPrompt(state) {
       const heads = AnyAll.heads(state.topLD);
