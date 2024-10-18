@@ -23,6 +23,8 @@ export default createStore({
     marking: AnyAll.emptyMarking,
     rulesInterview_nl: AnyAll.interviewRules_nl,
     topLD: AaJson.default["nl4eng"][0],
+    marking: {},
+    topLD: AaJson.default["nl4eng"][0],
     topLDBody: '',
     whichPrompt: 0,
     objects: getAaJsonLins(AaJson.default),
@@ -40,8 +42,7 @@ export default createStore({
       return AnyAll.paint2(state.marking)(state.topLDBody);
     },
     questionPrompt(state) {
-      const heads = AnyAll.heads(state.topLD);
-      return heads;
+      return Object.keys(state.topLD);
     },
     getMarkingField: (state) => (id) => {
       return state.marking[id]

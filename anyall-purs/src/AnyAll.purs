@@ -1,7 +1,5 @@
 module AnyAll
-  ( emptyMarking
-  , heads
-  , module RuleLib.Interview
+  ( module RuleLib.Interview
   , paint
   , paint2
   )
@@ -20,17 +18,10 @@ import Data.Argonaut.Encode (encodeJson)
 
 import RuleLib.Interview
 
-
-emptyMarking :: Marking
-emptyMarking = markup Map.empty
-
-paint :: Json -> NLDict -> Item String -> Json
-paint fm _ item =
+paint :: Json -> Item String -> Json
+paint fm item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
 
 paint2 :: Json -> Json -> Json
 paint2 fm item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown (decodeItemArgo item)
-
-heads ::  forall t2. Object t2 -> Array String
-heads x = keys(x)
