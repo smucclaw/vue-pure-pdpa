@@ -3,6 +3,7 @@ module AnyAll.Item
   , Label(..)
   , decodeAajsonGroupItem
   , decodeAajsonItem
+  , decodeItemArgo
   , nnf
   )
   where
@@ -19,6 +20,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe, maybe)
 import Data.Show.Generic (genericShow)
 import Data.Tuple (Tuple(..))
+import Partial.Unsafe (unsafeCrashWith)
 
 data Item a
   = Leaf a
@@ -80,3 +82,9 @@ decodeAajsonGroupItem json = do
   label <- obj .: "label"
   notValue <- getField (decodeArray decodeAajsonItem) obj "children"
   pure $ Tuple label notValue
+
+
+decodeItemArgo :: Json -> (Item String)
+decodeItemArgo json = case decodeAajsonItem json of
+      Right m -> m
+      Left jde -> unsafeCrashWith ("Failed to properly decode JSON string: " <> show (jde))

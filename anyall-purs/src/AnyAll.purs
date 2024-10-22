@@ -1,6 +1,7 @@
 module AnyAll
   ( module RuleLib.Interview
   , paint
+  , paint2
   )
   where
 
@@ -20,3 +21,7 @@ import RuleLib.Interview
 paint :: Json -> Item String -> Json
 paint fm item =
   encodeJson $ relevant (decodeMarkingArgo fm) Unknown item
+
+paint2 :: Json -> Json -> Json
+paint2 fm item =
+  encodeJson $ relevant (decodeMarkingArgo fm) Unknown (decodeItemArgo item)
