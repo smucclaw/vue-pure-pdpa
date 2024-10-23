@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import * as AnyAll from '../../anyall-purs/index.js';
+import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 
 function getLins(Interview) {
@@ -20,9 +20,6 @@ export function aaJsonLangs(aaJson) {
 
 export default createStore({
   state: {
-    marking: AnyAll.emptyMarking,
-    rulesInterview_nl: AnyAll.interviewRules_nl,
-    topLD: AaJson.default["nl4eng"][0],
     marking: {},
     topLD: AaJson.default["nl4eng"][0],
     topLDBody: '',
