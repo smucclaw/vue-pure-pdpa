@@ -47,9 +47,9 @@ export default {
   data() {
     return {
       navigationLinks: [],
-      langs: this.$store.getters.langs,
+      langs: this.$store.getters.allLangs,
       chosenLang: "",
-      showOptions: new Array(this.$store.getters.langs.length).fill(false),
+      showOptions: new Array(this.$store.getters.allLangs.length).fill(false),
       selectedIndex: null,
     };
   },

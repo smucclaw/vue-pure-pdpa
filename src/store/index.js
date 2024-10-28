@@ -13,28 +13,30 @@ export function aaJsonLangs(aaJson) {
 export default createStore({
   state: {
     marking: {},
-    interview: AaJson.default,
+    allInverviews: AaJson.default,
     currentLang: 'nl4eng',
     currentPrompt: 0,
   },
   getters: {
-    langs(state) {
-      return aaJsonLangs(state.interview);
+    allLangs(state) {
+      return aaJsonLangs(state.allInverviews);
     },
-    questions(state) {
-      const topLevelDecisions = state.interview[state.currentLang][0]
-      const topLDBody = Object.values(topLevelDecisions)[state.currentPrompt];
-      return AnyAll.paint2(state.marking)(topLDBody);
+    questions(state, getters) {
+      const currentInterviewBody = Object.values(getters.currentInterview)[0];
+      return AnyAll.paint2(state.marking)(currentInterviewBody);
     },
-    questionPrompt(state) {
-      return Object.keys(state.interview[state.currentLang][0]);
+    currentInterview(state) {
+      return state.allInverviews[state.currentLang][state.currentPrompt];
+    },
+    questionPrompt(state, getters) {
+      return Object.keys(getters.currentInterview)[0];
     },
     getMarkingField: (state) => (id) => {
       return state.marking[id]
     },
-    getTopLevelDecisions(state) {
-      return state.interview[state.currentLang][0];
-    },
+    getTopLevelDecisionKeys(state) {
+      return state.allInverviews[state.currentLang].flatMap((x) => Object.keys(x));
+    }
   },
   mutations: {
     updateMarkingField(state, payload) {
