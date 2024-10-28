@@ -9,6 +9,18 @@ const routes = [
     alias: '/nl4eng/questions',
   },
   {
+    path: '/index.html',
+    component: () => import('@/views/Questions.vue'),
+    alias: '/nl4eng/questions',
+    beforeEnter: (to, from, next) => {
+      fetch(`http://localhost:8090/workdir/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
+        .then(response => response.json())
+        .then(data => store.state.interview = data);
+
+      next();
+    }
+  },
+  {
     path: '/nl4eng',
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
