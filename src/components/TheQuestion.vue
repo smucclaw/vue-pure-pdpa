@@ -66,14 +66,13 @@ export default {
       }[this.questions.mark.value];
     },
     getTopLevelDecisions() {
-      return this.$store.state.topLD;
+      return this.$store.getters.getTopLevelDecisions;
     },
   },
   methods: {
     changeQuestionPrompt(index) {
       this.whichPrompt = index;
-      this.$store.state.whichPrompt = index;
-      this.$store.commit("updateTopLDBody", this.whichPrompt);
+      this.$store.commit("updateCurrentPrompt", this.whichPrompt);
     },
   },
 };
