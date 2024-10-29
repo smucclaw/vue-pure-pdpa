@@ -2,14 +2,6 @@ import { createStore } from 'vuex';
 import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 
-function getLins(Interview) {
-  const allLins = {}
-  for (const e of Interview.allLang) {
-    allLins[e] = (Interview[e])
-  }
-  return allLins
-}
-
 export function getAaJsonLins(aaJson) {
   return aaJson
 }
@@ -21,40 +13,40 @@ export function aaJsonLangs(aaJson) {
 export default createStore({
   state: {
     marking: {},
-    topLD: AaJson.default["nl4eng"][0],
-    topLDBody: '',
-    whichPrompt: 0,
-    objects: getAaJsonLins(AaJson.default),
-    allLangs: aaJsonLangs(AaJson.default)
+    allInverviews: AaJson.default,
+    currentLang: 'nl4eng',
+    currentPrompt: 0,
   },
   getters: {
-    langs(state) {
-      return state.allLangs;
+    allLangs(state) {
+      return aaJsonLangs(state.allInverviews);
     },
-    questions(state) {
-      if (!state.topLDBody) {
-        const topLDBody = Object.values(state.topLD)[state.whichPrompt];
-        return AnyAll.paint2(state.marking)(topLDBody);
-      }
-      return AnyAll.paint2(state.marking)(state.topLDBody);
+    questions(state, getters) {
+      const currentInterviewBody = Object.values(getters.currentInterview)[0];
+      return AnyAll.paint2(state.marking)(currentInterviewBody);
     },
-    questionPrompt(state) {
-      return Object.keys(state.topLD);
+    currentInterview(state) {
+      return state.allInverviews[state.currentLang][state.currentPrompt];
+    },
+    questionPrompt(state, getters) {
+      return Object.keys(getters.currentInterview)[0];
     },
     getMarkingField: (state) => (id) => {
       return state.marking[id]
     },
+    getTopLevelDecisionKeys(state) {
+      return state.allInverviews[state.currentLang].flatMap((x) => Object.keys(x));
+    }
   },
   mutations: {
     updateMarkingField(state, payload) {
       state.marking[payload.question] = payload.answer;
     },
-    updateTopLDBody(state, payload) {
-      state.topLDBody = Object.values(state.topLD)[payload];
+    updateCurrentPrompt(state, payload) {
+      state.currentPrompt = payload;
     },
     updateLang(state, payload) {
-      console.log('payload', payload)
-      state.topLD = state.objects[payload][0];
+      state.currentLang = payload;
     },
   },
   actions: {

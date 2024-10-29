@@ -9,7 +9,7 @@
       <div class="column is-one-fifth has-text-left is-size-4">
         <Notification class="is-next-from-top clearEdges">
           <div
-            v-for="(heading, index) in Object.keys(getTopLevelDecisions)"
+            v-for="(heading, index) in getTopLevelDecisions"
             :key="heading"
             class="vertical-container"
             @click="changeQuestionPrompt(index)"
@@ -35,7 +35,6 @@ export default {
   },
   data() {
     return {
-      whichPrompt: 0,
       whichHeading: "",
     };
   },
@@ -49,7 +48,7 @@ export default {
       return this.$store.getters.statements;
     },
     questionPrompt() {
-      return this.$store.getters.questionPrompt[this.whichPrompt];
+      return this.$store.getters.questionPrompt;
     },
     responseMsg() {
       return {
@@ -66,14 +65,12 @@ export default {
       }[this.questions.mark.value];
     },
     getTopLevelDecisions() {
-      return this.$store.state.topLD;
+      return this.$store.getters.getTopLevelDecisionKeys;
     },
   },
   methods: {
     changeQuestionPrompt(index) {
-      this.whichPrompt = index;
-      this.$store.state.whichPrompt = index;
-      this.$store.commit("updateTopLDBody", this.whichPrompt);
+      this.$store.commit("updateCurrentPrompt", index);
     },
   },
 };
