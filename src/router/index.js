@@ -15,7 +15,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       fetch(`http://localhost:8090/workdir/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
         .then(response => response.json())
-        .then(data => store.state.interview = data);
+        .then(data => store.state.allInverviews = data);
 
       next();
     }
