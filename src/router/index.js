@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '@/store/index.js';
 
+const hostMap = {
+  "dev": "https://cclaw.legalese.com/port/8090/workdir",
+  "prod": "https://prod.cclaw.legalese.com/port/8090",
+  "local": "http://localhost:8090/workdir"
+}
 
 const routes = [
   {
@@ -13,7 +18,8 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
-      fetch(`http://localhost:8090/workdir/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
+      const host = hostMap[to.query.host];
+      fetch(`${host}/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
         .then(response => response.json())
         .then(data => store.state.allInverviews = data);
 
