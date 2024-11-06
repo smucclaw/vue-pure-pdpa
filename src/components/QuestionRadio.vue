@@ -54,9 +54,9 @@ const btnOptions = [
 const emit = defineEmits(["update:modelValue"])
 
 const selectedValue = computed({
-  get: () => this.modelValue,
+  get: () => props.modelValue,
   set: (value) => {
-    this.$emit("update:modelValue", value);
+    emit("update:modelValue", value);
   },
 })
 
