@@ -20,72 +20,60 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCheck, faQuestion, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { computed } from "vue";
 
-export default {
-  name: "QuestionRadio",
-  components: {
-    FontAwesomeIcon,
+const props = defineProps({
+  modelValue: String,
+  disabled: Boolean,
+})
+
+const btnOptions = [
+  {
+    name: "Yes",
+    icon: faCheck,
+    color: "is-success",
+    value: "true",
   },
-  // Max: added disabled
-  props: {
-    modelValue: String,
-    disabled: Boolean,
+  {
+    name: "No",
+    icon: faTimes,
+    color: "is-danger",
+    value: "false",
   },
-  emits: ["update:modelValue"],
-  data() {
-    return {
-      btnOptions: [
-        {
-          name: "Yes",
-          icon: faCheck,
-          color: "is-success",
-          value: "true",
-        },
-        {
-          name: "No",
-          icon: faTimes,
-          color: "is-danger",
-          value: "false",
-        },
-        {
-          name: "Don't Know",
-          icon: faQuestion,
-          color: "is-dark",
-          value: "undefined",
-        },
-      ],
-    };
+  {
+    name: "Don't Know",
+    icon: faQuestion,
+    color: "is-dark",
+    value: "undefined",
   },
-  computed: {
-    selectedValue: {
-      get() {
-        return this.modelValue;
-      },
-      set(value) {
-        this.$emit("update:modelValue", value);
-      },
-    },
+]
+
+const emit = defineEmits(["update:modelValue"])
+
+const selectedValue = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    emit("update:modelValue", value);
   },
-  methods: {
-    getColor(currentColor, currentValue, selectedValue, disabled) {
-      const isSelected = currentValue === selectedValue;
-      const shouldShowActive = isSelected && !disabled ? "is-active" : "is-outlined";
-      const disabledClass = disabled ? "is-disabled" : "";
-      return currentColor.concat(" ", shouldShowActive, " ", disabledClass);
-    },
-  },
-};
+})
+
+function getColor(currentColor, currentValue, selectedValue, disabled) {
+  const isSelected = currentValue === selectedValue;
+  const shouldShowActive = isSelected && !disabled ? "is-active" : "is-outlined";
+  const disabledClass = disabled ? "is-disabled" : "";
+  return currentColor.concat(" ", shouldShowActive, " ", disabledClass);
+}
 </script>
 
 <style scoped>
-.control > label {
+.control>label {
   margin-right: 0.5rem !important;
 }
 
-.control > label:last-child {
+.control>label:last-child {
   margin-right: 0 !important;
 }
 </style>
