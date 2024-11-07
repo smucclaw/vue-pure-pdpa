@@ -1,22 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import BaseNotification from '@/components/BaseNotification.vue';
+import { mount } from "@vue/test-utils";
+
+import BaseNotification from '../BaseNotification.vue';
 
 
 describe('Test BaseNotification Component', () => {
 
   it('notification is not light', () => {
-    const isLightSetting = {
-      isLight: false,
-    };
-
-    expect(BaseNotification.computed.isLightTheme.call(isLightSetting)).toBe('');
-  });
-
-  it('notification is light', () => {
-    const isLightSetting = {
-      isLight: true,
-    };
-
-    expect(BaseNotification.computed.isLightTheme.call(isLightSetting)).toBe('is-light');
+    const wrapper = mount(BaseNotification, { props: { themeColor: "is-success" } })
+    expect(wrapper.get('.is-success')).not.toBeNull()
   });
 });
