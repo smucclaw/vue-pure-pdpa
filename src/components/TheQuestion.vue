@@ -30,13 +30,8 @@ import Notification from "@/components/BaseNotification.vue";
 const store = useStore();
 
 const questions = computed(() => {
-  console.log(store);
   return store.getters.questions;
 })
-
-const statements = computed(() => {
-  return store.getters.statements;
-});
 
 const questionPrompt = computed(() => {
   return store.getters.questionPrompt;
@@ -47,7 +42,7 @@ const responseMsg = computed(() => {
     true: "Yes!",
     false: "No!",
     undefined: "It depends...",
-  }[undefined];//[questions.mark.value];
+  }[questions.value.mark.value]
 });
 
 const responseTheme = computed(() => {
@@ -55,7 +50,7 @@ const responseTheme = computed(() => {
     true: "is-success",
     false: "is-danger",
     undefined: "is-info",
-  }[undefined];
+  }[questions.value.mark.value]
 });
 
 const getTopLevelDecisions = computed(() => {
