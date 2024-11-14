@@ -3,7 +3,7 @@ import store from '@/store/index.js';
 
 const hostMap = {
   "dev": "https://cclaw.legalese.com/port/8090/workdir",
-  "prod": "https://prod.cclaw.legalese.com/port/8090",
+  "prod": "https://prod.cclaw.legalese.com/port/8090/workdir",
   "local": "http://localhost:8090/workdir"
 }
 
@@ -18,7 +18,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
-      const host = hostMap[to.query.host];
+      const host = hostMap[hostCode] ?? `https://${hostCode}.dev.cclaw.legalese.com/workdir`;
       fetch(`${host}/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
         .then(response => response.json())
         .then(data => store.state.allInverviews = data);
