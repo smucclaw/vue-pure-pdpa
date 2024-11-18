@@ -18,7 +18,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
-      const host = hostMap[hostCode] ?? `https://${hostCode}.dev.cclaw.legalese.com/workdir`;
+      const host = hostMap[to.query.hostCode] ?? `https://${to.query.hostCode}.dev.cclaw.legalese.com/workdir`;
       fetch(`${host}/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
         .then(response => response.json())
         .then(data => store.state.allInverviews = data);
