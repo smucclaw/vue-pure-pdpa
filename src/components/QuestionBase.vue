@@ -1,7 +1,7 @@
 <template>
   <div class="question-block" v-if="!question.andOr.contents">
     <div class="question-content" v-if="question.prePost.Pre" :class="theme">
-      <div class="is-single-question" :style="indentParent">
+      <div class="is-single-question" :style="indentParent" :data-test="question.prePost.Pre">
         <strong><em>{{ question.prePost.Pre }}</em> {{ question.andOr.nl.en }}</strong>
       </div>
     </div>
