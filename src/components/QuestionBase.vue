@@ -99,6 +99,9 @@ export default {
   margin-bottom: 0.25rem;
   padding: 0.5rem 0;
   border-radius: 4px;
+  width: 60vw;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .question-block .question-content:last-child {
