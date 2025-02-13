@@ -75,7 +75,6 @@ const leaf = computed({
   }
 })
 
-// Methods
 function indent(depth, spacingFactor = 0.75) {
   return {
     marginLeft: `${depth * spacingFactor}rem`,
