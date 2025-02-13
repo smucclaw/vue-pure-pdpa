@@ -6,13 +6,8 @@
       </div>
     </div>
     <template v-if="question.andOr.children">
-      <QuestionBase
-        v-for="child in question.andOr.children"
-        :key="child"
-        :question="child"
-        :parent-tag="question.andOr.tag"
-        :parent-view="question.shouldView"
-        :depth="newDepth" />
+      <QuestionBase v-for="child in question.andOr.children" :key="child" :question="child"
+        :parent-tag="question.andOr.tag" :parent-view="question.shouldView" :depth="newDepth" />
     </template>
   </div>
   <div class="question-content" v-if="question.andOr.contents" :class="theme">
@@ -31,66 +26,60 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import QuestionRadio from "@/components/QuestionRadio.vue";
 
-export default {
-  name: "QuestionBase",
-  props: {
-    question: Object,
-    parentTag: String,
-    parentView: String,
-    depth: {
-      type: Number,
-      default: 0,
-    },
-  },
-  components: {
-    QuestionRadio,
-  },
-  computed: {
-    isHidden() {
-      const isHideMode = this.question.shouldView === "Hide";
-      const isViewMode = this.question.shouldView === "View";
-      const isParentViewHide = this.parentView === "Hide";
-      const isTagLeaf = this.question.andOr.tag === "Leaf";
+const store = useStore()
 
-      return isHideMode || (isTagLeaf && isViewMode && isParentViewHide);
-    },
-    theme() {
-      return this.isHidden
-        ? "has-background-grey-lighter has-text-grey-light"
-        : "has-background-light";
-    },
-    newDepth() {
-      return this.depth + 1;
-    },
-    indentParent() {
-      return this.indent(this.newDepth);
-    },
-    leaf: {
-      get() {
-        return this.question.mark.source === "user" ? this.question.mark.value : "none";
+const props = defineProps({
+  question: Object,
+  parentTag: String,
+  parentView: String,
+  depth: {
+    type: Number,
+    default: 0
+  }
+})
+
+const isHidden = computed(() => {
+  const isHideMode = props.question.shouldView === "Hide"
+  const isViewMode = props.question.shouldView === "View"
+  const isParentViewHide = props.parentView === "Hide"
+  const isTagLeaf = props.question.andOr.tag === "Leaf"
+
+  return isHideMode || (isTagLeaf && isViewMode && isParentViewHide)
+})
+
+const theme = computed(() =>
+  isHidden.value
+    ? "has-background-grey-lighter has-text-grey-light"
+    : "has-background-light"
+)
+
+const newDepth = computed(() => props.depth + 1)
+
+const indentParent = computed(() => indent(newDepth.value))
+
+const leaf = computed({
+  get: () => props.question.mark.source === "user" ? props.question.mark.value : "none",
+  set: (value) => {
+    store.commit("updateMarkingField", {
+      question: props.question.andOr.contents,
+      answer: {
+        source: "user",
+        value,
       },
-      set(value) {
-        this.$store.commit("updateMarkingField", {
-          question: this.question.andOr.contents,
-          answer: {
-            source: "user",
-            value,
-          },
-        });
-      },
-    },
-  },
-  methods: {
-    indent(depth, spacingFactor = 0.75) {
-      return {
-        marginLeft: `${depth * spacingFactor}rem`,
-      };
-    },
-  },
-};
+    })
+  }
+})
+
+function indent(depth, spacingFactor = 0.75) {
+  return {
+    marginLeft: `${depth * spacingFactor}rem`,
+  }
+}
 </script>
 
 <style scoped>
