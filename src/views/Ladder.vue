@@ -1,8 +1,6 @@
 <template>
   <TheQuestion v-slot="slotProps">
-    <LadderDiagram
-      :question="slotProps.questions"
-    />
+    <LadderDiagram :question="slotProps.questions" />
   </TheQuestion>
 </template>
 
