@@ -24,20 +24,6 @@ describe('Test BaseNavigation Component', () => {
     it('shows the correct navbar classes', () => {
       const wrapper = factory();
       expect(wrapper.find('nav').classes()).toContain('navbar');
-
-      /*
-      const classIsFixedTop = ['is-dark', 'is-fixed-top'];
-      wrapper.setProps({
-        navClasses: classIsFixedTop.join(' '),
-      });
-      expect(wrapper.find('nav').classes()).toContain(classIsFixedTop);
-
-      const classIsFixedBottom = ['is-dark', 'is-fixed-bottom'];
-      wrapper.setProps({
-        navClasses: classIsFixedBottom.join(' '),
-      });
-      expect(wrapper.find('nav').classes()).toContain(classIsFixedBottom);
-      */
     });
 
     it('has fluid width class if fluidWidth prop is false', () => {
