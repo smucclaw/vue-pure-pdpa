@@ -27,31 +27,22 @@
   </nav>
 </template>
 
-<script>
-export default {
-  props: {
-    navClasses: String,
-    extendedMenu: Boolean,
-    fluidWidth: Boolean,
-  },
-  data() {
-    return {
-      isActive: false,
-      hasExtendedMenu: this.extendedMenu,
-    };
-  },
-  computed: {
-    showNav() {
-      return this.isActive ? "is-active" : "";
-    },
-    showFluidWidth() {
-      return this.fluidWidth ? "is-fluid" : "";
-    },
-  },
-  methods: {
-    toggleNav() {
-      this.isActive = !this.isActive;
-    },
-  },
+<script setup>
+import { ref, computed } from 'vue';
+
+const props = defineProps({
+  navClasses: String,
+  extendedMenu: Boolean,
+  fluidWidth: Boolean,
+});
+
+const isActive = ref(false);
+const hasExtendedMenu = ref(props.extendedMenu);
+
+const showNav = computed(() => isActive.value ? "is-active" : "");
+const showFluidWidth = computed(() => props.fluidWidth ? "is-fluid" : "");
+
+const toggleNav = () => {
+  isActive.value = !isActive.value;
 };
 </script>
