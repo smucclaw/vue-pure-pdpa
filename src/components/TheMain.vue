@@ -27,58 +27,48 @@
         :key="menu.name"
         :to="menu.path"
       >
-        <!-- <FontAwesomeIcon :icon="menu.meta.icon" /> -->
         <p class="is-size-7">{{ menu.name }}</p>
       </router-link>
     </template>
   </BaseNavigation>
 </template>
 
-<script>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import BaseNavigation from "@/components/BaseNavigation.vue";
+<script setup>
+import { ref, computed, onBeforeMount } from 'vue'
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
+import BaseNavigation from "@/components/BaseNavigation.vue"
 
-export default {
-  name: "TheMain",
-  components: {
-    FontAwesomeIcon,
-    BaseNavigation,
-  },
-  data() {
-    return {
-      navigationLinks: [],
-      langs: this.$store.getters.allLangs,
-      chosenLang: "",
-      showOptions: new Array(this.$store.getters.allLangs.length).fill(false),
-      selectedIndex: null,
-    };
-  },
-  computed: {
-    appName() {
-      const name = import.meta.env.VUE_APP_NAME;
-      const isEmpty = !name || name === "";
+const router = useRouter()
+const store = useStore()
 
-      return isEmpty ? "Dolora the Law Explorer" : name;
-    },
-  },
-  methods: {
-    langNames(l) {
-      const fulllangs = {
-        nl4chi: "Chinese",
-        nl4eng: "English",
-        nl4may: "Malay",
-      };
-      return fulllangs[l];
-    },
-    showLang(l, viz) {
-      this.chosenLang = l;
-      this.$store.commit("updateLang", this.chosenLang);
-    },
-  },
-  beforeMount() {
-    this.navigationLinks = this.$router.options.routes;
-  },
-};
+const navigationLinks = ref([])
+const langs = store.getters.allLangs
+const chosenLang = ref('')
+
+const appName = computed(() => {
+  const name = import.meta.env.VUE_APP_NAME
+  const isEmpty = !name || name === ""
+  return isEmpty ? "Dolora the Law Explorer" : name
+})
+
+const langNames = (l) => {
+  const fulllangs = {
+    nl4chi: "Chinese",
+    nl4eng: "English",
+    nl4may: "Malay",
+  }
+  return fulllangs[l]
+}
+
+const showLang = (l) => {
+  chosenLang.value = l
+  store.commit("updateLang", chosenLang.value)
+}
+
+onBeforeMount(() => {
+  navigationLinks.value = router.options.routes
+})
 </script>
 
 <style>
