@@ -35,7 +35,8 @@
 
 <script setup>
 import { ref, computed, onBeforeMount } from 'vue'
-import { useRouter, useStore } from 'vue-router'
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
 import BaseNavigation from "@/components/BaseNavigation.vue"
 
 const router = useRouter()
