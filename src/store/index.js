@@ -28,7 +28,7 @@ export const interviewStore = defineStore('interview', {
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
     },
-    questionPrompt(state) {
+    questionPrompt() {
       return Object.keys(this.currentInterview)[0];
     },
     getMarkingField: (state) => (id) => {

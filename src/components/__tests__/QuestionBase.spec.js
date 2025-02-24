@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
+import { vi } from 'vitest'
 
 import QuestionBase from "../QuestionBase.vue";
 
@@ -54,15 +56,28 @@ const qq = {
 const valueSelectorChild = "[data-test='does the person walk?']";
 const valueSelectorNode = "[data-test='all of:']";
 
-
 describe("Test QuestionBase Component", () => {
   it("renders leaf properly", () => {
-    const wrapper = mount(QuestionBase, { props: { question: q } });
+    const wrapper = mount(QuestionBase, {
+      props: { question: q },
+      global: {
+        plugins: [createTestingPinia({
+          createSpy: vi.fn,
+        })],
+      },
+    });
     expect(wrapper.find(valueSelectorChild).text()).toContain("Yes");
   });
 
   it("renders tree node properly", () => {
-    const wrapper = mount(QuestionBase, { props: { question: qq } });
+    const wrapper = mount(QuestionBase, {
+      props: { question: qq },
+      global: {
+        plugins: [createTestingPinia({
+          createSpy: vi.fn,
+        })],
+      },
+    });
     expect(wrapper.find(valueSelectorNode).text()).toContain("all of:");
   });
 });
