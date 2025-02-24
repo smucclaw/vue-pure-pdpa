@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import { defineStore } from 'pinia'
 import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 
@@ -10,26 +10,26 @@ export function aaJsonLangs(aaJson) {
   return Object.keys(aaJson)
 }
 
-export default createStore({
-  state: {
+export const interviewStore = defineStore('interview', {
+  state: () => ({
     marking: {},
     allInverviews: AaJson.default,
     currentLang: 'nl4eng',
     currentPrompt: 0,
-  },
+  }),
   getters: {
     allLangs(state) {
       return aaJsonLangs(state.allInverviews);
     },
-    questions(state, getters) {
-      const currentInterviewBody = Object.values(getters.currentInterview)[0];
+    questions(state) {
+      const currentInterviewBody = Object.values(this.currentInterview)[0];
       return AnyAll.paint2(state.marking)(currentInterviewBody);
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
     },
-    questionPrompt(state, getters) {
-      return Object.keys(getters.currentInterview)[0];
+    questionPrompt(state) {
+      return Object.keys(this.currentInterview)[0];
     },
     getMarkingField: (state) => (id) => {
       return state.marking[id]
@@ -38,18 +38,16 @@ export default createStore({
       return state.allInverviews[state.currentLang].flatMap((x) => Object.keys(x));
     }
   },
-  mutations: {
-    updateMarkingField(state, payload) {
-      state.marking[payload.question] = payload.answer;
-    },
-    updateCurrentPrompt(state, payload) {
-      state.currentPrompt = payload;
-    },
-    updateLang(state, payload) {
-      state.currentLang = payload;
-    },
-  },
   actions: {
+    updateMarkingField(payload) {
+      this.marking[payload.question] = payload.answer;
+    },
+    updateCurrentPrompt(payload) {
+      this.currentPrompt = payload;
+    },
+    updateLang(payload) {
+      this.currentLang = payload;
+    },
   },
   modules: {
   },

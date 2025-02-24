@@ -15,17 +15,19 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "anyall": "file:./anyall-purs",
     "ladder-diagram": "^2.0.3",
+    "pinia": "^3.0.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vuex": "^4.1.0",
-    "anyall": "file:./anyall-purs"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.5",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/eslint-plugin": "1.1.25",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^14.4.0",
     "@vue/test-utils": "^2.4.6",
@@ -40,7 +42,6 @@
     "start-server-and-test": "^2.0.10",
     "typescript": "^5.7.3",
     "vite-plugin-vue-devtools": "^7.7.2",
-    "vitest": "^3.0.5",
-    "@vitest/eslint-plugin": "1.1.25"
+    "vitest": "^3.0.5"
   }
 }

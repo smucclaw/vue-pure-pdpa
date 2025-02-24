@@ -23,18 +23,18 @@
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from 'vuex';
+import {interviewStore} from '@/store/index.js';
 
 import Notification from "@/components/BaseNotification.vue";
 
-const store = useStore();
+const store = interviewStore();
 
 const questions = computed(() => {
-  return store.getters.questions;
+  return store.questions;
 })
 
 const questionPrompt = computed(() => {
-  return store.getters.questionPrompt;
+  return store.questionPrompt;
 });
 
 const responseMsg = computed(() => {
@@ -54,11 +54,11 @@ const responseTheme = computed(() => {
 });
 
 const getTopLevelDecisions = computed(() => {
-  return store.getters.getTopLevelDecisionKeys;
+  return store.getTopLevelDecisionKeys;
 });
 
 function changeQuestionPrompt(index) {
-  store.commit("updateCurrentPrompt", index);
+  store.updateCurrentPrompt(index);
 }
 </script>
 

@@ -28,10 +28,10 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import {interviewStore} from '@/store/index.js';
 import QuestionRadio from "@/components/QuestionRadio.vue";
 
-const store = useStore()
+const store = interviewStore()
 
 const props = defineProps({
   question: Object,
@@ -65,7 +65,7 @@ const indentParent = computed(() => indent(newDepth.value))
 const leaf = computed({
   get: () => props.question.mark.source === "user" ? props.question.mark.value : "none",
   set: (value) => {
-    store.commit("updateMarkingField", {
+    store.updateMarkingField({
       question: props.question.andOr.contents,
       answer: {
         source: "user",

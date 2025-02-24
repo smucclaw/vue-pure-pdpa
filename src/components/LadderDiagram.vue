@@ -8,10 +8,10 @@
 
 <script setup>
 import { ref, computed, onMounted, onUpdated } from 'vue';
-import { useStore } from 'vuex';
+import {interviewStore} from '@/store/index.js';
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
 
-const store = useStore();
+const store = interviewStore();
 const ladderHere = ref();
 
 // when the user clicks on the form Yes/No/Don'tKnow, Vue natively
@@ -38,7 +38,7 @@ function cycleUTF(currentState) {
 }
 
 function ladderEventHandler(e) {
-  store.commit('updateMarkingField', {
+  store.updateMarkingField({
     question: e.detail,
     answer: {
       source: 'user',
@@ -115,7 +115,7 @@ function ladderdiagramInitEvents(ld) {
 //
 // https://vuejs.org/guide/essentials/computed.html#writable-computed says:
 // don't make async requests or mutate the DOM inside a computed getter!
-const asCircuit = computed(() => q2circuit(store.getters.questions));
+const asCircuit = computed(() => q2circuit(store.questions));
 const ld = computed(() => new LadderDiagram(asCircuit.value));
 onMounted(() => {
   ld.value.attach(ladderHere.value);
