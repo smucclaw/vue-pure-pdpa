@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import store from '@/store/index.js';
+import {interviewStore} from '@/store/index.js';
 
 const hostMap = {
   "dev": "https://cclaw.legalese.com/port/8090/workdir",
@@ -31,7 +31,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
-      store.commit('updateLang', 'nl4eng');
+      store.updateLang('nl4eng');
       next();
     },
   },
@@ -40,7 +40,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4chi/questions',
     beforeEnter: (to, from, next) => {
-      store.commit('updateLang', 'nl4chi');
+      store.updateLang('nl4chi');
       next();
     },
   },
@@ -49,7 +49,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4may/questions',
     beforeEnter: (to, from, next) => {
-      store.commit('updateLang', 'nl4may');
+      store.updateLang('nl4may');
       next();
     },
   },
@@ -59,7 +59,7 @@ const routes = [
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
       // Call your desired function here
-      store.commit('updateLang', 'nl4eng');
+      store.updateLang('nl4eng');
       next();
     },
   },
@@ -73,6 +73,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   const name = import.meta.env.VUE_APP_BROWSER_NAME;
   const isEmpty = !name || name === '';
+  const store = interviewStore()
 
   window.document.title = isEmpty ? 'Dolora the Law Explorer' : name;
 });

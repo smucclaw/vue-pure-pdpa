@@ -35,15 +35,15 @@
 
 <script setup>
 import { ref, computed, onBeforeMount } from 'vue'
-import { useStore } from 'vuex';
+import {interviewStore} from '@/store/index.js';
 import { useRouter } from 'vue-router'
 import BaseNavigation from "@/components/BaseNavigation.vue"
 
 const router = useRouter()
-const store = useStore()
+const store = interviewStore()
 
 const navigationLinks = ref([])
-const langs = store.getters.allLangs
+const langs = store.allLangs
 const chosenLang = ref('')
 
 const appName = computed(() => {
@@ -63,7 +63,7 @@ const langNames = (l) => {
 
 const showLang = (l) => {
   chosenLang.value = l
-  store.commit("updateLang", chosenLang.value)
+  store.updateLang(chosenLang.value)
 }
 
 onBeforeMount(() => {
