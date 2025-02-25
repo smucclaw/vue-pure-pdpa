@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import * as d3 from 'd3';
 
@@ -16,20 +16,6 @@ const props = defineProps({
 });
 
 const width = ref(window.innerWidth);
-
-function addObject(target, obj) {
-  return Object.assign(target, obj);
-}
-
-function reformatdata(data) {
-  const viewChild = data.andOr.children.filter((child) => child.shouldView === 'View')[0].andOr;
-  const getObject = { ...viewChild };
-  const newTree = data;
-  const newChildren = data.andOr.children.filter((child) => child.shouldView === 'Ask');
-  newChildren.map((leaf) => addObject(leaf.andOr, getObject));
-  newTree.andOr.children = newChildren;
-  return newTree;
-}
 
 function init(data) {
   let nodes = d3.hierarchy(data, (d) => d.andOr.children);

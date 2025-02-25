@@ -33,7 +33,7 @@
   </BaseNavigation>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onBeforeMount } from 'vue'
 import {interviewStore} from '@/store/index.js';
 import { useRouter } from 'vue-router'
