@@ -5,7 +5,7 @@
   </TheQuestion>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TheQuestion from '@/components/TheQuestion.vue';
 import QuestionBase from '@/components/QuestionBase.vue';
 import LadderDiagram from '@/components/LadderDiagram.vue';

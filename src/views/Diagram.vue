@@ -4,7 +4,7 @@
   </TheQuestion>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TheQuestion from '@/components/TheQuestion.vue';
 import QuestionDiagram from '@/components/QuestionDiagram.vue';
 </script>

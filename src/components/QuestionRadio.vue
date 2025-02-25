@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCheck, faQuestion, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { computed } from "vue";
