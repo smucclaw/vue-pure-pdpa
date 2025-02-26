@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {interviewStore} from '@/store/index.js';
+import {userMark} from '@/types/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
 
 const store = interviewStore()
@@ -65,13 +66,10 @@ const indentParent = computed(() => indent(newDepth.value))
 const leaf = computed({
   get: () => props.question.mark.source === "user" ? props.question.mark.value : "none",
   set: (value) => {
-    store.updateMarkingField({
-      question: props.question.andOr.contents,
-      answer: {
-        source: "user",
-        value,
-      },
-    })
+    store.updateMarkingField(
+      props.question.andOr.contents,
+      userMark(value),
+    )
   }
 })
 

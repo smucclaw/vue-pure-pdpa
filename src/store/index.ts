@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
+import { MarkDetails } from '@/types/MarkDetails';
 
 export function getAaJsonLins(aaJson) {
   return aaJson
@@ -12,7 +13,7 @@ export function aaJsonLangs(aaJson) {
 
 export const interviewStore = defineStore('interview', {
   state: () => ({
-    marking: {},
+    marking: new Map(),
     allInverviews: AaJson.default,
     currentLang: 'nl4eng',
     currentPrompt: 0,
@@ -23,7 +24,7 @@ export const interviewStore = defineStore('interview', {
     },
     questions(state) {
       const currentInterviewBody = Object.values(this.currentInterview)[0];
-      return AnyAll.paint2(state.marking)(currentInterviewBody);
+      return AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
@@ -39,8 +40,8 @@ export const interviewStore = defineStore('interview', {
     }
   },
   actions: {
-    updateMarkingField(payload) {
-      this.marking[payload.question] = payload.answer;
+    updateMarkingField(question: string, answer: MarkDetails) {
+      this.marking.set(question, answer);
     },
     updateCurrentPrompt(payload) {
       this.currentPrompt = payload;
