@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUpdated } from 'vue';
 import {interviewStore} from '@/store/index.js';
-import {userMark} from '@/types/MarkDetails';
+import {userMark} from '@/model/MarkDetails';
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
 
 const store = interviewStore();
