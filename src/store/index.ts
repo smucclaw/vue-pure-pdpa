@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
-import { MarkDetails } from '@/types/MarkDetails';
+import { MarkDetails } from '@/model/MarkDetails';
 
 export function getAaJsonLins(aaJson) {
   return aaJson

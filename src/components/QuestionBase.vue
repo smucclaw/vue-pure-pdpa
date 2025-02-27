@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {interviewStore} from '@/store/index.js';
-import {userMark} from '@/types/MarkDetails';
+import {userMark} from '@/model/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
 
 const store = interviewStore()
