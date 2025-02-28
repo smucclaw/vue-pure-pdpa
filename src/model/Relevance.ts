@@ -1,0 +1,149 @@
+import { Ternary, Item, Q, ShouldView } from './Types';
+
+// Assuming Types.ts has these enums/types defined:
+// enum Ternary { True, False, Unknown }
+// enum ShouldView { View, Hide, Ask }
+// enum NodeType { Or, And }
+// type Item<T> = Leaf<T> | Not<T> | Any<T> | All<T>
+// interface Q { shouldView: ShouldView; ... }
+
+export type Marking = Map<string, Ternary>;
+
+/**
+ * Paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
+ */
+export function relevant(marking: Marking, parentValue: Ternary, self: Item<string>): Q {
+  const selfValue = evaluate(marking, self);
+  let initVis: ShouldView;
+  
+  if (parentValue !== Ternary.Unknown) {
+    if (parentValue === selfValue) {
+      initVis = ShouldView.View;
+    } else {
+      initVis = ShouldView.Hide;
+    }
+  } else if (evaluate(marking, self) !== Ternary.Unknown) {
+    initVis = ShouldView.View;
+  } else {
+    initVis = ShouldView.Ask;
+  }
+  
+  // We compute the initial visibility of the subtree.
+  // If our initial visibility is to hide, then we mute all our children by converting Ask to Hide;
+  // but if any of our children are View, we leave them as View.
+  const paintedChildren = getChildren(self).map(child => 
+    initVis !== ShouldView.Hide ? relevant(marking, selfValue, child) : ask2hide(relevant(marking, selfValue, child))
+  );
+
+  function makeQNode(itemNode: Item<string>): Q {
+    switch (itemNode.type) {
+      case 'Leaf':
+        return mkQ(initVis, 'Simply', itemNode.value, null, lookupMarking(itemNode.value, marking), []);
+      case 'Not':
+        return makeQNode(itemNode.value); // [TODO] we should have a SimplyNot as well
+      case 'Any':
+        return mkQ(ask2view(initVis), 'Or', null, itemNode.label, selfValue, paintedChildren);
+      case 'All':
+        return mkQ(ask2view(initVis), 'And', null, itemNode.label, selfValue, paintedChildren);
+    }
+  }
+
+  // Convert to a QTree for output
+  return makeQNode(self);
+}
+
+export function getChildren(item: Item<string>): Array<Item<string>> {
+  switch (item.type) {
+    case 'Leaf': return [];
+    case 'Not': return getChildren(item.value);
+    case 'Any': return item.children;
+    case 'All': return item.children;
+  }
+}
+
+export function ask2hide(q: Q): Q {
+  if (q.shouldView === ShouldView.Ask) {
+    return { ...q, shouldView: ShouldView.Hide };
+  }
+  return q;
+}
+
+export function ask2view(view: ShouldView): ShouldView {
+  if (view === ShouldView.Ask) {
+    return ShouldView.View;
+  }
+  return view;
+}
+
+export function nlMapFn(word: string, nldict: Map<string, Map<string, string>>, nl: Map<string, Map<string, string>>): Map<string, string> {
+  const langs = Array.from(nldict.keys());
+  const result = new Map<string, string>();
+  
+  langs.forEach(lg => {
+    const lgDict = nl.get(lg) || new Map<string, string>();
+    const longtext = lgDict.get(word) || "";
+    result.set(lg, longtext);
+  });
+  
+  return result;
+}
+
+// Well, it depends on what values the children have, and that depends on whether we're assessing them in soft or hard mode.
+export function evaluate(marking: Marking, item: Item<string>): Ternary {
+  switch (item.type) {
+    case 'Leaf':
+      return marking.get(item.value) || Ternary.Unknown;
+    case 'Not':
+      return not3(evaluate(marking, item.value));
+    case 'Any':
+      return evaluateAny(item.children.map(child => evaluate(marking, child)));
+    case 'All':
+      return evaluateAll(item.children.map(child => evaluate(marking, child)));
+  }
+}
+
+export function evaluateAny(items: Ternary[]): Ternary {
+  if (items.includes(Ternary.True)) {
+    return Ternary.True;
+  } else if (items.every(item => item === Ternary.False)) {
+    return Ternary.False;
+  } else {
+    return Ternary.Unknown;
+  }
+}
+
+export function evaluateAll(items: Ternary[]): Ternary {
+  if (items.every(item => item === Ternary.True)) {
+    return Ternary.True;
+  } else if (items.includes(Ternary.False)) {
+    return Ternary.False;
+  } else {
+    return Ternary.Unknown;
+  }
+}
+
+export function lookupMarking(node: string, marking: Marking): Ternary {
+  return marking.get(node) || Ternary.Unknown;
+}
+
+// Helper function (not in original but needed)
+function not3(value: Ternary): Ternary {
+  switch (value) {
+    case Ternary.True: return Ternary.False;
+    case Ternary.False: return Ternary.True;
+    case Ternary.Unknown: return Ternary.Unknown;
+  }
+}
+
+// This function should be defined in your Types.ts
+function mkQ(shouldView: ShouldView, nodeType: string, simpleValue: string | null, 
+             label: string | null, ternary: Ternary, children: Q[]): Q {
+  return {
+    shouldView,
+    nodeType,
+    simpleValue,
+    label,
+    ternary,
+    children
+  };
+}
