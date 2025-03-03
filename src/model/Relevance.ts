@@ -1,4 +1,3 @@
-import { Ternary, Item, Q, ShouldView } from './Types';
 
 // Assuming Types.ts has these enums/types defined:
 // enum Ternary { True, False, Unknown }
@@ -6,6 +5,9 @@ import { Ternary, Item, Q, ShouldView } from './Types';
 // enum NodeType { Or, And }
 // type Item<T> = Leaf<T> | Not<T> | Any<T> | All<T>
 // interface Q { shouldView: ShouldView; ... }
+
+import { ShouldView } from "./Interview";
+import { Ternary } from "./Ternary";
 
 export type Marking = Map<string, Ternary>;
 

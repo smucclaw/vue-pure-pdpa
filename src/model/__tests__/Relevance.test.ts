@@ -1,6 +1,7 @@
-import { evaluate } from '../../src/AnyAll/Relevance';
-import { Item, Label, Marking, Ternary } from '../../src/AnyAll/Types';
+import { evaluate, Marking } from '../Relevance';
 import { describe, it, expect } from 'vitest'
+import { Ternary } from '../Ternary';
+import { Item } from '../Item';
 
 // Constants
 export const keyString: string = "key";
@@ -11,17 +12,17 @@ export function right(b: Ternary): Marking {
   return map;
 }
 
-export const keyLeaf: Item<string> = {
+export const keyLeaf: Item = {
   type: 'Leaf',
   value: keyString
 };
 
-export const missingLeaf: Item<string> = {
+export const missingLeaf: Item = {
   type: 'Leaf',
   value: "missing"
 };
 
-export function any(leafs: Array<string>): Item<string> {
+export function any(leafs: Array<string>): Item {
   return {
     type: 'Any',
     label: { type: 'Pre', value: "dummy" },
@@ -29,7 +30,7 @@ export function any(leafs: Array<string>): Item<string> {
   };
 }
 
-export function all(leafs: Array<string>): Item<string> {
+export function all(leafs: Array<string>): Item {
   return {
     type: 'All',
     label: { type: 'Pre', value: "dummy" },
@@ -37,7 +38,7 @@ export function all(leafs: Array<string>): Item<string> {
   };
 }
 
-export function not(leaf: string): Item<string> {
+export function not(leaf: string): Item {
   return {
     type: 'Not',
     value: { type: 'Leaf', value: leaf }
