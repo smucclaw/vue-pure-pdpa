@@ -31,6 +31,7 @@ import { computed } from 'vue'
 import {interviewStore} from '@/store/index.js';
 import {userMark} from '@/model/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
+import { Ternary, ternaryFromString } from '@/model/Ternary';
 
 const store = interviewStore()
 
@@ -66,6 +67,10 @@ const indentParent = computed(() => indent(newDepth.value))
 const leaf = computed({
   get: () => props.question.mark.source === "user" ? props.question.mark.value : "none",
   set: (value) => {
+    console.log(value)
+    console.log(    ternaryFromString(value)    )
+    console.log(    userMark(value)    )
+
     store.updateMarkingField(
       props.question.andOr.contents,
       userMark(value),

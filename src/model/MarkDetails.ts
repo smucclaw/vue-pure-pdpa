@@ -1,11 +1,15 @@
-export interface MarkDetails {
+import { Ternary, ternaryFromString } from "./Ternary";
+
+export class MarkDetails {
     source: string;
-    value: boolean | undefined;
+    value: Ternary;
+
+    constructor(source: string, value: Ternary) {
+        this.source = source;
+        this.value = value;
+    }
 }
 
-export function userMark(value: boolean): MarkDetails {
-    return {
-        source: 'user',
-        value: value,
-    };
+export function userMark(value: string): MarkDetails {
+    return new MarkDetails('user', ternaryFromString(value));
 }
