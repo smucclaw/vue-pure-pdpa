@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 import { MarkDetails } from '@/model/MarkDetails';
+import { relevant } from '@/model/Relevance';
+import { Ternary } from '@/model/Ternary';
 
 export function getAaJsonLins(aaJson) {
   return aaJson
@@ -24,6 +26,11 @@ export const interviewStore = defineStore('interview', {
     },
     questions(state) {
       const currentInterviewBody = Object.values(this.currentInterview)[0];
+      const oldQ = AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
+      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
+      
+      console.log('oldQ', oldQ);
+      //console.log('newQ', newQ);
       return AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
     },
     currentInterview(state) {

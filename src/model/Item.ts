@@ -7,6 +7,7 @@ export class LeafItem extends Item {
   readonly type = 'Leaf';
   constructor(public value: string) {
     super();
+    this.value = value;
   }
   nnf(): Item {
     return this;
@@ -17,6 +18,7 @@ export class AllItem extends Item {
   readonly type = 'All';
   constructor(public label: Label, public children: Item[]) {
     super();
+    this.children = children;
   }
   nnf(): Item {
     return new AllItem(
@@ -30,6 +32,7 @@ export class AnyItem extends Item {
   readonly type = 'Any';
   constructor(public label: Label, public children: Item[]) {
     super();
+    this.children = children;
   }
   nnf(): Item {
     return new AnyItem(
@@ -41,21 +44,23 @@ export class AnyItem extends Item {
 
 export class NotItem extends Item {
   readonly type = 'Not';
+  readonly child: Item;
   constructor(public item: Item) {
     super();
+    this.child = item;
   }
   nnf(): Item {
-    if (this.item instanceof NotItem) {
-      return this.item.item.nnf();
-    } else if (this.item instanceof AllItem) {
+    if (this.child instanceof NotItem) {
+      return this.child.child.nnf();
+    } else if (this.child instanceof AllItem) {
       return new AnyItem(
-        this.item.label,
-        this.item.children.map(p => new NotItem(p).nnf())
+        this.child.label,
+        this.child.children.map(p => new NotItem(p).nnf())
       );
-    } else if (this.item instanceof AnyItem) {
+    } else if (this.child instanceof AnyItem) {
       return new AllItem(
-        this.item.label,
-        this.item.children.map(p => new NotItem(p).nnf())
+        this.child.label,
+        this.child.children.map(p => new NotItem(p).nnf())
       );
     }
     return this;

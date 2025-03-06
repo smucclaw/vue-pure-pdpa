@@ -7,6 +7,7 @@
 // interface Q { shouldView: ShouldView; ... }
 
 import { ShouldView } from "./Interview";
+import { AllItem, AnyItem, Item, LeafItem, NotItem } from "./Item";
 import { Ternary } from "./Ternary";
 
 export type Marking = Map<string, Ternary>;
@@ -14,10 +15,10 @@ export type Marking = Map<string, Ternary>;
 /**
  * Paint a tree as View, Hide, or Ask, depending on the dispositivity of the current node and its children.
  */
-export function relevant(marking: Marking, parentValue: Ternary, self: Item<string>): Q {
+export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q {
   const selfValue = evaluate(marking, self);
   let initVis: ShouldView;
-  
+
   if (parentValue !== Ternary.Unknown) {
     if (parentValue === selfValue) {
       initVis = ShouldView.View;
@@ -29,12 +30,16 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item<stri
   } else {
     initVis = ShouldView.Ask;
   }
-  
+
+  console.log('relevant', self);
+  console.log('relevant children', getChildren(self));
   // We compute the initial visibility of the subtree.
   // If our initial visibility is to hide, then we mute all our children by converting Ask to Hide;
   // but if any of our children are View, we leave them as View.
-  const paintedChildren = getChildren(self).map(child => 
-    initVis !== ShouldView.Hide ? relevant(marking, selfValue, child) : ask2hide(relevant(marking, selfValue, child))
+  const paintedChildren = getChildren(self).map(child =>
+    initVis !== ShouldView.Hide
+      ? relevant(marking, selfValue, child)
+      : ask2hide(relevant(marking, selfValue, child))
   );
 
   function makeQNode(itemNode: Item<string>): Q {
@@ -54,13 +59,15 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item<stri
   return makeQNode(self);
 }
 
-export function getChildren(item: Item<string>): Array<Item<string>> {
-  switch (item.type) {
-    case 'Leaf': return [];
-    case 'Not': return getChildren(item.value);
-    case 'Any': return item.children;
-    case 'All': return item.children;
+export function getChildren(item: Item): Array<Item> {
+  console.log('getChildren', item);
+  if (item instanceof NotItem) {
+    return [item.child];
+  } else if (item instanceof AnyItem || item instanceof AllItem) {
+    return item.children;
   }
+  
+  return [];
 }
 
 export function ask2hide(q: Q): Q {
@@ -80,28 +87,28 @@ export function ask2view(view: ShouldView): ShouldView {
 export function nlMapFn(word: string, nldict: Map<string, Map<string, string>>, nl: Map<string, Map<string, string>>): Map<string, string> {
   const langs = Array.from(nldict.keys());
   const result = new Map<string, string>();
-  
+
   langs.forEach(lg => {
     const lgDict = nl.get(lg) || new Map<string, string>();
     const longtext = lgDict.get(word) || "";
     result.set(lg, longtext);
   });
-  
+
   return result;
 }
 
 // Well, it depends on what values the children have, and that depends on whether we're assessing them in soft or hard mode.
-export function evaluate(marking: Marking, item: Item<string>): Ternary {
-  switch (item.type) {
-    case 'Leaf':
+export function evaluate(marking: Marking, item: Item): Ternary {
+  switch (true) {
+    case item instanceof LeafItem:
       return marking.get(item.value) || Ternary.Unknown;
-    case 'Not':
-      return not3(evaluate(marking, item.value));
-    case 'Any':
+    case item instanceof NotItem:
+      return not3(evaluate(marking, item.child));
+    case item instanceof AnyItem:
       return evaluateAny(item.children.map(child => evaluate(marking, child)));
-    case 'All':
+    case item instanceof AllItem:
       return evaluateAll(item.children.map(child => evaluate(marking, child)));
-  }
+    }
 }
 
 export function evaluateAny(items: Ternary[]): Ternary {
@@ -138,8 +145,8 @@ function not3(value: Ternary): Ternary {
 }
 
 // This function should be defined in your Types.ts
-function mkQ(shouldView: ShouldView, nodeType: string, simpleValue: string | null, 
-             label: string | null, ternary: Ternary, children: Q[]): Q {
+function mkQ(shouldView: ShouldView, nodeType: string, simpleValue: string | null,
+  label: string | null, ternary: Ternary, children: Q[]): Q {
   return {
     shouldView,
     nodeType,
