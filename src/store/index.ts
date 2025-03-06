@@ -28,13 +28,13 @@ export const interviewStore = defineStore('interview', {
       const currentInterviewBody = Object.values(this.currentInterview)[0];
       const markingTransformed = new Map(
         Array.from(state.marking.entries()).map(
-          ([k, v]) => [k, ternary2string(v.value)]
+          ([k, v]) => [k, {source:"user", value: ternary2string(v.value)}]
         )
       );
       console.log('markingTransformed', markingTransformed);
       console.log('state', state.marking);
 
-      const oldQ = AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
+      const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
       //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
       
       console.log('oldQ', oldQ);
