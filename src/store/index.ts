@@ -31,7 +31,7 @@ export const interviewStore = defineStore('interview', {
           ([k, v]) => [k, {source:"user", value: ternary2string(v.value)}]
         )
       );
-      console.log('markingTransformed', markingTransformed);
+      console.log('markingTransformed', Object.fromEntries(markingTransformed));
       console.log('state', state.marking);
 
       const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
@@ -39,7 +39,7 @@ export const interviewStore = defineStore('interview', {
       
       console.log('oldQ', oldQ);
       //console.log('newQ', newQ);
-      return AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
+      return AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
