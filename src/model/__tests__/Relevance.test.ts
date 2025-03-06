@@ -1,7 +1,7 @@
 import { evaluate, Marking } from '../Relevance';
 import { describe, it, expect } from 'vitest'
 import { Ternary } from '../Ternary';
-import { Item } from '../Item';
+import { AllItem, AnyItem, Item, LeafItem, NotItem, PreLabel } from '../Item';
 
 // Constants
 export const keyString: string = "key";
@@ -12,37 +12,29 @@ export function right(b: Ternary): Marking {
   return map;
 }
 
-export const keyLeaf: Item = {
-  type: 'Leaf',
-  value: keyString
-};
+export const keyLeaf: Item = new LeafItem(keyString);
 
-export const missingLeaf: Item = {
-  type: 'Leaf',
-  value: "missing"
-};
+export const missingLeaf: Item = new LeafItem("missing");
+
 
 export function any(leafs: Array<string>): Item {
-  return {
-    type: 'Any',
-    label: { type: 'Pre', value: "dummy" },
-    children: leafs.map(leaf => ({ type: 'Leaf', value: leaf }))
-  };
+  return new AnyItem(
+    new PreLabel("dummy"),
+    leafs.map(leaf => new LeafItem(leaf))
+  );
 }
 
 export function all(leafs: Array<string>): Item {
-  return {
-    type: 'All',
-    label: { type: 'Pre', value: "dummy" },
-    children: leafs.map(leaf => ({ type: 'Leaf', value: leaf }))
-  };
+  return new AllItem(
+    new PreLabel("dummy"),
+    leafs.map(leaf => new LeafItem(leaf))
+  );
 }
 
 export function not(leaf: string): Item {
-  return {
-    type: 'Not',
-    value: { type: 'Leaf', value: leaf }
-  };
+  return new NotItem(
+    new LeafItem(leaf)
+  );
 }
 
 describe("evaluate", () => {
