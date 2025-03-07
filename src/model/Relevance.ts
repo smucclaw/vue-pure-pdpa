@@ -23,8 +23,6 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
     initVis = ShouldView.Ask;
   }
 
-  console.log('relevant', self);
-  console.log('relevant children', getChildren(self));
   const paintedChildren = getChildren(self).map(child =>
     initVis !== ShouldView.Hide
       ? relevant(marking, selfValue, child)
@@ -49,7 +47,6 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
 }
 
 export function getChildren(item: Item): Array<Item> {
-  console.log('getChildren', item);
   if (item instanceof NotItem) {
     return [item.child];
   } else if (item instanceof AnyItem || item instanceof AllItem) {

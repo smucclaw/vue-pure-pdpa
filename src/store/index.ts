@@ -4,6 +4,7 @@ import * as AaJson from '../assets/Interview.json';
 import { MarkDetails } from '@/model/MarkDetails';
 import { relevant } from '@/model/Relevance';
 import { Ternary, ternary2bool, ternary2string } from '@/model/Ternary';
+import { deserializeItem } from '@/model/Item';
 
 export function getAaJsonLins(aaJson) {
   return aaJson
@@ -35,8 +36,15 @@ export const interviewStore = defineStore('interview', {
       const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
       console.log('oldQ', oldQ);
       
-      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
-      //console.log('newQ', newQ);
+      const markingCleaned = new Map(
+        Array.from(state.marking.entries()).map(
+          ([k, v]) => [k, v.value]
+        )
+      );
+
+      const currentItem = deserializeItem(currentInterviewBody);
+      const newQ = relevant(markingCleaned, Ternary.Unknown, currentItem);
+      console.log('newQ', newQ);
 
       return oldQ;
     },
