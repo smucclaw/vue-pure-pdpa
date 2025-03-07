@@ -84,3 +84,31 @@ export class PrePostLabel extends Label {
     super();
   }
 }
+
+export function deserializeItem(json: any): Item {
+  switch (Object.keys(json)[0]) {
+    case 'Leaf':
+      return new LeafItem(json.Leaf);
+    case 'All':
+      const allJson = json.All;
+      return new AllItem(deserializeLabel(allJson.label), allJson.children.map(deserializeItem));
+    case 'Any':
+      const anyJson = json.Any;
+      return new AnyItem(deserializeLabel(anyJson.label), anyJson.children.map(deserializeItem));
+    case 'Not':
+      return new NotItem(deserializeItem(json.Not));
+    default:
+      throw new Error(`Unknown item: ${json}`);
+  }
+}
+
+function deserializeLabel(json: any): Label {
+  const keys = Object.keys(json);
+  if (keys.length === 1 && keys.includes('Pre')) {
+    return new PreLabel(json.Pre);
+  } else if (keys.length === 2 && keys.includes('Pre') && keys.includes('Post')) {
+    return new PrePostLabel(json.Pre, json.Post);
+  } else {
+    throw new Error(`Unknown label type: ${json.type}`);
+  }
+}
