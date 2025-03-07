@@ -31,15 +31,14 @@ export const interviewStore = defineStore('interview', {
           ([k, v]) => [k, {source:"user", value: ternary2string(v.value)}]
         )
       );
-      console.log('markingTransformed', Object.fromEntries(markingTransformed));
-      console.log('state', state.marking);
 
       const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
-      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
-      
       console.log('oldQ', oldQ);
+      
+      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
       //console.log('newQ', newQ);
-      return AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
+
+      return oldQ;
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
