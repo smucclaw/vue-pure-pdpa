@@ -67,10 +67,6 @@ const indentParent = computed(() => indent(newDepth.value))
 const leaf = computed({
   get: () => props.question.mark.source === "user" ? props.question.mark.value : "none",
   set: (value) => {
-    console.log(value)
-    console.log(    ternaryFromString(value)    )
-    console.log(    userMark(value)    )
-
     store.updateMarkingField(
       props.question.andOr.contents,
       userMark(value),
