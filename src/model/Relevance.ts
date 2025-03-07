@@ -1,14 +1,6 @@
-
-// Assuming Types.ts has these enums/types defined:
-// enum Ternary { True, False, Unknown }
-// enum ShouldView { View, Hide, Ask }
-// enum NodeType { Or, And }
-// type Item<T> = Leaf<T> | Not<T> | Any<T> | All<T>
-// interface Q { shouldView: ShouldView; ... }
-
-import { ShouldView } from "./Interview";
+import { Q, ShouldView } from "./Interview";
 import { AllItem, AnyItem, Item, LeafItem, NotItem } from "./Item";
-import { Ternary } from "./Ternary";
+import { not3, Ternary } from "./Ternary";
 
 export type Marking = Map<string, Ternary>;
 
@@ -33,21 +25,18 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
 
   console.log('relevant', self);
   console.log('relevant children', getChildren(self));
-  // We compute the initial visibility of the subtree.
-  // If our initial visibility is to hide, then we mute all our children by converting Ask to Hide;
-  // but if any of our children are View, we leave them as View.
   const paintedChildren = getChildren(self).map(child =>
     initVis !== ShouldView.Hide
       ? relevant(marking, selfValue, child)
       : ask2hide(relevant(marking, selfValue, child))
   );
 
-  function makeQNode(itemNode: Item<string>): Q {
+  function makeQNode(itemNode: Item): Q {
     switch (itemNode.type) {
       case 'Leaf':
         return mkQ(initVis, 'Simply', itemNode.value, null, lookupMarking(itemNode.value, marking), []);
       case 'Not':
-        return makeQNode(itemNode.value); // [TODO] we should have a SimplyNot as well
+        return makeQNode(itemNode.value);
       case 'Any':
         return mkQ(ask2view(initVis), 'Or', null, itemNode.label, selfValue, paintedChildren);
       case 'All':
@@ -133,15 +122,6 @@ export function evaluateAll(items: Ternary[]): Ternary {
 
 export function lookupMarking(node: string, marking: Marking): Ternary {
   return marking.get(node) || Ternary.Unknown;
-}
-
-// Helper function (not in original but needed)
-function not3(value: Ternary): Ternary {
-  switch (value) {
-    case Ternary.True: return Ternary.False;
-    case Ternary.False: return Ternary.True;
-    case Ternary.Unknown: return Ternary.Unknown;
-  }
 }
 
 // This function should be defined in your Types.ts

@@ -31,6 +31,7 @@ import { computed } from 'vue'
 import {interviewStore} from '@/store/index.js';
 import {userMark} from '@/model/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
+import { Ternary, ternaryFromString } from '@/model/Ternary';
 
 const store = interviewStore()
 

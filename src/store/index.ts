@@ -3,7 +3,7 @@ import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 import { MarkDetails } from '@/model/MarkDetails';
 import { relevant } from '@/model/Relevance';
-import { Ternary } from '@/model/Ternary';
+import { Ternary, ternary2bool, ternary2string } from '@/model/Ternary';
 
 export function getAaJsonLins(aaJson) {
   return aaJson
@@ -26,12 +26,19 @@ export const interviewStore = defineStore('interview', {
     },
     questions(state) {
       const currentInterviewBody = Object.values(this.currentInterview)[0];
-      const oldQ = AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
-      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
-      
+      const markingTransformed = new Map(
+        Array.from(state.marking.entries()).map(
+          ([k, v]) => [k, {source:"user", value: ternary2string(v.value)}]
+        )
+      );
+
+      const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
       console.log('oldQ', oldQ);
+      
+      //const newQ = relevant(state.marking, Ternary.Unknown, currentInterviewBody);
       //console.log('newQ', newQ);
-      return AnyAll.paint2(Object.fromEntries(state.marking))(currentInterviewBody);
+
+      return oldQ;
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];
