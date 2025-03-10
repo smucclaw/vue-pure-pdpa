@@ -5,6 +5,7 @@ import { MarkDetails } from '@/model/MarkDetails';
 import { relevant } from '@/model/Relevance';
 import { Ternary, ternary2bool, ternary2string } from '@/model/Ternary';
 import { deserializeItem } from '@/model/Item';
+import { encodeJsonQ } from '@/model/Interview';
 
 export function getAaJsonLins(aaJson) {
   return aaJson
@@ -43,7 +44,10 @@ export const interviewStore = defineStore('interview', {
       );
 
       const currentItem = deserializeItem(currentInterviewBody);
-      const newQ = relevant(markingCleaned, Ternary.Unknown, currentItem);
+      const relevent = relevant(markingCleaned, Ternary.Unknown, currentItem);
+      console.log('relevent', relevent);
+
+      const newQ = encodeJsonQ(relevent);
       console.log('newQ', newQ);
 
       return oldQ;

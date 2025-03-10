@@ -1,4 +1,4 @@
-import { Q, ShouldView } from "./Interview";
+import { mkQ, Or, And, Q, ShouldView, Simply } from "./Interview";
 import { AllItem, AnyItem, Item, LeafItem, NotItem } from "./Item";
 import { not3, Ternary } from "./Ternary";
 
@@ -30,15 +30,15 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
   );
 
   function makeQNode(itemNode: Item): Q {
-    switch (itemNode.type) {
-      case 'Leaf':
-        return mkQ(initVis, 'Simply', itemNode.value, null, lookupMarking(itemNode.value, marking), []);
-      case 'Not':
-        return makeQNode(itemNode.value);
-      case 'Any':
-        return mkQ(ask2view(initVis), 'Or', null, itemNode.label, selfValue, paintedChildren);
-      case 'All':
-        return mkQ(ask2view(initVis), 'And', null, itemNode.label, selfValue, paintedChildren);
+    switch (true) {
+      case itemNode instanceof LeafItem:
+      return mkQ(initVis, new Simply(itemNode.value), undefined, lookupMarking(itemNode.value, marking), []);
+      case itemNode instanceof NotItem:
+      return makeQNode(itemNode.child);
+      case itemNode instanceof AnyItem:
+      return mkQ(ask2view(initVis), new Or(), itemNode.label, selfValue, paintedChildren);
+      case itemNode instanceof AllItem:
+      return mkQ(ask2view(initVis), new And(), itemNode.label, selfValue, paintedChildren);
     }
   }
 
@@ -119,17 +119,4 @@ export function evaluateAll(items: Ternary[]): Ternary {
 
 export function lookupMarking(node: string, marking: Marking): Ternary {
   return marking.get(node) || Ternary.Unknown;
-}
-
-// This function should be defined in your Types.ts
-function mkQ(shouldView: ShouldView, nodeType: string, simpleValue: string | null,
-  label: string | null, ternary: Ternary, children: Q[]): Q {
-  return {
-    shouldView,
-    nodeType,
-    simpleValue,
-    label,
-    ternary,
-    children
-  };
 }
