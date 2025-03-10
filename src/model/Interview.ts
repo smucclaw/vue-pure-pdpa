@@ -29,7 +29,7 @@ export class Simply extends AndOr {
 export interface Q {
   shouldView: ShouldView;
   andOr: AndOr;
-  prePost: Label | null;
+  prePost: Label | undefined;
   mark: Ternary;
   children: Q[];
 }
@@ -37,7 +37,7 @@ export interface Q {
 export function mkQ(
   shouldView: ShouldView,
   andOr: AndOr,
-  prePost: Label | null,
+  prePost: Label | undefined,
   mark: Ternary,
   children: Q[]
 ): Q {
@@ -52,4 +52,41 @@ export function mkQ(
 
 export function shouldViewToString(sv: ShouldView): string {
   return sv;
+}
+
+export function encodeJsonQ(q: Q): object {
+  return {
+    shouldView: q.shouldView,
+    prePost: encodePrePostArgo(q.prePost),
+    mark: q.mark,
+    andOr: encodeAndOrArgo(q.andOr, q.children)
+  };
+}
+
+function encodeAndOrArgo(andOr: AndOr, children: Q[]): object {
+  if (andOr instanceof Simply) {
+    return {
+      tag: "Leaf",
+      contents: andOr.value,
+      nl: {}
+    };
+  } else if (andOr instanceof And) {
+    console.log('encodeAndOrArgo', andOr, children);
+
+    return {
+      tag: "All",
+      children: children.map(encodeJsonQ),
+      nl: {}
+    };
+  } else if (andOr instanceof Or) {
+    return {
+      tag: "Any",
+      children: children.map(encodeJsonQ),
+      nl: {}
+    };
+  }
+}
+
+function encodePrePostArgo(prePost?: Label): object {
+  return prePost ? { value: prePost } : {};
 }
