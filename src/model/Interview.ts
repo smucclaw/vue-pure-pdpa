@@ -1,4 +1,4 @@
-import { Label } from './Item';
+import { Label, PreLabel, PrePostLabel } from './Item';
 import { Ternary, ternary2string } from './Ternary';
 
 
@@ -85,6 +85,16 @@ function encodeAndOrArgo(andOr: AndOr, children: Q[]): object {
   }
 }
 
-function encodePrePostArgo(prePost?: Label): object {
-  return prePost ? { value: prePost } : {};
+function encodePrePostArgo(label?: Label): object {
+  if (!label) {
+    return {};
+  }
+
+  if (label instanceof PreLabel) {
+    return {  "Pre" : label.pre };
+  } else if (label instanceof PrePostLabel) {
+    return {  "Pre" : label.pre, "Post": label.post };
+  } else {
+    return {  };
+  }
 }
