@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
-import * as AnyAll from 'anyall';
 import * as AaJson from '../assets/Interview.json';
 import { MarkDetails } from '@/model/MarkDetails';
 import { relevant } from '@/model/Relevance';
-import { Ternary, ternary2bool, ternary2string } from '@/model/Ternary';
+import { Ternary } from '@/model/Ternary';
 import { deserializeItem } from '@/model/Item';
 import { encodeJsonQ } from '@/model/Interview';
 
@@ -28,15 +27,7 @@ export const interviewStore = defineStore('interview', {
     },
     questions(state) {
       const currentInterviewBody = Object.values(this.currentInterview)[0];
-      const markingTransformed = new Map(
-        Array.from(state.marking.entries()).map(
-          ([k, v]) => [k, {source:"user", value: ternary2string(v.value)}]
-        )
-      );
 
-      const oldQ = AnyAll.paint2(Object.fromEntries(markingTransformed))(currentInterviewBody);
-      console.log('oldQ', oldQ);
-      
       const markingCleaned = new Map(
         Array.from(state.marking.entries()).map(
           ([k, v]) => [k, v.value]
@@ -45,12 +36,10 @@ export const interviewStore = defineStore('interview', {
 
       const currentItem = deserializeItem(currentInterviewBody);
       const relevent = relevant(markingCleaned, Ternary.Unknown, currentItem);
-      console.log('relevent', relevent);
 
       const newQ = encodeJsonQ(relevent);
-      console.log('newQ', newQ);
 
-      return oldQ;
+      return newQ;
     },
     currentInterview(state) {
       return state.allInverviews[state.currentLang][state.currentPrompt];

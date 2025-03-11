@@ -1,5 +1,5 @@
 import { Label } from './Item';
-import { Ternary } from './Ternary';
+import { Ternary, ternary2string } from './Ternary';
 
 
 export enum ShouldView {
@@ -58,7 +58,7 @@ export function encodeJsonQ(q: Q): object {
   return {
     shouldView: q.shouldView,
     prePost: encodePrePostArgo(q.prePost),
-    mark: q.mark,
+    mark: { source: "user", value: ternary2string(q.mark) },
     andOr: encodeAndOrArgo(q.andOr, q.children)
   };
 }
@@ -71,8 +71,6 @@ function encodeAndOrArgo(andOr: AndOr, children: Q[]): object {
       nl: {}
     };
   } else if (andOr instanceof And) {
-    console.log('encodeAndOrArgo', andOr, children);
-
     return {
       tag: "All",
       children: children.map(encodeJsonQ),
