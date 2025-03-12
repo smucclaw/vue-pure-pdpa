@@ -112,3 +112,17 @@ function deserializeLabel(json: any): Label {
     throw new Error(`Unknown label type: ${json.type}`);
   }
 }
+
+export function encodePrePostArgo(label?: Label): object {
+  if (!label) {
+    return {};
+  }
+
+  if (label instanceof PreLabel) {
+    return {  "Pre" : label.pre };
+  } else if (label instanceof PrePostLabel) {
+    return {  "Pre" : label.pre, "Post": label.post };
+  } else {
+    return {  };
+  }
+}
