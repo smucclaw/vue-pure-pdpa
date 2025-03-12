@@ -1,7 +1,7 @@
 import { evaluate, Marking } from '../Relevance';
 import { describe, it, expect } from 'vitest'
 import { Ternary } from '../Ternary';
-import { AllItem, AnyItem, Item, LeafItem, NotItem, PreLabel } from '../Item';
+import { AllItem, AnyItem, Item, LeafItem, NotItem,Label } from '../Item';
 
 // Constants
 export const keyString: string = "key";
@@ -19,14 +19,14 @@ export const missingLeaf: Item = new LeafItem("missing");
 
 export function any(leafs: Array<string>): Item {
   return new AnyItem(
-    new PreLabel("dummy"),
+    {type: "Pre", pre: "dummy"},
     leafs.map(leaf => new LeafItem(leaf))
   );
 }
 
 export function all(leafs: Array<string>): Item {
   return new AllItem(
-    new PreLabel("dummy"),
+    {type: "Pre", pre: "dummy"},
     leafs.map(leaf => new LeafItem(leaf))
   );
 }

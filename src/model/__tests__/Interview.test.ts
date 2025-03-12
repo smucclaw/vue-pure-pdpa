@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { encodeJsonQ, mkQ, ShouldView, And, Or, Simply } from '../Interview';
 import { Ternary } from '../Ternary';
-import { PreLabel, PrePostLabel } from '../Item';
+import { Label } from '../Item';
 
 describe('encodeJsonQ', () => {
   it('encodes a simple Q with Simply', () => {
@@ -21,7 +21,7 @@ describe('encodeJsonQ', () => {
 
   it('encodes a Q with And and children', () => {
     const childQ = mkQ(ShouldView.Hide, new Simply('child'), undefined, Ternary.False, []);
-    const q = mkQ(ShouldView.View, new And(), new PreLabel("All of:"), Ternary.True, [childQ]);
+    const q = mkQ(ShouldView.View, new And(), { type: 'Pre', pre: "All of:" }, Ternary.True, [childQ]);
     const encoded = encodeJsonQ(q);
     expect(encoded).toEqual({
       shouldView: 'View',
@@ -49,7 +49,7 @@ describe('encodeJsonQ', () => {
   it('encodes a Q with Or and children', () => {
     const childQ1 = mkQ(ShouldView.Hide, new Simply('child1'), undefined, Ternary.False, []);
     const childQ2 = mkQ(ShouldView.Ask, new Simply('child2'), undefined, Ternary.True, []);
-    const q = mkQ(ShouldView.View, new Or(), new PrePostLabel("Any of:", "Tally"), Ternary.True, [childQ1, childQ2]);
+    const q = mkQ(ShouldView.View, new Or(), { type: 'PrePost', pre: "Any of:", post: "Tally" }, Ternary.True, [childQ1, childQ2]);
     const encoded = encodeJsonQ(q);
     expect(encoded).toEqual({
       shouldView: 'View',
