@@ -17,9 +17,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@ps/*": [
-        "anyall-purs/output/*"
       ]
     },
     "lib": [
