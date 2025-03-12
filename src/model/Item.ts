@@ -67,23 +67,9 @@ export class NotItem extends Item {
   }
 }
 
-export abstract class Label {
-  abstract type: string;
-}
-
-export class PreLabel extends Label {
-  readonly type = 'Pre';
-  constructor(public pre: string) {
-    super();
-  }
-}
-
-export class PrePostLabel extends Label {
-  readonly type = 'PrePost';
-  constructor(public pre: string, public post: string) {
-    super();
-  }
-}
+export type Label =
+  | { type: 'Pre', pre: string }
+  | { type: 'PrePost', pre: string, post: string };
 
 export function deserializeItem(json: any): Item {
   switch (Object.keys(json)[0]) {
@@ -105,9 +91,9 @@ export function deserializeItem(json: any): Item {
 function deserializeLabel(json: any): Label {
   const keys = Object.keys(json);
   if (keys.length === 1 && keys.includes('Pre')) {
-    return new PreLabel(json.Pre);
+    return { type: 'Pre', pre: json.Pre };
   } else if (keys.length === 2 && keys.includes('Pre') && keys.includes('Post')) {
-    return new PrePostLabel(json.Pre, json.Post);
+    return { type: 'PrePost', pre: json.Pre, post: json.Post };
   } else {
     throw new Error(`Unknown label type: ${json.type}`);
   }
@@ -118,11 +104,12 @@ export function encodePrePostArgo(label?: Label): object {
     return {};
   }
 
-  if (label instanceof PreLabel) {
-    return {  "Pre" : label.pre };
-  } else if (label instanceof PrePostLabel) {
-    return {  "Pre" : label.pre, "Post": label.post };
-  } else {
-    return {  };
+  switch (label.type) {
+    case 'Pre':
+      return { "Pre": label.pre };
+    case 'PrePost':
+      return { "Pre": label.pre, "Post": label.post };
+    default:
+      return {};
   }
 }
