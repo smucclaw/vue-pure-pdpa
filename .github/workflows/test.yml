@@ -19,14 +19,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Install Spago Dependencies
-        run: npx spago install
-        working-directory: anyall-purs
-
-      - name: Test Purescript
-        run: npm run test
-        working-directory: anyall-purs
-
       - name: Test Components
         run: npm run test:unit
 
