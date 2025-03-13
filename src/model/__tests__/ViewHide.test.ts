@@ -1,7 +1,7 @@
 import { Marking, relevant } from '../Relevance';
 import { describe, it, expect } from 'vitest'
 import { Ternary } from '../Ternary';
-import { AllItem, AnyItem, Item, LeafItem, NotItem, PreLabel } from '../Item';
+import { Item, createLeaf, createAll, createAny, createNot } from '../Item';
 import { Q, ShouldView } from '../Interview';
 
 // Helper constants and functions
@@ -13,34 +13,31 @@ export function right(b: Ternary): Marking {
   return map;
 }
 
-export const keyLeaf: Item = new LeafItem(keyString);
+export const keyLeaf: Item = createLeaf(keyString);
 
-export const missingLeaf: Item = new LeafItem("missing");
-
+export const missingLeaf: Item = createLeaf("missing");
 
 export function any(leafs: Array<string>): Item {
-  return new AnyItem(
-    new PreLabel("dummy"),
-    leafs.map(leaf => new LeafItem(leaf))
+  return createAny(
+    { type: 'Pre', pre: "dummy" },
+    leafs.map(leaf => createLeaf(leaf))
   );
 }
 
 export function all(leafs: Array<string>): Item {
-  return new AllItem(
-    new PreLabel("dummy"),
-    leafs.map(leaf => new LeafItem(leaf))
+  return createAll(
+    { type: 'Pre', pre: "dummy" },
+    leafs.map(leaf => createLeaf(leaf))
   );
 }
 
 export function not(leaf: string): Item {
-  return new NotItem(
-    new LeafItem(leaf)
-  );
+  return createNot(createLeaf(leaf));
 }
 
 export const emptyMarking: Marking = new Map<string, Ternary>();
 
-export const example1: Item = new LeafItem("single");
+export const example1: Item = createLeaf("single");
 
 export const myq: Q = {
   andOr: { type: 'Simply', value: "single" },

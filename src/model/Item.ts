@@ -1,88 +1,108 @@
-export abstract class Item {
-  abstract type: string;
-  abstract nnf(): Item;
+export type Item =
+  | LeafItem
+  | AllItem
+  | AnyItem
+  | NotItem;
+
+export interface LeafItem {
+  type: 'Leaf';
+  value: string;
 }
 
-export class LeafItem extends Item {
-  readonly type = 'Leaf';
-  constructor(public value: string) {
-    super();
-    this.value = value;
-  }
-  nnf(): Item {
-    return this;
-  }
+export interface AllItem {
+  type: 'All';
+  label: Label;
+  children: Item[];
 }
 
-export class AllItem extends Item {
-  readonly type = 'All';
-  constructor(public label: Label, public children: Item[]) {
-    super();
-    this.children = children;
-  }
-  nnf(): Item {
-    return new AllItem(
-      this.label,
-      this.children.map(p => p.nnf())
-    );
-  }
+export interface AnyItem {
+  type: 'Any';
+  label: Label;
+  children: Item[];
 }
 
-export class AnyItem extends Item {
-  readonly type = 'Any';
-  constructor(public label: Label, public children: Item[]) {
-    super();
-    this.children = children;
-  }
-  nnf(): Item {
-    return new AnyItem(
-      this.label,
-      this.children.map(p => p.nnf())
-    );
-  }
-}
-
-export class NotItem extends Item {
-  readonly type = 'Not';
-  readonly child: Item;
-  constructor(public item: Item) {
-    super();
-    this.child = item;
-  }
-  nnf(): Item {
-    if (this.child instanceof NotItem) {
-      return this.child.child.nnf();
-    } else if (this.child instanceof AllItem) {
-      return new AnyItem(
-        this.child.label,
-        this.child.children.map(p => new NotItem(p).nnf())
-      );
-    } else if (this.child instanceof AnyItem) {
-      return new AllItem(
-        this.child.label,
-        this.child.children.map(p => new NotItem(p).nnf())
-      );
-    }
-    return this;
-  }
+export interface NotItem {
+  type: 'Not';
+  child: Item;
 }
 
 export type Label =
-  | { type: 'Pre', pre: string }
-  | { type: 'PrePost', pre: string, post: string };
+  | { type: 'Pre'; pre: string }
+  | { type: 'PrePost'; pre: string; post: string };
+
+// Helper functions to create items
+export const createLeaf = (value: string): LeafItem => ({
+  type: 'Leaf',
+  value
+});
+
+export const createAll = (label: Label, children: Item[]): AllItem => ({
+  type: 'All',
+  label,
+  children
+});
+
+export const createAny = (label: Label, children: Item[]): AnyItem => ({
+  type: 'Any',
+  label,
+  children
+});
+
+export const createNot = (child: Item): NotItem => ({
+  type: 'Not',
+  child
+});
+
+export function nnf(item: Item): Item {
+  switch (item.type) {
+    case 'Leaf':
+      return item;
+    case 'All':
+      return createAll(
+        item.label,
+        item.children.map(child => nnf(child))
+      );
+    case 'Any':
+      return createAny(
+        item.label,
+        item.children.map(child => nnf(child))
+      );
+    case 'Not':
+      if (item.child.type === 'Not') {
+        return nnf(item.child.child);
+      } else if (item.child.type === 'All') {
+        return createAny(
+          item.child.label,
+          item.child.children.map(p => nnf(createNot(p)))
+        );
+      } else if (item.child.type === 'Any') {
+        return createAll(
+          item.child.label,
+          item.child.children.map(p => nnf(createNot(p)))
+        );
+      }
+      return item;
+  }
+}
 
 export function deserializeItem(json: any): Item {
   switch (Object.keys(json)[0]) {
     case 'Leaf':
-      return new LeafItem(json.Leaf);
+      return createLeaf(json.Leaf);
     case 'All':
       const allJson = json.All;
-      return new AllItem(deserializeLabel(allJson.label), allJson.children.map(deserializeItem));
+      return createAll(
+        deserializeLabel(allJson.label),
+        allJson.children.map(deserializeItem)
+      );
     case 'Any':
       const anyJson = json.Any;
-      return new AnyItem(deserializeLabel(anyJson.label), anyJson.children.map(deserializeItem));
+      return createAny(
+        deserializeLabel(anyJson.label),
+        anyJson.children.map(deserializeItem)
+      );
     case 'Not':
-      return new NotItem(deserializeItem(json.Not));
+      return createNot(deserializeItem(json.Not));
     default:
       throw new Error(`Unknown item: ${json}`);
   }
