@@ -1,7 +1,7 @@
 import { evaluate, Marking } from '../Relevance';
 import { describe, it, expect } from 'vitest'
 import { Ternary } from '../Ternary';
-import { AllItem, AnyItem, Item, LeafItem, NotItem,Label } from '../Item';
+import { Item, createLeaf, createAll, createAny, createNot, Label } from '../Item';
 
 // Constants
 export const keyString: string = "key";
@@ -12,29 +12,26 @@ export function right(b: Ternary): Marking {
   return map;
 }
 
-export const keyLeaf: Item = new LeafItem(keyString);
+export const keyLeaf: Item = createLeaf(keyString);
 
-export const missingLeaf: Item = new LeafItem("missing");
-
+export const missingLeaf: Item = createLeaf("missing");
 
 export function any(leafs: Array<string>): Item {
-  return new AnyItem(
-    {type: "Pre", pre: "dummy"},
-    leafs.map(leaf => new LeafItem(leaf))
+  return createAny(
+    { type: "Pre", pre: "dummy" },
+    leafs.map(leaf => createLeaf(leaf))
   );
 }
 
 export function all(leafs: Array<string>): Item {
-  return new AllItem(
-    {type: "Pre", pre: "dummy"},
-    leafs.map(leaf => new LeafItem(leaf))
+  return createAll(
+    { type: "Pre", pre: "dummy" },
+    leafs.map(leaf => createLeaf(leaf))
   );
 }
 
 export function not(leaf: string): Item {
-  return new NotItem(
-    new LeafItem(leaf)
-  );
+  return createNot(createLeaf(leaf));
 }
 
 describe("evaluate", () => {

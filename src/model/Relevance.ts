@@ -1,6 +1,6 @@
 import { mkQ, Or, And, Q, ShouldView, Simply } from "./Interview";
-import { AllItem, AnyItem, Item, LeafItem, NotItem } from "./Item";
 import { not3, Ternary } from "./Ternary";
+import { Item, createLeaf, createAll, createAny, createNot } from './Item';
 
 export type Marking = Map<string, Ternary>;
 
@@ -30,15 +30,15 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
   );
 
   function makeQNode(itemNode: Item): Q {
-    switch (true) {
-      case itemNode instanceof LeafItem:
-      return mkQ(initVis, new Simply(itemNode.value), undefined, lookupMarking(itemNode.value, marking), []);
-      case itemNode instanceof NotItem:
-      return makeQNode(itemNode.child);
-      case itemNode instanceof AnyItem:
-      return mkQ(ask2view(initVis), new Or(), itemNode.label, selfValue, paintedChildren);
-      case itemNode instanceof AllItem:
-      return mkQ(ask2view(initVis), new And(), itemNode.label, selfValue, paintedChildren);
+    switch (itemNode.type) {
+      case 'Leaf':
+        return mkQ(initVis, new Simply(itemNode.value), undefined, lookupMarking(itemNode.value, marking), []);
+      case 'Not':
+        return makeQNode(itemNode.child);
+      case 'Any':
+        return mkQ(ask2view(initVis), new Or(), itemNode.label, selfValue, paintedChildren);
+      case 'All':
+        return mkQ(ask2view(initVis), new And(), itemNode.label, selfValue, paintedChildren);
     }
   }
 
@@ -46,14 +46,16 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
   return makeQNode(self);
 }
 
-export function getChildren(item: Item): Array<Item> {
-  if (item instanceof NotItem) {
-    return [item.child];
-  } else if (item instanceof AnyItem || item instanceof AllItem) {
-    return item.children;
+export function getChildren(item: Item): Item[] {
+  switch (item.type) {
+    case 'Leaf':
+      return [];
+    case 'Not':
+      return getChildren(item.child);
+    case 'Any':
+    case 'All':
+      return item.children;
   }
-  
-  return [];
 }
 
 export function ask2hide(q: Q): Q {
@@ -85,16 +87,16 @@ export function nlMapFn(word: string, nldict: Map<string, Map<string, string>>, 
 
 // Well, it depends on what values the children have, and that depends on whether we're assessing them in soft or hard mode.
 export function evaluate(marking: Marking, item: Item): Ternary {
-  switch (true) {
-    case item instanceof LeafItem:
+  switch (item.type) {
+    case 'Leaf':
       return marking.get(item.value) || Ternary.Unknown;
-    case item instanceof NotItem:
+    case 'Not':
       return not3(evaluate(marking, item.child));
-    case item instanceof AnyItem:
+    case 'Any':
       return evaluateAny(item.children.map(child => evaluate(marking, child)));
-    case item instanceof AllItem:
+    case 'All':
       return evaluateAll(item.children.map(child => evaluate(marking, child)));
-    }
+  }
 }
 
 export function evaluateAny(items: Ternary[]): Ternary {
