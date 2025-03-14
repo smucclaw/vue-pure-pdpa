@@ -1,4 +1,4 @@
-import { mkQ, Or, And, Q, ShouldView, Simply } from "./Interview";
+import { mkQ, ShouldView, Simply, Q, AndOr } from "./Interview";
 import { not3, Ternary } from "./Ternary";
 import { Item, createLeaf, createAll, createAny, createNot } from './Item';
 
@@ -32,13 +32,13 @@ export function relevant(marking: Marking, parentValue: Ternary, self: Item): Q 
   function makeQNode(itemNode: Item): Q {
     switch (itemNode.type) {
       case 'Leaf':
-        return mkQ(initVis, new Simply(itemNode.value), undefined, lookupMarking(itemNode.value, marking), []);
+        return mkQ(initVis, { type: 'Simply', value: itemNode.value }, undefined, lookupMarking(itemNode.value, marking), []);
       case 'Not':
         return makeQNode(itemNode.child);
       case 'Any':
-        return mkQ(ask2view(initVis), new Or(), itemNode.label, selfValue, paintedChildren);
+        return mkQ(ask2view(initVis), { type: 'Or' }, itemNode.label, selfValue, paintedChildren);
       case 'All':
-        return mkQ(ask2view(initVis), new And(), itemNode.label, selfValue, paintedChildren);
+        return mkQ(ask2view(initVis), { type: 'And' }, itemNode.label, selfValue, paintedChildren);
     }
   }
 
