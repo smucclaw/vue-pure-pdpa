@@ -1,6 +1,5 @@
-import { encodePrePostArgo, Label, PreLabel, PrePostLabel } from './Item';
+import { encodePrePostArgo, Label } from './Item';
 import { Ternary, ternary2string } from './Ternary';
-
 
 export enum ShouldView {
   View = 'View',
@@ -8,23 +7,10 @@ export enum ShouldView {
   Ask = 'Ask'
 }
 
-export abstract class AndOr {
-}
-
-export class And extends AndOr {
-  readonly type = 'And';
-}
-
-export class Or extends AndOr {
-  readonly type = 'Or';
-}
-
-export class Simply extends AndOr {
-  readonly type = 'Simply';
-  constructor(public readonly value: string) {
-    super();
-  }
-}
+export type AndOr =
+  | { type: 'And' }
+  | { type: 'Or' }
+  | { type: 'Simply'; value: string };
 
 export interface Q {
   shouldView: ShouldView;
@@ -64,23 +50,24 @@ export function encodeJsonQ(q: Q): object {
 }
 
 function encodeAndOrArgo(andOr: AndOr, children: Q[]): object {
-  if (andOr instanceof Simply) {
-    return {
-      tag: "Leaf",
-      contents: andOr.value,
-      nl: {}
-    };
-  } else if (andOr instanceof And) {
-    return {
-      tag: "All",
-      children: children.map(encodeJsonQ),
-      nl: {}
-    };
-  } else if (andOr instanceof Or) {
-    return {
-      tag: "Any",
-      children: children.map(encodeJsonQ),
-      nl: {}
-    };
+  switch (andOr.type) {
+    case 'Simply':
+      return {
+        tag: "Leaf",
+        contents: andOr.value,
+        nl: {}
+      };
+    case 'And':
+      return {
+        tag: "All",
+        children: children.map(encodeJsonQ),
+        nl: {}
+      };
+    case 'Or':
+      return {
+        tag: "Any",
+        children: children.map(encodeJsonQ),
+        nl: {}
+      };
   }
 }
