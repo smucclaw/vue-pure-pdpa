@@ -1,4 +1,4 @@
-import { encodePrePostArgo, Label } from './Item';
+import { encodePrePostArgo, Label, LabelViewModel } from './Item';
 import { Ternary, ternary2string } from './Ternary';
 
 export enum ShouldView {
@@ -40,7 +40,14 @@ export function shouldViewToString(sv: ShouldView): string {
   return sv;
 }
 
-export function encodeJsonQ(q: Q): object {
+export interface InterviewViewModel {
+  shouldView: ShouldView;
+  prePost: LabelViewModel;
+  mark: { source: string; value: string };
+  andOr: InterviewNodeViewModel;
+}
+
+export function encodeJsonQ(q: Q): InterviewViewModel {
   return {
     shouldView: q.shouldView,
     prePost: encodePrePostArgo(q.prePost),
@@ -49,7 +56,14 @@ export function encodeJsonQ(q: Q): object {
   };
 }
 
-function encodeAndOrArgo(andOr: AndOr, children: Q[]): object {
+interface InterviewNodeViewModel {
+  tag: string;
+  contents?: string;
+  children?: InterviewViewModel[];
+  nl: object;
+}
+
+function encodeAndOrArgo(andOr: AndOr, children: Q[]): InterviewNodeViewModel {
   switch (andOr.type) {
     case 'Simply':
       return {
