@@ -119,7 +119,12 @@ function deserializeLabel(json: any): Label {
   }
 }
 
-export function encodePrePostArgo(label?: Label): object {
+export interface LabelViewModel {
+  Pre?: string;
+  Post?: string;
+}
+
+export function encodePrePostArgo(label?: Label): LabelViewModel {
   if (!label) {
     return {};
   }

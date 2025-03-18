@@ -28,21 +28,22 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import {interviewStore} from '@/store/index.js';
-import {userMark} from '@/model/MarkDetails';
+import { interviewStore } from '@/store/index.js';
+import { userMark } from '@/model/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
-import { Ternary, ternaryFromString } from '@/model/Ternary';
+import { InterviewViewModel } from '@/model/Interview';
 
 const store = interviewStore()
 
-const props = defineProps({
-  question: Object,
-  parentTag: String,
-  parentView: String,
-  depth: {
-    type: Number,
-    default: 0
-  }
+interface QuestionProps {
+  question: InterviewViewModel,
+  parentTag: string,
+  parentView: string,
+  depth: number
+}
+
+const props = withDefaults(defineProps<QuestionProps>(), {
+  depth: 0
 })
 
 const isHidden = computed(() => {
@@ -74,7 +75,7 @@ const leaf = computed({
   }
 })
 
-function indent(depth, spacingFactor = 0.75) {
+function indent(depth: number, spacingFactor = 0.75) {
   return {
     marginLeft: `${depth * spacingFactor}rem`,
   }
