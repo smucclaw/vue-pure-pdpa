@@ -60,7 +60,6 @@ interface InterviewNodeViewModel {
   tag: string;
   contents?: string;
   children?: InterviewViewModel[];
-  nl: object;
 }
 
 function encodeAndOrArgo(andOr: AndOr, children: Q[]): InterviewNodeViewModel {
@@ -69,19 +68,16 @@ function encodeAndOrArgo(andOr: AndOr, children: Q[]): InterviewNodeViewModel {
       return {
         tag: "Leaf",
         contents: andOr.value,
-        nl: {}
       };
     case 'And':
       return {
         tag: "All",
         children: children.map(encodeJsonQ),
-        nl: {}
       };
     case 'Or':
       return {
         tag: "Any",
         children: children.map(encodeJsonQ),
-        nl: {}
       };
   }
 }
