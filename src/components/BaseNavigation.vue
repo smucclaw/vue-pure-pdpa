@@ -30,11 +30,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
-const props = defineProps({
-  navClasses: String,
-  extendedMenu: Boolean,
-  fluidWidth: Boolean,
-});
+const props = defineProps<{
+  navClasses?: string;
+  extendedMenu?: boolean;
+  fluidWidth?: boolean;
+}>();
 
 const isActive = ref(false);
 const hasExtendedMenu = ref(props.extendedMenu);

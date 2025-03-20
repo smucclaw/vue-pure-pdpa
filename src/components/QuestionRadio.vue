@@ -25,10 +25,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCheck, faQuestion, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { computed } from "vue";
 
-const props = defineProps({
-  modelValue: String,
-  disabled: Boolean,
-})
+const props = defineProps<{
+  modelValue?: string,
+  disabled?: boolean,
+}>()
 
 const btnOptions = [
   {
