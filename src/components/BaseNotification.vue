@@ -8,11 +8,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps({
-  hasCloseButton: Boolean,
-  themeColor: String,
-  content: String,
-})
+const props = defineProps<{
+  hasCloseButton?: boolean,
+  themeColor?: string,
+  content?: string,
+}>()
 
 const isCloseButtonVisible = computed(() => {
   return props.hasCloseButton ? '' : 'is-hidden';
