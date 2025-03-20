@@ -13,7 +13,6 @@ describe('encodeJsonQ', () => {
       andOr: {
         tag: 'Leaf',
         contents: 'test',
-        nl: {}
       }
     });
   });
@@ -36,11 +35,9 @@ describe('encodeJsonQ', () => {
             andOr: {
               tag: 'Leaf',
               contents: 'child',
-              nl: {}
             }
           }
         ],
-        nl: {}
       }
     });
   });
@@ -64,7 +61,6 @@ describe('encodeJsonQ', () => {
             andOr: {
               tag: 'Leaf',
               contents: 'child1',
-              nl: {}
             }
           },
           {
@@ -74,11 +70,9 @@ describe('encodeJsonQ', () => {
             andOr: {
               tag: 'Leaf',
               contents: 'child2',
-              nl: {}
             }
           }
         ],
-        nl: {}
       }
     });
   });
