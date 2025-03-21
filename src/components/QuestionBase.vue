@@ -25,9 +25,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { interviewStore } from '@/store/index.js';
-import { userMark } from '@/model/MarkDetails';
 import QuestionRadio from "@/components/QuestionRadio.vue";
 import { InterviewViewModel } from '@/model/Interview';
+import { ternaryFromString } from '@/model/Ternary';
 
 const store = interviewStore()
 
@@ -66,7 +66,7 @@ const leaf = computed({
   set: (value) => {
     store.updateMarkingField(
       props.question.andOr.contents,
-      userMark(value),
+      ternaryFromString(value),
     )
   }
 })

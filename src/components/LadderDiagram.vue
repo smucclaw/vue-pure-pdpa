@@ -9,10 +9,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUpdated } from 'vue';
 import {interviewStore} from '@/store/index.js';
-import {userMark} from '@/model/MarkDetails';
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
+import { storeToRefs } from 'pinia';
+import { Ternary } from '@/model/Ternary';
 
 const store = interviewStore();
+const { getMarkingField } = storeToRefs(store)
 const ladderHere = ref();
 
 // when the user clicks on the form Yes/No/Don'tKnow, Vue natively
@@ -29,19 +31,19 @@ const ladderHere = ref();
 // so, one way to do it, if we follow the QuestionRadio example, is to define an emitter to update.
 // but we're using Vuex, so let's try writing directly to the store, shall we?
 
-function cycleUTF(currentState) {
+function cycleUTF(currentState: Ternary | undefined) {
   return (
-    currentState == undefined ? 'true' :
-    currentState.value == 'true'      ? 'false' :
-    currentState.value == 'false'     ? 'unknown' :
-    currentState.value == 'unknown'   ? 'true' : 'true'
+    currentState == undefined ? Ternary.True :
+    currentState == Ternary.True      ? Ternary.False :
+    currentState == Ternary.False     ? Ternary.Unknown :
+    currentState == Ternary.Unknown   ? Ternary.True : Ternary.True
   );
 }
 
 function ladderEventHandler(e) {
   store.updateMarkingField(
     e.detail,
-    userMark(cycleUTF(store.getMarkingField(e.detail)))
+    cycleUTF(getMarkingField.value(e.detail))
   );
 }
 
