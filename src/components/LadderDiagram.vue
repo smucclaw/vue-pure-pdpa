@@ -31,13 +31,15 @@ const ladderHere = ref();
 // so, one way to do it, if we follow the QuestionRadio example, is to define an emitter to update.
 // but we're using Vuex, so let's try writing directly to the store, shall we?
 
-function cycleUTF(currentState: Ternary | undefined) {
-  return (
-    currentState == undefined ? Ternary.True :
-    currentState == Ternary.True      ? Ternary.False :
-    currentState == Ternary.False     ? Ternary.Unknown :
-    currentState == Ternary.Unknown   ? Ternary.True : Ternary.True
-  );
+function cycleUTF(currentState) {
+  switch (currentState) {
+    case Ternary.True:
+      return Ternary.False;
+    case Ternary.False:
+      return Ternary.Unknown;
+    default:
+      return Ternary.True;
+  }
 }
 
 function ladderEventHandler(e) {
@@ -58,8 +60,8 @@ function q2circuit(q) {
       null
     );
 
-    return new BoolVar(q.andOr.contents, // [TODO] nl.en || contents
-      false, // [TODO] this should depend on SimplyNot
+    return new BoolVar(q.andOr.contents,
+      false,
       q.mark.source === 'default' ? utf : null,
       q.mark.source === 'user'    ? utf : null,
     );
