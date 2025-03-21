@@ -9,10 +9,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUpdated } from 'vue';
 import {interviewStore} from '@/store/index.js';
-import {userMark} from '@/model/MarkDetails';
 import { BoolVar, AllQuantifier, AnyQuantifier, LadderDiagram } from 'ladder-diagram';
+import { storeToRefs } from 'pinia';
+import { Ternary } from '@/model/Ternary';
 
 const store = interviewStore();
+const { getMarkingField } = storeToRefs(store)
 const ladderHere = ref();
 
 // when the user clicks on the form Yes/No/Don'tKnow, Vue natively
@@ -30,18 +32,20 @@ const ladderHere = ref();
 // but we're using Vuex, so let's try writing directly to the store, shall we?
 
 function cycleUTF(currentState) {
-  return (
-    currentState == undefined ? 'true' :
-    currentState.value == 'true'      ? 'false' :
-    currentState.value == 'false'     ? 'unknown' :
-    currentState.value == 'unknown'   ? 'true' : 'true'
-  );
+  switch (currentState) {
+    case Ternary.True:
+      return Ternary.False;
+    case Ternary.False:
+      return Ternary.Unknown;
+    default:
+      return Ternary.True;
+  }
 }
 
 function ladderEventHandler(e) {
   store.updateMarkingField(
     e.detail,
-    userMark(cycleUTF(store.getMarkingField(e.detail)))
+    cycleUTF(getMarkingField.value(e.detail))
   );
 }
 
@@ -56,8 +60,8 @@ function q2circuit(q) {
       null
     );
 
-    return new BoolVar(q.andOr.contents, // [TODO] nl.en || contents
-      false, // [TODO] this should depend on SimplyNot
+    return new BoolVar(q.andOr.contents,
+      false,
       q.mark.source === 'default' ? utf : null,
       q.mark.source === 'user'    ? utf : null,
     );
