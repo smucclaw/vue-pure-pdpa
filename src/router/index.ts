@@ -21,7 +21,7 @@ const routes = [
       const host = hostMap[to.query.hostCode] ?? `https://${to.query.hostCode}.dev.cclaw.legalese.com/workdir`;
       fetch(`${host}/${to.query.uuid}/${to.query.spreadsheetId}/${to.query.sheetId}/aajson/LATEST.json`)
         .then(response => response.json())
-        .then(data => store.state.allInverviews = data);
+        .then(data => interviewStore().allInverviews = data);
 
       next();
     }
@@ -31,7 +31,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
-      store.updateLang('nl4eng');
+      interviewStore().currentLang = 'nl4eng'
       next();
     },
   },
@@ -40,7 +40,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4chi/questions',
     beforeEnter: (to, from, next) => {
-      store.updateLang('nl4chi');
+      interviewStore().currentLang = 'nl4chi'
       next();
     },
   },
@@ -49,7 +49,7 @@ const routes = [
     component: () => import('@/views/Questions.vue'),
     alias: '/nl4may/questions',
     beforeEnter: (to, from, next) => {
-      store.updateLang('nl4may');
+      interviewStore().currentLang = 'nl4may'
       next();
     },
   },
@@ -59,7 +59,7 @@ const routes = [
     alias: '/nl4eng/questions',
     beforeEnter: (to, from, next) => {
       // Call your desired function here
-      store.updateLang('nl4eng');
+      interviewStore().currentLang = 'nl4eng'
       next();
     },
   },
@@ -73,7 +73,6 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   const name = import.meta.env.VUE_APP_BROWSER_NAME;
   const isEmpty = !name || name === '';
-  const store = interviewStore()
 
   window.document.title = isEmpty ? 'Dolora the Law Explorer' : name;
 });
